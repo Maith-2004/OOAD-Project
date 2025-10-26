@@ -12,6 +12,10 @@ public class Dairy {
     private String description;
     private double price;
     private int quantity;
+    
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String image;
 
     // Constructors
     public Dairy() {}
@@ -21,6 +25,14 @@ public class Dairy {
         this.description = description;
         this.price = price;
         this.quantity = quantity;
+    }
+    
+    public Dairy(String name, String description, double price, int quantity, String image) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.image = image;
     }
 
     // Getters and Setters
@@ -38,4 +50,7 @@ public class Dairy {
     
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
+    
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
 }

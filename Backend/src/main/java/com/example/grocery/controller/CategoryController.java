@@ -34,6 +34,9 @@ public class CategoryController {
     private GrainsRepository grainsRepo;
     
     @Autowired
+    private VegetablesRepository vegetablesRepo;
+    
+    @Autowired
     private ProductRepository productRepo;
 
     /**
@@ -105,9 +108,19 @@ public class CategoryController {
                 "description", "Rice, wheat, and grain products"
             ));
             
-            // General Products
+            // Vegetables
             categories.add(Map.of(
                 "id", 7,
+                "name", "Vegetables",
+                "endpoint", "/api/vegetables",
+                "count", vegetablesRepo.count(),
+                "icon", "🥬",
+                "description", "Fresh vegetables"
+            ));
+            
+            // General Products
+            categories.add(Map.of(
+                "id", 8,
                 "name", "Products",
                 "endpoint", "/api/products",
                 "count", productRepo.count(),
@@ -160,13 +173,16 @@ public class CategoryController {
                 case "grains":
                     products = grainsRepo.findAll();
                     break;
+                case "vegetables":
+                    products = vegetablesRepo.findAll();
+                    break;
                 case "products":
                     products = productRepo.findAll();
                     break;
                 default:
                     return ResponseEntity.badRequest().body(Map.of(
                         "success", false,
-                        "error", "Invalid category. Valid categories: bakery, fruits, dairy, meat, beverages, grains, products"
+                        "error", "Invalid category. Valid categories: bakery, fruits, dairy, meat, beverages, grains, vegetables, products"
                     ));
             }
             
@@ -217,6 +233,10 @@ public class CategoryController {
             
             grainsRepo.findAll().forEach(item -> 
                 allProducts.add(createProductMap(item, "Grains", "🌾"))
+            );
+            
+            vegetablesRepo.findAll().forEach(item -> 
+                allProducts.add(createProductMap(item, "Vegetables", "🥬"))
             );
             
             productRepo.findAll().forEach(item -> 
@@ -279,6 +299,10 @@ public class CategoryController {
                 .filter(item -> matchesSearch(item, query))
                 .forEach(item -> results.add(createProductMap(item, "Grains", "🌾")));
             
+            vegetablesRepo.findAll().stream()
+                .filter(item -> matchesSearch(item, query))
+                .forEach(item -> results.add(createProductMap(item, "Vegetables", "🥬")));
+            
             productRepo.findAll().stream()
                 .filter(item -> matchesSearch(item, query))
                 .forEach(item -> results.add(createProductMap(item, "Products", "🛒")));
@@ -308,10 +332,10 @@ public class CategoryController {
             long totalProducts = bakeryRepo.count() + fruitsRepo.count() + 
                                 dairyRepo.count() + meatRepo.count() + 
                                 beveragesRepo.count() + grainsRepo.count() + 
-                                productRepo.count();
+                                vegetablesRepo.count() + productRepo.count();
             
             Map<String, Object> stats = new HashMap<>();
-            stats.put("totalCategories", 7);
+            stats.put("totalCategories", 8);
             stats.put("totalProducts", totalProducts);
             stats.put("breakdown", Map.of(
                 "Bakery", bakeryRepo.count(),
@@ -320,6 +344,7 @@ public class CategoryController {
                 "Meat", meatRepo.count(),
                 "Beverages", beveragesRepo.count(),
                 "Grains", grainsRepo.count(),
+                "Vegetables", vegetablesRepo.count(),
                 "Products", productRepo.count()
             ));
             

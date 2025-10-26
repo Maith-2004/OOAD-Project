@@ -12,6 +12,7 @@ import com.example.grocery.repo.DairyRepository;
 import com.example.grocery.repo.MeatRepository;
 import com.example.grocery.repo.BeveragesRepository;
 import com.example.grocery.repo.GrainsRepository;
+import com.example.grocery.repo.VegetablesRepository;
 import com.example.grocery.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,8 @@ public class OrderController {
     private BeveragesRepository beveragesRepo;
     @Autowired
     private GrainsRepository grainsRepo;
+    @Autowired
+    private VegetablesRepository vegetablesRepo;
     @Autowired
     private ProductRepository productRepo;
 
@@ -640,6 +643,11 @@ public class OrderController {
                         .map(p -> p.getQuantity() >= quantity)
                         .orElse(false);
                         
+                case "vegetables":
+                    return vegetablesRepo.findById(productId)
+                        .map(p -> p.getQuantity() >= quantity)
+                        .orElse(false);
+                        
                 case "products":
                     return productRepo.findById(productId)
                         .map(p -> p.getQuantity() >= quantity)
@@ -714,6 +722,13 @@ public class OrderController {
                     });
                     break;
                     
+                case "vegetables":
+                    vegetablesRepo.findById(productId).ifPresent(p -> {
+                        p.setQuantity(p.getQuantity() - quantity);
+                        vegetablesRepo.save(p);
+                    });
+                    break;
+                    
                 case "products":
                     productRepo.findById(productId).ifPresent(p -> {
                         p.setQuantity(p.getQuantity() - quantity);
@@ -756,6 +771,8 @@ public class OrderController {
                     return beveragesRepo.findById(productId).map(p -> p.getName()).orElse("Unknown Product");
                 case "grains":
                     return grainsRepo.findById(productId).map(p -> p.getName()).orElse("Unknown Product");
+                case "vegetables":
+                    return vegetablesRepo.findById(productId).map(p -> p.getName()).orElse("Unknown Product");
                 case "products":
                     return productRepo.findById(productId).map(p -> p.getName()).orElse("Unknown Product");
                 default:
@@ -777,6 +794,7 @@ public class OrderController {
         if (meatRepo.findById(productId).map(p -> p.getQuantity() >= quantity).orElse(false)) return true;
         if (beveragesRepo.findById(productId).map(p -> p.getQuantity() >= quantity).orElse(false)) return true;
         if (grainsRepo.findById(productId).map(p -> p.getQuantity() >= quantity).orElse(false)) return true;
+        if (vegetablesRepo.findById(productId).map(p -> p.getQuantity() >= quantity).orElse(false)) return true;
         if (productRepo.findById(productId).map(p -> p.getQuantity() >= quantity).orElse(false)) return true;
         return false;
     }
@@ -809,6 +827,10 @@ public class OrderController {
         grainsRepo.findById(productId).ifPresent(p -> {
             p.setQuantity(p.getQuantity() - quantity);
             grainsRepo.save(p);
+        });
+        vegetablesRepo.findById(productId).ifPresent(p -> {
+            p.setQuantity(p.getQuantity() - quantity);
+            vegetablesRepo.save(p);
         });
         productRepo.findById(productId).ifPresent(p -> {
             p.setQuantity(p.getQuantity() - quantity);

@@ -195,8 +195,7 @@ public class EmployeeController {
                 if (order.getItems() != null) {
                     for (var item : order.getItems()) {
                         Map<String, Object> itemMap = new HashMap<>();
-                        itemMap.put("productId", item.getProductId());
-                        itemMap.put("productName", "Product " + item.getProductId()); // TODO: Look up actual name
+                        itemMap.put("productName", item.getProduct() != null ? item.getProduct().getName() : "Unknown");
                         itemMap.put("quantity", item.getQuantity());
                         itemMap.put("price", item.getPrice());
                         items.add(itemMap);

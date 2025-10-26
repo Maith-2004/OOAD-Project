@@ -10,6 +10,10 @@ public class Product {
     private String description;
     private double price;
     private int quantity;
+    
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String image;
 
     // getters & setters
     public Long getId(){return id;}
@@ -22,4 +26,6 @@ public class Product {
     public void setPrice(double price){this.price=price;}
     public int getQuantity(){return quantity;}
     public void setQuantity(int quantity){this.quantity=quantity;}
+    public String getImage(){return image;}
+    public void setImage(String image){this.image=image;}
 }
