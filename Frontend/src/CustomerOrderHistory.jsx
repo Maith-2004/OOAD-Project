@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_BASE_URL from './config/api';
 import './CustomerOrderHistory.css';
 
 /**
@@ -16,7 +17,7 @@ const CustomerOrderHistory = ({ customerId }) => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch(`http://localhost:8081/api/users/${customerId}/orders`);
+      const response = await fetch(`${API_BASE_URL}/api/users/${customerId}/orders`);
       const data = await response.json();
 
       if (data.error) {

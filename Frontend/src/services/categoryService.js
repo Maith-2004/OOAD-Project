@@ -2,7 +2,7 @@
 
 import { CATEGORIES } from '../config/categories';
 
-const API_BASE_URL = 'http://localhost:8081';
+const API_BASE_URL = process.env.REACT_APP_API_URL || (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8081');
 
 class CategoryService {
   // Get all products from a specific category

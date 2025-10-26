@@ -7,7 +7,10 @@ import WorkerDashboard from './WorkerDashboard';
 import PaymentHandlerDashboard from './PaymentHandlerDashboard';
 import './styles/categories.css';
 
-const API = 'http://localhost:8081/api';
+// Use relative URL for production (same origin), localhost for development
+const API = process.env.NODE_ENV === 'production' 
+  ? '/api'  // Production: same domain
+  : 'http://localhost:8081/api';  // Development: local backend
 
 // Employee roles configuration
 const EMPLOYEE_ROLES = {

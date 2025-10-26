@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../config/api';
 import './DeliveryEmployeeDashboard.css';
 
 const DeliveryEmployeeDashboard = ({ employee, onSignOut }) => {
@@ -32,7 +33,7 @@ const DeliveryEmployeeDashboard = ({ employee, onSignOut }) => {
       console.log(`🔄 Fetching orders for delivery employee ID: ${employeeId}`);
       
       const response = await axios.get(
-        `http://localhost:8081/api/employees/${employeeId}/orders`
+        `${API_BASE_URL}/api/employees/${employeeId}/orders`
       );
       
       if (response.data.error) {
@@ -108,7 +109,7 @@ const DeliveryEmployeeDashboard = ({ employee, onSignOut }) => {
     
     try {
       const response = await axios.put(
-        `http://localhost:8081/api/orders/${orderId}/mark-delivered`,
+        `${API_BASE_URL}/api/orders/${orderId}/mark-delivered`,
         { employeeId: parseInt(employeeId) },
         {
           headers: {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_BASE_URL from './config/api';
 import './WorkerDashboard.css';
 
 const WorkerDashboard = ({ employee, onSignOut }) => {
@@ -42,7 +43,7 @@ const WorkerDashboard = ({ employee, onSignOut }) => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8081${currentCategory.endpoint}`);
+      const response = await axios.get(`${API_BASE_URL}${currentCategory.endpoint}`);
       setProducts(response.data);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -119,7 +120,7 @@ const WorkerDashboard = ({ employee, onSignOut }) => {
       };
 
       await axios.post(
-        `http://localhost:8081${currentCategory.endpoint}`,
+        `${API_BASE_URL}${currentCategory.endpoint}`,
         productData,
         {
           headers: {
@@ -157,7 +158,7 @@ const WorkerDashboard = ({ employee, onSignOut }) => {
 
       // Send complete product data
       const response = await axios.put(
-        `http://localhost:8081${currentCategory.endpoint}/${selectedProduct.id}`,
+        `${API_BASE_URL}${currentCategory.endpoint}/${selectedProduct.id}`,
         updatedProduct,
         {
           headers: {
@@ -192,7 +193,7 @@ const WorkerDashboard = ({ employee, onSignOut }) => {
 
     try {
       await axios.delete(
-        `http://localhost:8081${currentCategory.endpoint}/${productId}`,
+        `${API_BASE_URL}${currentCategory.endpoint}/${productId}`,
         {
           headers: {
             'user-id': userId

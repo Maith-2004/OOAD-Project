@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/files")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "https://shanthistores.azurewebsites.net"})
 public class FileUploadController {
 
     private static final String UPLOAD_DIR = "uploads/receipts/";

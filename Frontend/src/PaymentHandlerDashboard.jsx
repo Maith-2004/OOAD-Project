@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_BASE_URL from './config/api';
 import './PaymentHandlerDashboard.css';
 
 /**
@@ -24,7 +25,7 @@ const PaymentHandlerDashboard = ({ employee, onSignOut }) => {
 
   const fetchPendingPayments = async () => {
     try {
-      const response = await fetch('http://localhost:8081/api/payments/pending', {
+      const response = await fetch(`${API_BASE_URL}/api/payments/pending`, {
         headers: {
           'user-id': employeeId.toString()
         }
@@ -53,7 +54,7 @@ const PaymentHandlerDashboard = ({ employee, onSignOut }) => {
     setProcessing(true);
 
     try {
-      const response = await fetch(`http://localhost:8081/api/payments/approve/${orderId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/payments/approve/${orderId}`, {
         method: 'POST',
         headers: {
           'user-id': employeeId.toString(),
@@ -90,7 +91,7 @@ const PaymentHandlerDashboard = ({ employee, onSignOut }) => {
     setProcessing(true);
 
     try {
-      const response = await fetch(`http://localhost:8081/api/payments/reject/${orderId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/payments/reject/${orderId}`, {
         method: 'POST',
         headers: {
           'user-id': employeeId.toString(),
