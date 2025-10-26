@@ -1,0 +1,18 @@
+/* HomePage.css - Starter styles for FoodMart homepage integration */
+.foodmart-home {
+  min-height: 100vh;
+  background: #f8fafc;
+}
+.foodmart-header img {
+  margin-bottom: 12px;
+}
+.foodmart-product-card img {
+  box-shadow: 0 2px 8px rgba(123,31,162,0.08);
+}
+.foodmart-product-card button {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.foodmart-product-card button:hover {
+  background: #388e3c;
+}
