@@ -256,7 +256,7 @@ function App(){
     
     console.log('📤 Sending product update payload:', payload);
     
-    axios.put(`${API}/products/${id}`, payload, {
+  axios.put(`${API}/categories/products/${id}`, payload, {
       headers: { 
         'user-id': user.id,
         'Content-Type': 'application/json'

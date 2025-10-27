@@ -55,8 +55,26 @@ public class ProductController {
             if (!"manager".equalsIgnoreCase(user.getRole()) && !"worker".equalsIgnoreCase(user.getRole())) {
                 return Map.of("error", "Only manager or worker can update general products");
             }
-            item.setId(id);
-            return repo.save(item);
+            
+            // Check if product exists in general products table
+            Optional<Product> existingProduct = repo.findById(id);
+            if (!existingProduct.isPresent()) {
+                return Map.of(
+                    "error", "Product not found in general products category. Use /api/categories/products/{id} endpoint for category-specific products.",
+                    "hint", "This product may belong to a specific category (bakery, fruits, dairy, etc.)"
+                );
+            }
+            
+            // Update existing product
+            Product existing = existingProduct.get();
+            existing.setName(item.getName());
+            existing.setDescription(item.getDescription());
+            existing.setPrice(item.getPrice());
+            existing.setQuantity(item.getQuantity());
+            if (item.getImage() != null) {
+                existing.setImage(item.getImage());
+            }
+            return repo.save(existing);
         }
         Optional<Employee> empOpt = employeeRepo.findById(userId);
         if (empOpt.isPresent()) {
@@ -64,8 +82,26 @@ public class ProductController {
             if (!"manager".equalsIgnoreCase(emp.getRole()) && !"worker".equalsIgnoreCase(emp.getRole())) {
                 return Map.of("error", "Only manager or worker can update general products");
             }
-            item.setId(id);
-            return repo.save(item);
+            
+            // Check if product exists in general products table
+            Optional<Product> existingProduct = repo.findById(id);
+            if (!existingProduct.isPresent()) {
+                return Map.of(
+                    "error", "Product not found in general products category. Use /api/categories/products/{id} endpoint for category-specific products.",
+                    "hint", "This product may belong to a specific category (bakery, fruits, dairy, etc.)"
+                );
+            }
+            
+            // Update existing product
+            Product existing = existingProduct.get();
+            existing.setName(item.getName());
+            existing.setDescription(item.getDescription());
+            existing.setPrice(item.getPrice());
+            existing.setQuantity(item.getQuantity());
+            if (item.getImage() != null) {
+                existing.setImage(item.getImage());
+            }
+            return repo.save(existing);
         }
         return Map.of("error", "User not found");
     }
