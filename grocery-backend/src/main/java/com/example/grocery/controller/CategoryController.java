@@ -4,6 +4,7 @@ import com.example.grocery.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -413,6 +414,7 @@ public class CategoryController {
      * Requires category (new) and oldCategory fields in request body
      * If category changes, moves product from old table to new table
      */
+    @Transactional
     @PutMapping("/products/{id}")
     public ResponseEntity<?> updateProductInCategory(
             @PathVariable Long id,
@@ -477,13 +479,26 @@ public class CategoryController {
             if (categoryChanged) {
                 System.out.println("[CategoryController] ⚠️ CATEGORY CHANGE DETECTED: " + oldCategory + " -> " + newCategory);
                 
-                // Step 1: Delete from old category table
-                deleteFromCategory(id, oldCategory);
-                System.out.println("[CategoryController] ✅ Deleted from " + oldCategory + " table");
+                // Step 1: Verify product exists in old category
+                if (!productExistsInCategory(id, oldCategory)) {
+                    return ResponseEntity.badRequest().body(Map.of(
+                        "success", false,
+                        "error", "Product with id " + id + " not found in " + oldCategory + " table"
+                    ));
+                }
                 
-                // Step 2: Create in new category table (use id from old product or generate new one)
+                // Step 2: Delete from old category table
+                deleteFromCategory(id, oldCategory);
+                System.out.println("[CategoryController] ✅ Deleted from " + oldCategory + " table (ID: " + id + ")");
+                
+                // Step 3: Verify deletion
+                if (productExistsInCategory(id, oldCategory)) {
+                    throw new RuntimeException("Failed to delete product from " + oldCategory + " table");
+                }
+                
+                // Step 4: Create in new category table
                 updatedProduct = createInCategory(name, description, price, quantity, image, newCategory);
-                System.out.println("[CategoryController] ✅ Created in " + newCategory + " table");
+                System.out.println("[CategoryController] ✅ Created in " + newCategory + " table with new ID");
                 
             } else {
                 System.out.println("[CategoryController] ℹ️ No category change, updating in place");
@@ -524,6 +539,21 @@ public class CategoryController {
         if (vegetablesRepo.existsById(id)) return "vegetables";
         if (productRepo.existsById(id)) return "products";
         return null; // Product not found in any table
+    }
+    
+    // Helper method to check if product exists in a specific category
+    private boolean productExistsInCategory(Long id, String category) {
+        switch (category.toLowerCase()) {
+            case "bakery": return bakeryRepo.existsById(id);
+            case "fruits": return fruitsRepo.existsById(id);
+            case "dairy": return dairyRepo.existsById(id);
+            case "meat": return meatRepo.existsById(id);
+            case "beverages": return beveragesRepo.existsById(id);
+            case "grains": return grainsRepo.existsById(id);
+            case "vegetables": return vegetablesRepo.existsById(id);
+            case "products": return productRepo.existsById(id);
+            default: return false;
+        }
     }
     
     // Helper method to delete product from a category table
