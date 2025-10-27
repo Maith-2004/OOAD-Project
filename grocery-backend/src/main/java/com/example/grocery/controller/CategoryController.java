@@ -435,14 +435,23 @@ public class CategoryController {
                 ));
             }
             
-            // If oldCategory is not provided, assume same as newCategory (backward compatibility)
+            newCategory = newCategory.toLowerCase();
+            
+            // If oldCategory is not provided, try to find which table the product currently exists in
             if (oldCategory == null || oldCategory.trim().isEmpty()) {
-                oldCategory = newCategory;
-                System.out.println("[CategoryController] ⚠️ oldCategory not provided, assuming same as category (no category change)");
+                System.out.println("[CategoryController] ⚠️ oldCategory not provided, searching for product in all tables...");
+                oldCategory = findProductCategory(id);
+                if (oldCategory == null) {
+                    return ResponseEntity.badRequest().body(Map.of(
+                        "success", false,
+                        "error", "Product with id " + id + " not found in any category table"
+                    ));
+                }
+                System.out.println("[CategoryController] ✅ Found product in: " + oldCategory);
+            } else {
+                oldCategory = oldCategory.toLowerCase();
             }
             
-            newCategory = newCategory.toLowerCase();
-            oldCategory = oldCategory.toLowerCase();
             System.out.println("[CategoryController] Old category: " + oldCategory);
             System.out.println("[CategoryController] New category: " + newCategory);
             
@@ -502,6 +511,19 @@ public class CategoryController {
                 "error", "Failed to update product: " + e.getMessage()
             ));
         }
+    }
+    
+    // Helper method to find which category table a product exists in
+    private String findProductCategory(Long id) {
+        if (bakeryRepo.existsById(id)) return "bakery";
+        if (fruitsRepo.existsById(id)) return "fruits";
+        if (dairyRepo.existsById(id)) return "dairy";
+        if (meatRepo.existsById(id)) return "meat";
+        if (beveragesRepo.existsById(id)) return "beverages";
+        if (grainsRepo.existsById(id)) return "grains";
+        if (vegetablesRepo.existsById(id)) return "vegetables";
+        if (productRepo.existsById(id)) return "products";
+        return null; // Product not found in any table
     }
     
     // Helper method to delete product from a category table
