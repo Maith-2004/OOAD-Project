@@ -1922,9 +1922,14 @@ function App(){
       
       // All endpoints failed
       console.error('❌ All endpoints failed to fetch user orders');
+      console.error('📋 Backend needs to implement one of these endpoints:');
+      console.error('   1. GET /api/orders/user/:userId');
+      console.error('   2. GET /api/orders/customer/:customerId');  
+      console.error('   3. GET /api/orders?customerId=:id');
+      console.error('   4. GET /api/orders (with customer filtering)');
       safeSetUserOrders([]);
       setLoadingUserOrders(false);
-      setUserOrderError('Unable to fetch your orders. Please try again later or contact support.');
+      setUserOrderError('⚠️ Unable to fetch orders. The backend does not have a customer orders endpoint. Please contact your system administrator to implement GET /api/orders/customer/:customerId');
     };
     
     tryAllEndpoints();

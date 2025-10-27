@@ -345,6 +345,76 @@ public class OrderController {
         }
 
         /**
+         * Get orders for a specific customer
+         * Public endpoint for customers to view their own orders
+         * @param customerId The customer's user ID
+         * @return List of orders for the customer
+         */
+        @GetMapping("/customer/{customerId}")
+        public Object getCustomerOrders(@PathVariable Long customerId) {
+            try {
+                System.out.println("[OrderController] Getting orders for customer ID: " + customerId);
+                
+                // Verify customer exists
+                Optional<User> customerOpt = userRepo.findById(customerId);
+                if (customerOpt.isEmpty()) {
+                    return Map.of("error", "Customer not found with ID: " + customerId);
+                }
+                
+                User customer = customerOpt.get();
+                
+                // Get all orders for this customer
+                List<Order> orders = orderRepo.findByCustomer(customer);
+                System.out.println("[OrderController] Found " + orders.size() + " orders for customer: " + customer.getUsername());
+                
+                // Convert to simple DTOs for customer view
+                List<Map<String, Object>> orderDTOs = new ArrayList<>();
+                
+                for (Order order : orders) {
+                    Map<String, Object> dto = new HashMap<>();
+                    
+                    // Basic order info
+                    dto.put("id", order.getId());
+                    dto.put("status", order.getStatus());
+                    dto.put("createdAt", order.getCreatedAt());
+                    dto.put("deliveryAddress", order.getDeliveryAddress());
+                    dto.put("total", order.getTotal());
+                    dto.put("paymentMethod", order.getPaymentMethod());
+                    dto.put("paymentReceipt", order.getPaymentReceipt());
+                    dto.put("paymentStatus", order.getPaymentStatus());
+                    
+                    // Order items
+                    List<Map<String, Object>> itemsList = new ArrayList<>();
+                    if (order.getItems() != null) {
+                        for (com.example.grocery.model.OrderItem item : order.getItems()) {
+                            Map<String, Object> itemMap = new HashMap<>();
+                            itemMap.put("productId", item.getProduct() != null ? item.getProduct().getId() : null);
+                            itemMap.put("quantity", item.getQuantity());
+                            itemMap.put("price", item.getPrice());
+                            itemsList.add(itemMap);
+                        }
+                    }
+                    dto.put("items", itemsList);
+                    
+                    // Delivery employee info (if assigned)
+                    if (order.getDeliveryEmployee() != null) {
+                        dto.put("deliveryEmployeeName", order.getDeliveryEmployee().getName());
+                    }
+                    
+                    orderDTOs.add(dto);
+                }
+                
+                System.out.println("[OrderController] ✅ Returning " + orderDTOs.size() + " orders for customer");
+                return orderDTOs;
+                
+            } catch (Exception e) {
+                System.err.println("[OrderController] ❌ Error fetching customer orders: " + e.getMessage());
+                e.printStackTrace();
+                return Map.of("error", "Failed to fetch orders: " + e.getMessage());
+            }
+        }
+
+        /**
          * Automatically assigns a delivery employee to an order using round-robin algorithm
          * @return Employee assigned for delivery, or null if no delivery employees available
          */
