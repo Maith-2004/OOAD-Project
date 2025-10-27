@@ -582,8 +582,18 @@ function App(){
   
   // Fetch employees when user loads (needed for delivery assignment)
   useEffect(() => {
+    console.log('🔍 Employee fetch check:', { 
+      user: user?.role, 
+      employee: employee?.role, 
+      shouldFetch: user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')
+    });
+    
     if (user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')) {
+      console.log('✅ Authorized to fetch employees');
       fetchEmployees();
+    } else {
+      console.log('❌ Not authorized to fetch employees, ensuring empty array');
+      setEmployees([]); // Ensure employees is always an empty array for non-authorized users
     }
   }, [user, employee]);
   
@@ -1486,6 +1496,19 @@ function App(){
   const [employeeError, setEmployeeError] = useState("");
 
   function fetchEmployees() {
+    // Authorization check - only managers and payment handlers can fetch employees
+    if (!user || user.guest || (user.role !== 'manager' && employee?.role !== 'Payment Handler')) {
+      console.log('❌ Unauthorized fetchEmployees call prevented for:', { 
+        userRole: user?.role, 
+        employeeRole: employee?.role,
+        isGuest: user?.guest 
+      });
+      setEmployees([]); // Ensure employees is empty for unauthorized users
+      setLoadingEmployees(false);
+      setEmployeeError("Not authorized to view employees");
+      return;
+    }
+    
     setLoadingEmployees(true);
     setEmployeeError("");
     
@@ -1495,7 +1518,7 @@ function App(){
       return;
     }
     
-    console.log('Fetching employees with user-id:', user.id, 'role:', user.role);
+    console.log('✅ Authorized employee fetch for user-id:', user.id, 'role:', user.role);
     
     axios.get(API + '/employees', { 
       headers: { 
@@ -4235,7 +4258,7 @@ function App(){
                       
                       {deliveryEmployees.length > 0 ? (
                         <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))', gap:'16px'}}>
-                          {deliveryEmployees.map(emp => (
+                          {(Array.isArray(deliveryEmployees) ? deliveryEmployees : []).map(emp => (
                             <div key={emp.id} style={{
                               border:'1px solid #c8e6c9',
                               borderRadius:'8px',
@@ -4550,7 +4573,7 @@ function App(){
                   gap:'20px',
                   marginTop:'30px'
                 }}>
-                  {favourites.map((product, i) => {
+                  {(Array.isArray(favourites) ? favourites : []).map((product, i) => {
                     const pid = product.id || i;
                     const qty = qtys[pid] || 1;
                     // Create unique key using category and id to avoid duplicate keys
@@ -5045,7 +5068,7 @@ function App(){
                             if (Array.isArray(items) && items.length > 0) {
                               return (
                                 <div>
-                                  {items.map((item, index) => {
+                                  {(Array.isArray(items) ? items : []).map((item, index) => {
                                     // Extract product information from the nested structure
                                     const productName = item.product?.name || 
                                                        item.name || 
@@ -5637,7 +5660,7 @@ function App(){
                           }}>
                             <div style={{fontWeight:'600', marginBottom:'8px', fontSize:'14px'}}>Order Items:</div>
                             <div style={{display:'flex', flexDirection:'column', gap:'6px'}}>
-                              {order.items.map((item, idx) => (
+                              {(Array.isArray(order.items) ? order.items : []).map((item, idx) => (
                                 <div key={idx} style={{fontSize:'13px', color:'#666', paddingLeft:'12px'}}>
                                   • {item.productName || `Product #${item.productId}`} - 
                                   Qty: {item.quantity} × Rs. {item.price ? item.price.toFixed(2) : '0.00'} = 
