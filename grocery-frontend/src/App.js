@@ -1884,6 +1884,13 @@ function App(){
     
     console.log('🔍 Fetching orders for user:', user.id);
     
+    // Safety wrapper to ensure we only set arrays
+    const safeSetUserOrders = (data) => {
+      const orders = Array.isArray(data) ? data : [];
+      console.log('🛡️ Setting user orders (safe):', orders.length, 'orders');
+      setUserOrders(orders);
+    };
+    
     // Try multiple endpoints to find the correct one
     const tryEndpoint = (endpoint, description) => {
       console.log(`🌐 Trying ${description}: ${endpoint}`);
@@ -1903,7 +1910,7 @@ function App(){
         } else if (r.data && Array.isArray(r.data.data)) {
           orders = r.data.data;
         }
-        setUserOrders(orders);
+        safeSetUserOrders(orders);
         console.log(`✅ Successfully loaded ${orders.length} orders`);
       })
       .catch(e1 => {
@@ -1924,7 +1931,7 @@ function App(){
             );
             
             console.log(`✅ Filtered ${userOrders.length} orders from ${allOrders.length} total orders`);
-            setUserOrders(userOrders);
+            safeSetUserOrders(userOrders);
           })
           .catch(e2 => {
             console.log('⚠️ General endpoint failed, trying query parameter approach...');
@@ -1934,12 +1941,12 @@ function App(){
               .then(r => {
                 console.log('✅ Orders API response (query param):', r.data);
                 const orders = Array.isArray(r.data) ? r.data : [];
-                setUserOrders(orders);
+                safeSetUserOrders(orders);
                 console.log(`✅ Successfully loaded ${orders.length} orders via query param`);
               })
               .catch(e3 => {
                 console.error('❌ All endpoints failed:', { e1: e1.message, e2: e2.message, e3: e3.message });
-                setUserOrders([]);
+                safeSetUserOrders([]);
                 
                 // Provide detailed error message
                 let msg = 'Unable to fetch your orders. ';
@@ -4670,7 +4677,9 @@ function App(){
         )}
 
         {/* My Orders Page */}
-        {page==='orders' && (
+        {page==='orders' && (() => {
+          console.log('🔍 Orders page rendering - userOrders:', userOrders, 'type:', typeof userOrders, 'isArray:', Array.isArray(userOrders));
+          return (
           <div style={{
             fontFamily:'Nunito, Open Sans, Arial',
             padding:'40px 24px',
@@ -4731,7 +4740,7 @@ function App(){
                   <div style={{fontSize:'18px',marginBottom:'8px'}}>⚠️ Error</div>
                   <div>{userOrderError}</div>
                 </div>
-              ) : userOrders.length === 0 ? (
+              ) : !Array.isArray(userOrders) || userOrders.length === 0 ? (
                 <div style={{textAlign:'center', padding:'40px'}}>
                   <div style={{
                     width:'100px',
@@ -4770,14 +4779,14 @@ function App(){
               ) : (
                 <div>
                   <div style={{marginBottom:'20px',color:'#666',fontSize:'14px'}}>
-                    Total Orders: {userOrders.length}
+                    Total Orders: {Array.isArray(userOrders) ? userOrders.length : 0}
                   </div>
                   
                   <div style={{
                     display:'grid',
                     gap:'16px'
                   }}>
-                    {userOrders.map((order) => (
+                    {(Array.isArray(userOrders) ? userOrders : []).map((order) => (
                       <div key={order.id} style={{
                         border:'1px solid #e0e0e0',
                         borderRadius:'12px',
@@ -5159,7 +5168,8 @@ function App(){
               )}
             </div>
           </div>
-        )}
+          );
+        })()}
 
         {/* Blogs Page */}
         {page==='blogs' && (
