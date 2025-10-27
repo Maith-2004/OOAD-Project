@@ -125,7 +125,7 @@
               <outputDirectory>${basedir}/src/main/resources/static</outputDirectory>
               <resources>
                 <resource>
-                  <directory>../grocery-frontend/build</directory>
+                  <directory>${basedir}/../grocery-frontend/build</directory>
                   <filtering>false</filtering>
                 </resource>
               </resources>

@@ -364,18 +364,20 @@ public class CategoryController {
     private Map<String, Object> createProductMap(Object item, String category, String icon) {
         Map<String, Object> map = new HashMap<>();
         try {
-            // Use reflection to get common fields (id, name, price, description, quantity)
+            // Use reflection to get common fields (id, name, price, description, quantity, image)
             java.lang.reflect.Method getId = item.getClass().getMethod("getId");
             java.lang.reflect.Method getName = item.getClass().getMethod("getName");
             java.lang.reflect.Method getPrice = item.getClass().getMethod("getPrice");
             java.lang.reflect.Method getDescription = item.getClass().getMethod("getDescription");
             java.lang.reflect.Method getQuantity = item.getClass().getMethod("getQuantity");
+            java.lang.reflect.Method getImage = item.getClass().getMethod("getImage");
             
             map.put("id", getId.invoke(item));
             map.put("name", getName.invoke(item));
             map.put("price", getPrice.invoke(item));
             map.put("description", getDescription.invoke(item));
             map.put("quantity", getQuantity.invoke(item));
+            map.put("image", getImage.invoke(item));
             map.put("category", category);
             map.put("categoryIcon", icon);
             
