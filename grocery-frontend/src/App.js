@@ -490,7 +490,7 @@ function App(){
         
         // Refresh orders to show new order
         if (user && !user.guest) {
-          fetchOrders();
+          fetchUserOrders();
         }
       })
       .catch((error)=>{
@@ -4309,7 +4309,7 @@ function App(){
                       </tr>
                     </thead>
                     <tbody>
-                      {orders.map(order => (
+                      {(Array.isArray(orders) ? orders : []).map(order => (
                         <tr key={order.id}>
                           <td style={{padding:8, border:'1px solid #ddd'}}>{order.id}</td>
                           <td style={{padding:8, border:'1px solid #ddd'}}>{order.customerId ?? order.customer_id ?? ''}</td>
