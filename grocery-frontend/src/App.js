@@ -2906,17 +2906,24 @@ function App(){
                         <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'140px',marginBottom:'12px',borderRadius:'8px',backgroundColor:'#fafafa'}}>
                           <img 
                             src={
-                              product.image || 
-                              (product.name && product.name.toLowerCase().includes('tomato') ? 
-                                (product.name.toLowerCase().includes('ketchup') ? 
-                                  '/FoodMart-1.0.0/images/thumb-tomatoketchup.png' : 
-                                  '/FoodMart-1.0.0/images/thumb-tomatoes.png'
-                                ) : 
-                                '/FoodMart-1.0.0/images/thumb-bananas.png'
-                              )
+                              product.image && product.image.trim() !== '' ? 
+                                product.image :
+                                (product.name && product.name.toLowerCase().includes('tomato') ? 
+                                  (product.name.toLowerCase().includes('ketchup') ? 
+                                    '/FoodMart-1.0.0/images/thumb-tomatoketchup.png' : 
+                                    '/FoodMart-1.0.0/images/thumb-tomatoes.png'
+                                  ) : 
+                                  '/FoodMart-1.0.0/images/thumb-bananas.png'
+                                )
                             } 
                             alt={product.name || 'Product'} 
-                            style={{maxHeight:'120px',maxWidth:'100%',objectFit:'contain'}} 
+                            style={{maxHeight:'120px',maxWidth:'100%',objectFit:'contain'}}
+                            onError={(e) => {
+                              // If image fails to load, use fallback
+                              if (e.target.src !== '/FoodMart-1.0.0/images/thumb-bananas.png') {
+                                e.target.src = '/FoodMart-1.0.0/images/thumb-bananas.png';
+                              }
+                            }}
                           />
                         </div>
                         
@@ -3792,6 +3799,7 @@ function App(){
                     <table style={{width:'100%', borderCollapse:'collapse'}}>
                       <thead>
                         <tr style={{background:'#f8f9fa'}}>
+                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
@@ -3802,6 +3810,14 @@ function App(){
                       <tbody>
                         {(Array.isArray(products) ? products : []).map(p=>(
                           <tr key={p.id}>
+                            <td style={{padding:8, border:'1px solid #ddd'}}>
+                              {p.image ? (
+                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
+                                  onError={(e) => {e.target.style.display = 'none';}} />
+                              ) : (
+                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
+                              )}
+                            </td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
@@ -3829,6 +3845,7 @@ function App(){
                     <table style={{width:'100%', borderCollapse:'collapse'}}>
                       <thead>
                         <tr style={{background:'#fff8e1'}}>
+                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
@@ -3839,6 +3856,14 @@ function App(){
                       <tbody>
                         {(Array.isArray(bakery) ? bakery : []).map(p=>(
                           <tr key={p.id}>
+                            <td style={{padding:8, border:'1px solid #ddd'}}>
+                              {p.image ? (
+                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
+                                  onError={(e) => {e.target.style.display = 'none';}} />
+                              ) : (
+                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
+                              )}
+                            </td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
