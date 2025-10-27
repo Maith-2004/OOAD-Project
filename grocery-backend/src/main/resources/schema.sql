@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS product (
     name VARCHAR(255),
     description VARCHAR(255),
     price DOUBLE NOT NULL,
-    quantity INT NOT NULL
+    quantity INT NOT NULL,
+    image TEXT
 );
 
 -- Category-specific product tables
@@ -42,7 +43,8 @@ CREATE TABLE IF NOT EXISTS bakery (
     name VARCHAR(255),
     description VARCHAR(255),
     price DOUBLE NOT NULL,
-    quantity INT NOT NULL
+    quantity INT NOT NULL,
+    image TEXT
 );
 
 -- Fresh fruits
@@ -51,7 +53,8 @@ CREATE TABLE IF NOT EXISTS fruits (
     name VARCHAR(255),
     description VARCHAR(255),
     price DOUBLE NOT NULL,
-    quantity INT NOT NULL
+    quantity INT NOT NULL,
+    image TEXT
 );
 
 -- Dairy products (milk, cheese, yogurt, etc.)
@@ -60,7 +63,8 @@ CREATE TABLE IF NOT EXISTS dairy (
     name VARCHAR(255),
     description VARCHAR(255),
     price DOUBLE NOT NULL,
-    quantity INT NOT NULL
+    quantity INT NOT NULL,
+    image TEXT
 );
 
 -- Meat products
@@ -69,7 +73,8 @@ CREATE TABLE IF NOT EXISTS meat (
     name VARCHAR(255),
     description VARCHAR(255),
     price DOUBLE NOT NULL,
-    quantity INT NOT NULL
+    quantity INT NOT NULL,
+    image TEXT
 );
 
 -- Beverages (juices, sodas, water, etc.)
@@ -78,7 +83,8 @@ CREATE TABLE IF NOT EXISTS beverages (
     name VARCHAR(255),
     description VARCHAR(255),
     price DOUBLE NOT NULL,
-    quantity INT NOT NULL
+    quantity INT NOT NULL,
+    image TEXT
 );
 
 -- Grains and cereals (rice, wheat, quinoa, etc.)
@@ -87,7 +93,8 @@ CREATE TABLE IF NOT EXISTS grains (
     name VARCHAR(255),
     description VARCHAR(255),
     price DOUBLE NOT NULL,
-    quantity INT NOT NULL
+    quantity INT NOT NULL,
+    image TEXT
 );
 
 -- Fresh vegetables
@@ -96,7 +103,8 @@ CREATE TABLE IF NOT EXISTS vegetables (
     name VARCHAR(255),
     description VARCHAR(255),
     price DOUBLE NOT NULL,
-    quantity INT NOT NULL
+    quantity INT NOT NULL,
+    image TEXT
 );
 
 -- Orders table for customer purchases

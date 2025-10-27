@@ -33,11 +33,25 @@ These are **generic product images**, not the custom images uploaded by the mana
 
 ## 🚨 Root Cause: Backend Issue
 
-The backend's `GET /api/categories/all-products` endpoint is:
-1. ❌ **Missing the `image` field** in the Product entity
-2. ❌ **Missing the `image` column** in the database
-3. ❌ **Using a DTO that excludes** the image field
-4. ❌ **Not mapping the image field** properly
+The backend's product/category endpoints are ALL missing the image field:
+
+**Affected Endpoints:**
+1. ❌ `GET /api/categories/all-products` - Main endpoint (all 38 products)
+2. ❌ `GET /api/categories/bakery` - Bakery products
+3. ❌ `GET /api/categories/fruits` - Fruit products
+4. ❌ `GET /api/categories/dairy` - Dairy products
+5. ❌ `GET /api/categories/meat` - Meat products
+6. ❌ `GET /api/categories/beverages` - Beverage products
+7. ❌ `GET /api/categories/grains` - Grain products
+8. ❌ `GET /api/categories/vegetables` - Vegetable products
+9. ❌ `GET /api/vegetables` - Direct vegetables endpoint
+
+**Probable Cause:**
+You have **separate database tables** for each category (bakery, fruits, dairy, etc.) and:
+1. ❌ **Missing `image` column** in one or more category tables
+2. ❌ **Missing `image` field** in entity classes (Product, Bakery, Fruits, etc.)
+3. ❌ **Using DTOs that exclude** the image field
+4. ❌ **Not mapping the image field** in controllers
 
 ## ✅ Frontend is Working Correctly
 
@@ -50,52 +64,89 @@ The frontend:
 
 ## 🔧 Required Backend Fixes
 
-### Priority 1: Add Image Field to Response
+### Priority 1: Add Image Field to ALL Entity Classes
 
-#### Option A: Check Product Entity
+If you have separate entity classes for each category, you need to add the image field to ALL of them:
+
 ```java
+// Product.java
 @Entity
+@Table(name = "products")
 public class Product {
     // ... other fields
-    
     @Column(columnDefinition = "TEXT")
-    private String image;  // ⚠️ ADD THIS IF MISSING
+    private String image;
     
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
 }
-```
 
-#### Option B: Check Database Schema
-```sql
--- Check if column exists
-SHOW COLUMNS FROM products LIKE 'image';
-
--- Add if missing
-ALTER TABLE products ADD COLUMN image TEXT;
-
--- Change VARCHAR to TEXT if needed (to store base64)
-ALTER TABLE products MODIFY COLUMN image TEXT;
-```
-
-#### Option C: Check if Using DTO
-If the controller uses a ProductDTO instead of the Product entity, make sure:
-```java
-public class ProductDTO {
-    private String image;  // ⚠️ MUST BE INCLUDED
+// Bakery.java
+@Entity
+@Table(name = "bakery")
+public class Bakery {
     // ... other fields
+    @Column(columnDefinition = "TEXT")
+    private String image;  // ⚠️ ADD THIS
+    
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
 }
+
+// Fruits.java, Dairy.java, Meat.java, Beverages.java, Grains.java, Vegetables.java
+// ⚠️ ALL need the same image field added!
 ```
+
+### Priority 2: Add Image Column to ALL Database Tables
+
+```sql
+-- Check which tables are missing the image column
+DESCRIBE products;
+DESCRIBE bakery;
+DESCRIBE fruits;
+DESCRIBE dairy;
+DESCRIBE meat;
+DESCRIBE beverages;
+DESCRIBE grains;
+DESCRIBE vegetables;
+
+-- Add image column to ALL tables
+ALTER TABLE products ADD COLUMN image TEXT;
+ALTER TABLE bakery ADD COLUMN image TEXT;
+ALTER TABLE fruits ADD COLUMN image TEXT;
+ALTER TABLE dairy ADD COLUMN image TEXT;
+ALTER TABLE meat ADD COLUMN image TEXT;
+ALTER TABLE beverages ADD COLUMN image TEXT;
+ALTER TABLE grains ADD COLUMN image TEXT;
+ALTER TABLE vegetables ADD COLUMN image TEXT;
+```
+
+### Priority 3: Ensure ALL Controllers Return Image Field
+
+Make sure ALL category controllers/endpoints return the image field:
+- `/categories/all-products`
+- `/categories/bakery`
+- `/categories/fruits`
+- `/categories/dairy`
+- `/categories/meat`
+- `/categories/beverages`
+- `/categories/grains`
+- `/categories/vegetables`
+- `/vegetables`
 
 ### Priority 2: Verify Data is Being Saved
 
-Test the update endpoint and check if it returns the image:
+Test the update endpoint (now using `/api/categories/products/{id}`):
 ```bash
-curl -X PUT https://shanthistores-efc0fnf6dpczh8bm.italynorth-01.azurewebsites.net/api/products/1 \
+curl -X PUT https://shanthistores-efc0fnf6dpczh8bm.italynorth-01.azurewebsites.net/api/categories/products/1 \
   -H "Content-Type: application/json" \
   -H "user-id: 1" \
   -d '{
-    "name": "Test",
+    "name": "Test Product",
+    "description": "Test Description",
+    "price": 10.99,
+    "quantity": 50,
+    "category": "bakery",
     "image": "data:image/jpeg;base64,/9j/4AAQ..."
   }'
 ```
@@ -104,21 +155,16 @@ The response should include:
 ```json
 {
   "id": 1,
-  "name": "Test",
+  "name": "Test Product",
+  "category": "bakery",
   "image": "data:image/jpeg;base64,/9j/4AAQ..."  ← MUST BE HERE
 }
 ```
 
-## 🎯 Next Steps
-
-1. **Access the backend code** on Azure or GitHub
-2. **Check Product.java** entity class for `image` field
-3. **Check database** for `image` column with TEXT type
-4. **Check CategoryController.java** or ProductController.java
-5. **Verify the response** includes all Product fields
-6. **Redeploy backend** after adding image field
-7. **Test with curl** to verify image is returned
-8. **Refresh frontend** - images should now display!
+**After the update, ALL these endpoints should return the image:**
+- `GET /api/categories/all-products` 
+- `GET /api/categories/bakery` (if product is in bakery category)
+- Any other category endpoint where this product appears
 
 ## 📊 Current Status
 
