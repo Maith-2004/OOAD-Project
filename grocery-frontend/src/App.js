@@ -1765,10 +1765,17 @@ function App(){
   const [orderError, setOrderError] = useState("");
 
   // User orders state (for individual users to view their orders)
-  const [userOrders, setUserOrders] = useState([]);
+  const [userOrders, setUserOrdersRaw] = useState([]);
   const [loadingUserOrders, setLoadingUserOrders] = useState(false);
   const [userOrderError, setUserOrderError] = useState("");
   const [viewedUserOrder, setViewedUserOrder] = useState(null);
+  
+  // Safe wrapper for setUserOrders that ALWAYS ensures an array
+  const setUserOrders = (data) => {
+    const safeData = Array.isArray(data) ? data : [];
+    console.log('🛡️ setUserOrders called with:', typeof data, 'length:', data?.length, 'isArray:', Array.isArray(data), '→ setting:', safeData.length, 'items');
+    setUserOrdersRaw(safeData);
+  };
 
   // Employee login state
   const [showEmployeeLogin, setShowEmployeeLogin] = useState(false);
@@ -4701,9 +4708,7 @@ function App(){
         )}
 
         {/* My Orders Page */}
-        {page==='orders' && (() => {
-          console.log('🔍 Orders page rendering - userOrders:', userOrders, 'type:', typeof userOrders, 'isArray:', Array.isArray(userOrders));
-          return (
+        {page==='orders' && (
           <div style={{
             fontFamily:'Nunito, Open Sans, Arial',
             padding:'40px 24px',
@@ -5192,8 +5197,7 @@ function App(){
               )}
             </div>
           </div>
-          );
-        })()}
+        )}
 
         {/* Blogs Page */}
         {page==='blogs' && (
@@ -5578,7 +5582,7 @@ function App(){
                   </div>
                 ) : (
                   <div style={{display:'flex', flexDirection:'column', gap:'16px'}}>
-                    {orders.filter(order => order.paymentMethod === 'bank').slice(0, 10).map(order => (
+                    {(Array.isArray(orders) ? orders : []).filter(order => order.paymentMethod === 'bank').slice(0, 10).map(order => (
                       <div key={order.id} style={{
                         border:'2px solid #7b1fa2',
                         borderRadius:'12px',
@@ -5816,7 +5820,7 @@ function App(){
               }}>
                 <h2 style={{margin:'0 0 20px', color:'#333', fontSize:'20px'}}>All Recent Orders</h2>
                 <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
-                  {orders.slice(0, 10).map(order => (
+                  {(Array.isArray(orders) ? orders : []).slice(0, 10).map(order => (
                     <div key={order.id} style={{
                       border:'1px solid #eee',
                       borderRadius:'8px',
