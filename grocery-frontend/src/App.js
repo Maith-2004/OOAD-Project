@@ -580,37 +580,6 @@ function App(){
     }
   }, [user, page]);
   
-  // Fetch employees when user loads (needed for delivery assignment)
-  useEffect(() => {
-    if (user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')) {
-      fetchEmployees();
-    }
-  }, [user, employee]);
-  
-  // Clear receipt when switching from bank to cash payment
-  useEffect(() => {
-    if (paymentMethod === 'cash') {
-      setPaymentReceipt(null);
-      setReceiptPreview('');
-    }
-  }, [paymentMethod]);
-
-  // Load favourites from backend when user changes
-  useEffect(() => {
-    if (user && !user.guest) {
-      fetchUserFavourites();
-    } else {
-      setFavourites([]); // Clear favourites for guests
-    }
-  }, [user]);
-
-  // Fetch user orders when orders page is opened
-  useEffect(() => {
-    if (page === 'orders' && user && !user.guest) {
-      fetchUserOrders();
-    }
-  }, [page, user]);
-
   // Load employee data on app startup
   useEffect(() => {
     const employeeData = localStorage.getItem('employeeData');
@@ -2044,6 +2013,39 @@ function App(){
         showPopupMsg(msg);
       });
   }
+
+  // ===== useEffects that depend on fetch functions (placed after function definitions) =====
+  
+  // Fetch employees when user loads (needed for delivery assignment)
+  useEffect(() => {
+    if (user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')) {
+      fetchEmployees();
+    }
+  }, [user, employee]);
+  
+  // Clear receipt when switching from bank to cash payment
+  useEffect(() => {
+    if (paymentMethod === 'cash') {
+      setPaymentReceipt(null);
+      setReceiptPreview('');
+    }
+  }, [paymentMethod]);
+
+  // Load favourites from backend when user changes
+  useEffect(() => {
+    if (user && !user.guest) {
+      fetchUserFavourites();
+    } else {
+      setFavourites([]); // Clear favourites for guests
+    }
+  }, [user]);
+
+  // Fetch user orders when orders page is opened
+  useEffect(() => {
+    if (page === 'orders' && user && !user.guest) {
+      fetchUserOrders();
+    }
+  }, [page, user]);
 
   // Test function for employee login
   function testEmployeeLogin() {
