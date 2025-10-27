@@ -50,6 +50,7 @@ public class OrderController {
         if(cid==null) return Map.of("error","customerId required");
         Optional<User> u = userRepo.findById(cid.longValue());
         if(u.isEmpty()) return Map.of("error","user not found");
+        @SuppressWarnings("unchecked")
         List<Map<String,Object>> itemsRaw = (List<Map<String,Object>>)body.get("items");
         if(itemsRaw==null || itemsRaw.isEmpty()) return Map.of("error","items required");
         List<com.example.grocery.model.OrderItem> items = new ArrayList<>();

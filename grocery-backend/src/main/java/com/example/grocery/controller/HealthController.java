@@ -20,7 +20,7 @@ public class HealthController {
     }
 
     @GetMapping("/status")
-    public Map<String, Object> root() {
+    public Map<String, Object> status() {
         return Map.of(
             "message", "Shanthi Stores API is running",
             "status", "OK",

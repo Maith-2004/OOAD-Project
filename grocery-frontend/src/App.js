@@ -374,7 +374,7 @@ function App(){
     console.log('Attempting to submit order, employees state:', employees);
     
     // Include category field for stock management (backend requirement)
-    const items = (Array.isArray(cart) ? cart : []).map(p => ({
+    const items = cart.map(p => ({
       productId: p.id,
       quantity: p.cartQty || 1,
       price: p.price,
@@ -442,7 +442,7 @@ function App(){
           
           // Handle stock errors specifically
           if (result.error === 'Insufficient stock for some items' && result.stockErrors) {
-            const stockErrorsList = (Array.isArray(result.stockErrors) ? result.stockErrors : []).map(err => {
+            const stockErrorsList = result.stockErrors.map(err => {
               console.log('Stock error item:', err);
               return `${err.productName || `Product ${err.productId}`}: Requested ${err.requestedQuantity}, Available ${err.availableStock}`;
             }).join('\n');
@@ -490,7 +490,7 @@ function App(){
         
         // Refresh orders to show new order
         if (user && !user.guest) {
-          fetchUserOrders();
+          fetchOrders();
         }
       })
       .catch((error)=>{
@@ -504,7 +504,7 @@ function App(){
         
         if (errorData?.error === 'Insufficient stock' && errorData?.stockErrors) {
           // Format stock error messages
-          const stockErrorsList = (Array.isArray(errorData.stockErrors) ? errorData.stockErrors : []).map(err => 
+          const stockErrorsList = errorData.stockErrors.map(err => 
             `• ${err.productName || 'Unknown Product'}: Requested ${err.requestedQuantity}, Available ${err.availableStock}`
           ).join('\n');
           
@@ -580,6 +580,37 @@ function App(){
     }
   }, [user, page]);
   
+  // Fetch employees when user loads (needed for delivery assignment)
+  useEffect(() => {
+    if (user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')) {
+      fetchEmployees();
+    }
+  }, [user, employee]);
+  
+  // Clear receipt when switching from bank to cash payment
+  useEffect(() => {
+    if (paymentMethod === 'cash') {
+      setPaymentReceipt(null);
+      setReceiptPreview('');
+    }
+  }, [paymentMethod]);
+
+  // Load favourites from backend when user changes
+  useEffect(() => {
+    if (user && !user.guest) {
+      fetchUserFavourites();
+    } else {
+      setFavourites([]); // Clear favourites for guests
+    }
+  }, [user]);
+
+  // Fetch user orders when orders page is opened
+  useEffect(() => {
+    if (page === 'orders' && user && !user.guest) {
+      fetchUserOrders();
+    }
+  }, [page, user]);
+
   // Load employee data on app startup
   useEffect(() => {
     const employeeData = localStorage.getItem('employeeData');
@@ -922,7 +953,7 @@ function App(){
       console.log('📥 Fetched favourites from backend:', backendFavourites.length);
       
       // Try to match with current products to get category info
-      const enrichedFavourites = (Array.isArray(backendFavourites) ? backendFavourites : []).map(fav => {
+      const enrichedFavourites = backendFavourites.map(fav => {
         // If favourite already has category, keep it
         if (fav.category) return fav;
         
@@ -1092,7 +1123,7 @@ function App(){
       removeFromCart(index);
       return;
     }
-    setCart(prev => (Array.isArray(prev) ? prev : []).map((item, i) => 
+    setCart(prev => prev.map((item, i) => 
       i === index ? { ...item, cartQty: newQty } : item
     )); 
   }
@@ -1118,7 +1149,7 @@ function App(){
       productId: product.id, 
       productCategory: product.category,
       isAlreadyFavourite,
-      currentFavourites: (Array.isArray(favourites) ? favourites : []).map(f => ({ id: f.id, category: f.category }))
+      currentFavourites: favourites.map(f => ({ id: f.id, category: f.category }))
     });
     
     try {
@@ -1455,19 +1486,6 @@ function App(){
   const [employeeError, setEmployeeError] = useState("");
 
   function fetchEmployees() {
-    // Authorization check - only managers and payment handlers can fetch employees
-    if (!user || user.guest || (user.role !== 'manager' && employee?.role !== 'Payment Handler')) {
-      console.log('❌ Unauthorized fetchEmployees call prevented for:', { 
-        userRole: user?.role, 
-        employeeRole: employee?.role,
-        isGuest: user?.guest 
-      });
-      setEmployees([]); // Ensure employees is empty for unauthorized users
-      setLoadingEmployees(false);
-      setEmployeeError("Not authorized to view employees");
-      return;
-    }
-    
     setLoadingEmployees(true);
     setEmployeeError("");
     
@@ -1477,7 +1495,7 @@ function App(){
       return;
     }
     
-    console.log('✅ Authorized employee fetch for user-id:', user.id, 'role:', user.role);
+    console.log('Fetching employees with user-id:', user.id, 'role:', user.role);
     
     axios.get(API + '/employees', { 
       headers: { 
@@ -1724,17 +1742,10 @@ function App(){
   const [orderError, setOrderError] = useState("");
 
   // User orders state (for individual users to view their orders)
-  const [userOrders, setUserOrdersRaw] = useState([]);
+  const [userOrders, setUserOrders] = useState([]);
   const [loadingUserOrders, setLoadingUserOrders] = useState(false);
   const [userOrderError, setUserOrderError] = useState("");
   const [viewedUserOrder, setViewedUserOrder] = useState(null);
-  
-  // Safe wrapper for setUserOrders that ALWAYS ensures an array
-  const setUserOrders = (data) => {
-    const safeData = Array.isArray(data) ? data : [];
-    console.log('🛡️ setUserOrders called with:', typeof data, 'length:', data?.length, 'isArray:', Array.isArray(data), '→ setting:', safeData.length, 'items');
-    setUserOrdersRaw(safeData);
-  };
 
   // Employee login state
   const [showEmployeeLogin, setShowEmployeeLogin] = useState(false);
@@ -2033,51 +2044,6 @@ function App(){
         showPopupMsg(msg);
       });
   }
-
-  // ===== useEffects that depend on fetch functions (must be after function definitions) =====
-  
-  // Fetch employees when user loads (needed for delivery assignment)
-  useEffect(() => {
-    console.log('🔍 Employee fetch check:', { 
-      user: user?.role, 
-      employee: employee?.role, 
-      shouldFetch: user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')
-    });
-    
-    if (user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')) {
-      console.log('✅ Authorized to fetch employees');
-      fetchEmployees();
-    } else {
-      console.log('❌ Not authorized to fetch employees, ensuring empty array');
-      setEmployees([]); // Ensure employees is always an empty array for non-authorized users
-    }
-  }, [user, employee]);
-  
-  // Clear receipt when switching from bank to cash payment
-  useEffect(() => {
-    if (paymentMethod === 'cash') {
-      setPaymentReceipt(null);
-      setReceiptPreview('');
-    }
-  }, [paymentMethod]);
-
-  // Load favourites from backend when user changes
-  useEffect(() => {
-    if (user && !user.guest) {
-      fetchUserFavourites();
-    } else {
-      setFavourites([]); // Clear favourites for guests
-    }
-  }, [user]);
-
-  // Fetch user orders when orders page is opened
-  useEffect(() => {
-    if (page === 'orders' && user && !user.guest) {
-      fetchUserOrders();
-    }
-  }, [page, user]);
-
-  // ===== End of useEffects section =====
 
   // Test function for employee login
   function testEmployeeLogin() {
@@ -2722,24 +2688,23 @@ function App(){
               
               <div key={selectedCategory} style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))',gap:'20px'}}>
                 {(() => {
-                  const safeArray = (arr) => Array.isArray(arr) ? arr : [];
                   const allProducts = selectedCategory === 'all' 
-                    ? [...safeArray(products), ...safeArray(bakery), ...safeArray(fruits), ...safeArray(dairy), ...safeArray(meat), ...safeArray(beverages), ...safeArray(grains), ...safeArray(vegetables)]
-                    : selectedCategory === 'products' ? safeArray(products)
-                    : selectedCategory === 'bakery' ? safeArray(bakery)
-                    : selectedCategory === 'fruits' ? safeArray(fruits)
-                    : selectedCategory === 'dairy' ? safeArray(dairy)
-                    : selectedCategory === 'meat' ? safeArray(meat)
-                    : selectedCategory === 'beverages' ? safeArray(beverages)
-                    : selectedCategory === 'grains' ? safeArray(grains)
-                    : selectedCategory === 'vegetables' ? safeArray(vegetables)
+                    ? [...products, ...bakery, ...fruits, ...dairy, ...meat, ...beverages, ...grains, ...vegetables]
+                    : selectedCategory === 'products' ? products
+                    : selectedCategory === 'bakery' ? bakery
+                    : selectedCategory === 'fruits' ? fruits
+                    : selectedCategory === 'dairy' ? dairy
+                    : selectedCategory === 'meat' ? meat
+                    : selectedCategory === 'beverages' ? beverages
+                    : selectedCategory === 'grains' ? grains
+                    : selectedCategory === 'vegetables' ? vegetables
                     : [];
                   
                   // ...existing code...
                   
-                  return (Array.isArray(allProducts) ? allProducts : [])
+                  return allProducts
                     .filter(p =>
-                      p.name && p.name.toLowerCase().includes(search.toLowerCase()) ||
+                      p.name.toLowerCase().includes(search.toLowerCase()) ||
                       (p.description && p.description.toLowerCase().includes(search.toLowerCase()))
                     )
                     .map((product, i) => {
@@ -4269,7 +4234,7 @@ function App(){
                       
                       {deliveryEmployees.length > 0 ? (
                         <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))', gap:'16px'}}>
-                          {(Array.isArray(deliveryEmployees) ? deliveryEmployees : []).map(emp => (
+                          {deliveryEmployees.map(emp => (
                             <div key={emp.id} style={{
                               border:'1px solid #c8e6c9',
                               borderRadius:'8px',
@@ -4343,7 +4308,7 @@ function App(){
                       </tr>
                     </thead>
                     <tbody>
-                      {(Array.isArray(orders) ? orders : []).map(order => (
+                      {orders.map(order => (
                         <tr key={order.id}>
                           <td style={{padding:8, border:'1px solid #ddd'}}>{order.id}</td>
                           <td style={{padding:8, border:'1px solid #ddd'}}>{order.customerId ?? order.customer_id ?? ''}</td>
@@ -4584,7 +4549,7 @@ function App(){
                   gap:'20px',
                   marginTop:'30px'
                 }}>
-                  {(Array.isArray(favourites) ? favourites : []).map((product, i) => {
+                  {favourites.map((product, i) => {
                     const pid = product.id || i;
                     const qty = qtys[pid] || 1;
                     // Create unique key using category and id to avoid duplicate keys
@@ -4712,7 +4677,9 @@ function App(){
         )}
 
         {/* My Orders Page */}
-        {page==='orders' && (
+        {page==='orders' && (() => {
+          console.log('🔍 Orders page rendering - userOrders:', userOrders, 'type:', typeof userOrders, 'isArray:', Array.isArray(userOrders));
+          return (
           <div style={{
             fontFamily:'Nunito, Open Sans, Arial',
             padding:'40px 24px',
@@ -5077,7 +5044,7 @@ function App(){
                             if (Array.isArray(items) && items.length > 0) {
                               return (
                                 <div>
-                                  {(Array.isArray(items) ? items : []).map((item, index) => {
+                                  {items.map((item, index) => {
                                     // Extract product information from the nested structure
                                     const productName = item.product?.name || 
                                                        item.name || 
@@ -5201,7 +5168,8 @@ function App(){
               )}
             </div>
           </div>
-        )}
+          );
+        })()}
 
         {/* Blogs Page */}
         {page==='blogs' && (
@@ -5586,7 +5554,7 @@ function App(){
                   </div>
                 ) : (
                   <div style={{display:'flex', flexDirection:'column', gap:'16px'}}>
-                    {(Array.isArray(orders) ? orders : []).filter(order => order.paymentMethod === 'bank').slice(0, 10).map(order => (
+                    {orders.filter(order => order.paymentMethod === 'bank').slice(0, 10).map(order => (
                       <div key={order.id} style={{
                         border:'2px solid #7b1fa2',
                         borderRadius:'12px',
@@ -5668,7 +5636,7 @@ function App(){
                           }}>
                             <div style={{fontWeight:'600', marginBottom:'8px', fontSize:'14px'}}>Order Items:</div>
                             <div style={{display:'flex', flexDirection:'column', gap:'6px'}}>
-                              {(Array.isArray(order.items) ? order.items : []).map((item, idx) => (
+                              {order.items.map((item, idx) => (
                                 <div key={idx} style={{fontSize:'13px', color:'#666', paddingLeft:'12px'}}>
                                   • {item.productName || `Product #${item.productId}`} - 
                                   Qty: {item.quantity} × Rs. {item.price ? item.price.toFixed(2) : '0.00'} = 
@@ -5824,7 +5792,7 @@ function App(){
               }}>
                 <h2 style={{margin:'0 0 20px', color:'#333', fontSize:'20px'}}>All Recent Orders</h2>
                 <div style={{display:'flex', flexDirection:'column', gap:'12px'}}>
-                  {(Array.isArray(orders) ? orders : []).slice(0, 10).map(order => (
+                  {orders.slice(0, 10).map(order => (
                     <div key={order.id} style={{
                       border:'1px solid #eee',
                       borderRadius:'8px',
