@@ -582,10 +582,10 @@ function App(){
   
   // Fetch employees when user loads (needed for delivery assignment)
   useEffect(() => {
-    if (user && !user.guest) {
+    if (user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')) {
       fetchEmployees();
     }
-  }, [user]);
+  }, [user, employee]);
   
   // Clear receipt when switching from bank to cash payment
   useEffect(() => {
@@ -2888,7 +2888,7 @@ function App(){
                     Your cart is empty
                   </div>
                 ) : (
-                  cart.map((item, index) => (
+                  (Array.isArray(cart) ? cart : []).map((item, index) => (
                     <div key={index} style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -3117,7 +3117,7 @@ function App(){
                 borderBottom:'2px solid #f9a825',
                 paddingBottom:'8px'
               }}>Order Summary</h3>
-              {cart.map((item, index) => (
+              {(Array.isArray(cart) ? cart : []).map((item, index) => (
                 <div key={index} style={{
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -3642,7 +3642,7 @@ function App(){
                         </tr>
                       </thead>
                       <tbody>
-                        {products.map(p=>(
+                        {(Array.isArray(products) ? products : []).map(p=>(
                           <tr key={p.id}>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
@@ -3679,7 +3679,7 @@ function App(){
                         </tr>
                       </thead>
                       <tbody>
-                        {bakery.map(p=>(
+                        {(Array.isArray(bakery) ? bakery : []).map(p=>(
                           <tr key={p.id}>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
@@ -3716,7 +3716,7 @@ function App(){
                         </tr>
                       </thead>
                       <tbody>
-                        {fruits.map(p=>(
+                        {(Array.isArray(fruits) ? fruits : []).map(p=>(
                           <tr key={p.id}>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
@@ -3753,7 +3753,7 @@ function App(){
                         </tr>
                       </thead>
                       <tbody>
-                        {dairy.map(p=>(
+                        {(Array.isArray(dairy) ? dairy : []).map(p=>(
                           <tr key={p.id}>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
@@ -3790,7 +3790,7 @@ function App(){
                         </tr>
                       </thead>
                       <tbody>
-                        {meat.map(p=>(
+                        {(Array.isArray(meat) ? meat : []).map(p=>(
                           <tr key={p.id}>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
@@ -3827,7 +3827,7 @@ function App(){
                         </tr>
                       </thead>
                       <tbody>
-                        {beverages.map(p=>(
+                        {(Array.isArray(beverages) ? beverages : []).map(p=>(
                           <tr key={p.id}>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
@@ -3864,7 +3864,7 @@ function App(){
                         </tr>
                       </thead>
                       <tbody>
-                        {grains.map(p=>(
+                        {(Array.isArray(grains) ? grains : []).map(p=>(
                           <tr key={p.id}>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
@@ -3901,7 +3901,7 @@ function App(){
                         </tr>
                       </thead>
                       <tbody>
-                        {vegetables.map(p=>(
+                        {(Array.isArray(vegetables) ? vegetables : []).map(p=>(
                           <tr key={p.id}>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
@@ -3953,7 +3953,7 @@ function App(){
                       </tr>
                     </thead>
                     <tbody>
-                      {users.map(u => (
+                      {(Array.isArray(users) ? users : []).map(u => (
                         <tr key={u.id}>
                           <td style={{padding:8, border:'1px solid #ddd'}}>{u.id}</td>
                           <td style={{padding:8, border:'1px solid #ddd'}}>{u.username}</td>
@@ -4169,7 +4169,7 @@ function App(){
                       </tr>
                     </thead>
                     <tbody>
-                      {employees.map(emp => (
+                      {(Array.isArray(employees) ? employees : []).map(emp => (
                         <tr key={emp.id}>
                           <td style={{padding:8, border:'1px solid #ddd'}}>{emp.id}</td>
                           <td style={{padding:8, border:'1px solid #ddd'}}>{emp.name}</td>
