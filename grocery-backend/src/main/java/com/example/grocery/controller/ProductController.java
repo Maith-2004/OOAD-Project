@@ -119,8 +119,12 @@ public class ProductController {
             if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                 return Map.of("error", "Only manager or worker can delete general products");
             }
+            // Check if product exists
+            if (!repo.existsById(id)) {
+                return Map.of("error", "Product not found with id: " + id);
+            }
             repo.deleteById(id);
-            return Map.of("status","deleted");
+            return Map.of("status","deleted", "id", id);
         }
         Optional<Employee> empOpt = employeeRepo.findById(userId);
         if (empOpt.isPresent()) {
@@ -129,8 +133,12 @@ public class ProductController {
             if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                 return Map.of("error", "Only manager or worker can delete general products");
             }
+            // Check if product exists
+            if (!repo.existsById(id)) {
+                return Map.of("error", "Product not found with id: " + id);
+            }
             repo.deleteById(id);
-            return Map.of("status","deleted");
+            return Map.of("status","deleted", "id", id);
         }
         return Map.of("error", "User not found");
     }

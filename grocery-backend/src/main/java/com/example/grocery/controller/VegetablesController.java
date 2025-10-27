@@ -83,11 +83,12 @@ public class VegetablesController {
             if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                 return Map.of("error", "Only manager or worker can delete vegetables items");
             }
-            if (repo.existsById(id)) {
-                repo.deleteById(id);
-                return Map.of("status", "deleted");
+            // Check if product exists before deleting
+            if (!repo.existsById(id)) {
+                return Map.of("error", "Vegetables product not found with id: " + id);
             }
-            return Map.of("error", "Vegetables not found");
+            repo.deleteById(id);
+            return Map.of("status", "deleted", "id", id);
         }
         Optional<Employee> empOpt = employeeRepo.findById(userId);
         if (empOpt.isPresent()) {
@@ -96,11 +97,12 @@ public class VegetablesController {
             if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                 return Map.of("error", "Only manager or worker can delete vegetables items");
             }
-            if (repo.existsById(id)) {
-                repo.deleteById(id);
-                return Map.of("status", "deleted");
+            // Check if product exists before deleting
+            if (!repo.existsById(id)) {
+                return Map.of("error", "Vegetables product not found with id: " + id);
             }
-            return Map.of("error", "Vegetables not found");
+            repo.deleteById(id);
+            return Map.of("status", "deleted", "id", id);
         }
         return Map.of("error", "User not found");
     }
