@@ -374,7 +374,7 @@ function App(){
     console.log('Attempting to submit order, employees state:', employees);
     
     // Include category field for stock management (backend requirement)
-    const items = cart.map(p => ({
+    const items = (Array.isArray(cart) ? cart : []).map(p => ({
       productId: p.id,
       quantity: p.cartQty || 1,
       price: p.price,
@@ -442,7 +442,7 @@ function App(){
           
           // Handle stock errors specifically
           if (result.error === 'Insufficient stock for some items' && result.stockErrors) {
-            const stockErrorsList = result.stockErrors.map(err => {
+            const stockErrorsList = (Array.isArray(result.stockErrors) ? result.stockErrors : []).map(err => {
               console.log('Stock error item:', err);
               return `${err.productName || `Product ${err.productId}`}: Requested ${err.requestedQuantity}, Available ${err.availableStock}`;
             }).join('\n');
@@ -504,7 +504,7 @@ function App(){
         
         if (errorData?.error === 'Insufficient stock' && errorData?.stockErrors) {
           // Format stock error messages
-          const stockErrorsList = errorData.stockErrors.map(err => 
+          const stockErrorsList = (Array.isArray(errorData.stockErrors) ? errorData.stockErrors : []).map(err => 
             `• ${err.productName || 'Unknown Product'}: Requested ${err.requestedQuantity}, Available ${err.availableStock}`
           ).join('\n');
           
@@ -953,7 +953,7 @@ function App(){
       console.log('📥 Fetched favourites from backend:', backendFavourites.length);
       
       // Try to match with current products to get category info
-      const enrichedFavourites = backendFavourites.map(fav => {
+      const enrichedFavourites = (Array.isArray(backendFavourites) ? backendFavourites : []).map(fav => {
         // If favourite already has category, keep it
         if (fav.category) return fav;
         
@@ -1123,7 +1123,7 @@ function App(){
       removeFromCart(index);
       return;
     }
-    setCart(prev => prev.map((item, i) => 
+    setCart(prev => (Array.isArray(prev) ? prev : []).map((item, i) => 
       i === index ? { ...item, cartQty: newQty } : item
     )); 
   }
@@ -1149,7 +1149,7 @@ function App(){
       productId: product.id, 
       productCategory: product.category,
       isAlreadyFavourite,
-      currentFavourites: favourites.map(f => ({ id: f.id, category: f.category }))
+      currentFavourites: (Array.isArray(favourites) ? favourites : []).map(f => ({ id: f.id, category: f.category }))
     });
     
     try {
@@ -2688,23 +2688,24 @@ function App(){
               
               <div key={selectedCategory} style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))',gap:'20px'}}>
                 {(() => {
+                  const safeArray = (arr) => Array.isArray(arr) ? arr : [];
                   const allProducts = selectedCategory === 'all' 
-                    ? [...products, ...bakery, ...fruits, ...dairy, ...meat, ...beverages, ...grains, ...vegetables]
-                    : selectedCategory === 'products' ? products
-                    : selectedCategory === 'bakery' ? bakery
-                    : selectedCategory === 'fruits' ? fruits
-                    : selectedCategory === 'dairy' ? dairy
-                    : selectedCategory === 'meat' ? meat
-                    : selectedCategory === 'beverages' ? beverages
-                    : selectedCategory === 'grains' ? grains
-                    : selectedCategory === 'vegetables' ? vegetables
+                    ? [...safeArray(products), ...safeArray(bakery), ...safeArray(fruits), ...safeArray(dairy), ...safeArray(meat), ...safeArray(beverages), ...safeArray(grains), ...safeArray(vegetables)]
+                    : selectedCategory === 'products' ? safeArray(products)
+                    : selectedCategory === 'bakery' ? safeArray(bakery)
+                    : selectedCategory === 'fruits' ? safeArray(fruits)
+                    : selectedCategory === 'dairy' ? safeArray(dairy)
+                    : selectedCategory === 'meat' ? safeArray(meat)
+                    : selectedCategory === 'beverages' ? safeArray(beverages)
+                    : selectedCategory === 'grains' ? safeArray(grains)
+                    : selectedCategory === 'vegetables' ? safeArray(vegetables)
                     : [];
                   
                   // ...existing code...
                   
-                  return allProducts
+                  return (Array.isArray(allProducts) ? allProducts : [])
                     .filter(p =>
-                      p.name.toLowerCase().includes(search.toLowerCase()) ||
+                      p.name && p.name.toLowerCase().includes(search.toLowerCase()) ||
                       (p.description && p.description.toLowerCase().includes(search.toLowerCase()))
                     )
                     .map((product, i) => {
