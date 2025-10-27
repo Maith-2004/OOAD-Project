@@ -378,13 +378,13 @@ public class CategoryController {
             map.put("description", getDescription.invoke(item));
             map.put("quantity", getQuantity.invoke(item));
             map.put("image", getImage.invoke(item));
-            map.put("category", category);
+            map.put("category", category.toLowerCase());  // Lowercase for API consistency
             map.put("categoryIcon", icon);
             
         } catch (Exception e) {
             // Fallback: just return the object as-is
             map.put("item", item);
-            map.put("category", category);
+            map.put("category", category.toLowerCase());
             map.put("categoryIcon", icon);
         }
         return map;
