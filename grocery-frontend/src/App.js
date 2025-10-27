@@ -187,22 +187,51 @@ function App(){
       showPopupMsg('Please fill in all product fields.');
       return;
     }
-    axios.put(`${API}/products/${id}`, {
+    
+    console.log('📝 Updating product:', id, 'with data:', form);
+    
+    // Prepare payload with all fields including category
+    const payload = {
       name: form.name,
       description: form.description,
-      price: form.price,
-      quantity: form.quantity,
-      image: form.image || null  // Include image URL
-    }, {
-      headers: { 'user-id': user.id }
+      price: parseFloat(form.price), // Ensure number
+      quantity: parseInt(form.quantity, 10), // Ensure integer
+      image: form.image || null,
+      category: form.category || 'products' // Include category
+    };
+    
+    console.log('📤 Sending product update payload:', payload);
+    
+    axios.put(`${API}/products/${id}`, payload, {
+      headers: { 
+        'user-id': user.id,
+        'Content-Type': 'application/json'
+      }
     })
-    .then(()=>{ 
-      showPopupMsg('Product updated'); 
+    .then((response)=>{ 
+      console.log('✅ Product update response:', response.data);
+      showPopupMsg('Product updated successfully!'); 
       resetForm();
-      fetchAllProducts(); 
+      
+      // Wait a bit before refetching to ensure backend has processed the update
+      setTimeout(() => {
+        console.log('🔄 Refetching products after update...');
+        fetchAllProducts();
+      }, 500);
     })
     .catch(e=>{
-      let msg = e.response?.data?.error || e.response?.data?.message || e.response?.data || e.message || 'Edit product failed';
+      console.error('❌ Product update failed:', e);
+      console.error('Error response:', e.response?.data);
+      console.error('Error status:', e.response?.status);
+      
+      let msg = '';
+      if (e.response?.status === 500) {
+        msg = '⚠️ Internal Server Error: The backend could not process this update. Check if all fields are valid and the product exists.';
+        console.error('💡 Possible causes: Invalid data type, missing required field, or database constraint violation');
+      } else {
+        msg = e.response?.data?.error || e.response?.data?.message || e.response?.data || e.message || 'Edit product failed';
+      }
+      
       if (typeof msg === 'object') msg = JSON.stringify(msg);
       showPopupMsg(msg);
     });
