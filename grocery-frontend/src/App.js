@@ -580,47 +580,6 @@ function App(){
     }
   }, [user, page]);
   
-  // Fetch employees when user loads (needed for delivery assignment)
-  useEffect(() => {
-    console.log('🔍 Employee fetch check:', { 
-      user: user?.role, 
-      employee: employee?.role, 
-      shouldFetch: user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')
-    });
-    
-    if (user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')) {
-      console.log('✅ Authorized to fetch employees');
-      fetchEmployees();
-    } else {
-      console.log('❌ Not authorized to fetch employees, ensuring empty array');
-      setEmployees([]); // Ensure employees is always an empty array for non-authorized users
-    }
-  }, [user, employee]);
-  
-  // Clear receipt when switching from bank to cash payment
-  useEffect(() => {
-    if (paymentMethod === 'cash') {
-      setPaymentReceipt(null);
-      setReceiptPreview('');
-    }
-  }, [paymentMethod]);
-
-  // Load favourites from backend when user changes
-  useEffect(() => {
-    if (user && !user.guest) {
-      fetchUserFavourites();
-    } else {
-      setFavourites([]); // Clear favourites for guests
-    }
-  }, [user]);
-
-  // Fetch user orders when orders page is opened
-  useEffect(() => {
-    if (page === 'orders' && user && !user.guest) {
-      fetchUserOrders();
-    }
-  }, [page, user]);
-
   // Load employee data on app startup
   useEffect(() => {
     const employeeData = localStorage.getItem('employeeData');
@@ -2074,6 +2033,51 @@ function App(){
         showPopupMsg(msg);
       });
   }
+
+  // ===== useEffects that depend on fetch functions (must be after function definitions) =====
+  
+  // Fetch employees when user loads (needed for delivery assignment)
+  useEffect(() => {
+    console.log('🔍 Employee fetch check:', { 
+      user: user?.role, 
+      employee: employee?.role, 
+      shouldFetch: user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')
+    });
+    
+    if (user && !user.guest && (user.role === 'manager' || employee?.role === 'Payment Handler')) {
+      console.log('✅ Authorized to fetch employees');
+      fetchEmployees();
+    } else {
+      console.log('❌ Not authorized to fetch employees, ensuring empty array');
+      setEmployees([]); // Ensure employees is always an empty array for non-authorized users
+    }
+  }, [user, employee]);
+  
+  // Clear receipt when switching from bank to cash payment
+  useEffect(() => {
+    if (paymentMethod === 'cash') {
+      setPaymentReceipt(null);
+      setReceiptPreview('');
+    }
+  }, [paymentMethod]);
+
+  // Load favourites from backend when user changes
+  useEffect(() => {
+    if (user && !user.guest) {
+      fetchUserFavourites();
+    } else {
+      setFavourites([]); // Clear favourites for guests
+    }
+  }, [user]);
+
+  // Fetch user orders when orders page is opened
+  useEffect(() => {
+    if (page === 'orders' && user && !user.guest) {
+      fetchUserOrders();
+    }
+  }, [page, user]);
+
+  // ===== End of useEffects section =====
 
   // Test function for employee login
   function testEmployeeLogin() {
