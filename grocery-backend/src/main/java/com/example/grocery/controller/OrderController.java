@@ -320,8 +320,34 @@ public class OrderController {
                         dto.put("paymentHandlerName", null);
                     }
                     
-                    // Items
-                    dto.put("items", order.getItems());
+                    // Items - Convert to proper format for frontend
+                    List<Map<String, Object>> itemDTOs = new ArrayList<>();
+                    if (order.getItems() != null) {
+                        for (com.example.grocery.model.OrderItem item : order.getItems()) {
+                            Map<String, Object> itemDto = new HashMap<>();
+                            itemDto.put("id", item.getId());
+                            itemDto.put("quantity", item.getQuantity());
+                            itemDto.put("price", item.getPrice());
+                            
+                            // Product info
+                            if (item.getProduct() != null) {
+                                itemDto.put("productId", item.getProduct().getId());
+                                itemDto.put("productName", item.getProduct().getName());
+                                itemDto.put("productDescription", item.getProduct().getDescription());
+                                itemDto.put("productPrice", item.getProduct().getPrice());
+                                itemDto.put("productImage", item.getProduct().getImage());
+                            } else {
+                                itemDto.put("productId", null);
+                                itemDto.put("productName", "Unknown Product");
+                                itemDto.put("productDescription", "");
+                                itemDto.put("productPrice", 0.0);
+                                itemDto.put("productImage", null);
+                            }
+                            
+                            itemDTOs.add(itemDto);
+                        }
+                    }
+                    dto.put("items", itemDTOs);
                     
                     orderDTOs.add(dto);
                     
