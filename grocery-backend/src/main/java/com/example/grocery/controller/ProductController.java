@@ -7,6 +7,8 @@ import com.example.grocery.repo.ProductRepository;
 import com.example.grocery.repo.UserRepository;
 import com.example.grocery.repo.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -111,35 +113,45 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public Object deleteProduct(@PathVariable Long id, @RequestHeader("user-id") Long userId) {
-        Optional<User> userOpt = userRepo.findById(userId);
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            String role = user.getRole();
-            if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
-                return Map.of("error", "Only manager or worker can delete general products");
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id, @RequestHeader(value = "user-id", required = false) Long userId) {
+        try {
+            if (userId == null) {
+                return ResponseEntity.badRequest().body(Map.of("error", "user-id header is required"));
             }
-            // Check if product exists
-            if (!repo.existsById(id)) {
-                return Map.of("error", "Product not found with id: " + id);
+            
+            Optional<User> userOpt = userRepo.findById(userId);
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                String role = user.getRole();
+                if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Only manager or worker can delete general products"));
+                }
+                // Check if product exists
+                if (!repo.existsById(id)) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Product not found with id: " + id));
+                }
+                repo.deleteById(id);
+                return ResponseEntity.ok(Map.of("status","deleted", "id", id));
             }
-            repo.deleteById(id);
-            return Map.of("status","deleted", "id", id);
+            Optional<Employee> empOpt = employeeRepo.findById(userId);
+            if (empOpt.isPresent()) {
+                Employee emp = empOpt.get();
+                String role = emp.getRole();
+                if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Only manager or worker can delete general products"));
+                }
+                // Check if product exists
+                if (!repo.existsById(id)) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Product not found with id: " + id));
+                }
+                repo.deleteById(id);
+                return ResponseEntity.ok(Map.of("status","deleted", "id", id));
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
+        } catch (Exception e) {
+            System.err.println("[ProductController] DELETE Error: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to delete product: " + e.getMessage()));
         }
-        Optional<Employee> empOpt = employeeRepo.findById(userId);
-        if (empOpt.isPresent()) {
-            Employee emp = empOpt.get();
-            String role = emp.getRole();
-            if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
-                return Map.of("error", "Only manager or worker can delete general products");
-            }
-            // Check if product exists
-            if (!repo.existsById(id)) {
-                return Map.of("error", "Product not found with id: " + id);
-            }
-            repo.deleteById(id);
-            return Map.of("status","deleted", "id", id);
-        }
-        return Map.of("error", "User not found");
     }
 }
