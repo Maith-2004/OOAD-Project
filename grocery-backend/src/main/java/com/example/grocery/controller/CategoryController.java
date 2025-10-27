@@ -2,6 +2,7 @@ package com.example.grocery.controller;
 
 import com.example.grocery.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
@@ -409,7 +410,8 @@ public class CategoryController {
     /**
      * PUT /api/categories/products/{id}
      * Update a product in its category-specific table
-     * Requires category field in request body to know which table to update
+     * Requires category (new) and oldCategory fields in request body
+     * If category changes, moves product from old table to new table
      */
     @PutMapping("/products/{id}")
     public ResponseEntity<?> updateProductInCategory(
@@ -422,17 +424,28 @@ public class CategoryController {
             System.out.println("[CategoryController] User ID: " + userId);
             System.out.println("[CategoryController] Product Data: " + productData);
             
-            // Get category from request
-            String category = (String) productData.get("category");
-            if (category == null || category.trim().isEmpty()) {
+            // Get new category from request
+            String newCategory = (String) productData.get("category");
+            String oldCategory = (String) productData.get("oldCategory");
+            
+            if (newCategory == null || newCategory.trim().isEmpty()) {
                 return ResponseEntity.badRequest().body(Map.of(
                     "success", false,
                     "error", "Category is required in request body"
                 ));
             }
             
-            category = category.toLowerCase();
-            System.out.println("[CategoryController] Target category: " + category);
+            if (oldCategory == null || oldCategory.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "error", "oldCategory is required in request body"
+                ));
+            }
+            
+            newCategory = newCategory.toLowerCase();
+            oldCategory = oldCategory.toLowerCase();
+            System.out.println("[CategoryController] Old category: " + oldCategory);
+            System.out.println("[CategoryController] New category: " + newCategory);
             
             // Extract product fields
             String name = (String) productData.get("name");
@@ -451,127 +464,244 @@ public class CategoryController {
             }
             
             Object updatedProduct = null;
+            boolean categoryChanged = !oldCategory.equals(newCategory);
             
-            // Update in the appropriate category-specific table
-            switch (category) {
-                case "bakery":
-                    com.example.grocery.model.Bakery bakery = bakeryRepo.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Bakery product not found with id: " + id));
-                    bakery.setName(name);
-                    bakery.setDescription(description);
-                    bakery.setPrice(price);
-                    bakery.setQuantity(quantity);
-                    if (image != null) bakery.setImage(image);
-                    updatedProduct = bakeryRepo.save(bakery);
-                    System.out.println("[CategoryController] ✅ Updated in bakery table");
-                    break;
-                    
-                case "fruits":
-                    com.example.grocery.model.Fruits fruits = fruitsRepo.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Fruits product not found with id: " + id));
-                    fruits.setName(name);
-                    fruits.setDescription(description);
-                    fruits.setPrice(price);
-                    fruits.setQuantity(quantity);
-                    if (image != null) fruits.setImage(image);
-                    updatedProduct = fruitsRepo.save(fruits);
-                    System.out.println("[CategoryController] ✅ Updated in fruits table");
-                    break;
-                    
-                case "dairy":
-                    com.example.grocery.model.Dairy dairy = dairyRepo.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Dairy product not found with id: " + id));
-                    dairy.setName(name);
-                    dairy.setDescription(description);
-                    dairy.setPrice(price);
-                    dairy.setQuantity(quantity);
-                    if (image != null) dairy.setImage(image);
-                    updatedProduct = dairyRepo.save(dairy);
-                    System.out.println("[CategoryController] ✅ Updated in dairy table");
-                    break;
-                    
-                case "meat":
-                    com.example.grocery.model.Meat meat = meatRepo.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Meat product not found with id: " + id));
-                    meat.setName(name);
-                    meat.setDescription(description);
-                    meat.setPrice(price);
-                    meat.setQuantity(quantity);
-                    if (image != null) meat.setImage(image);
-                    updatedProduct = meatRepo.save(meat);
-                    System.out.println("[CategoryController] ✅ Updated in meat table");
-                    break;
-                    
-                case "beverages":
-                    com.example.grocery.model.Beverages beverages = beveragesRepo.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Beverages product not found with id: " + id));
-                    beverages.setName(name);
-                    beverages.setDescription(description);
-                    beverages.setPrice(price);
-                    beverages.setQuantity(quantity);
-                    if (image != null) beverages.setImage(image);
-                    updatedProduct = beveragesRepo.save(beverages);
-                    System.out.println("[CategoryController] ✅ Updated in beverages table");
-                    break;
-                    
-                case "grains":
-                    com.example.grocery.model.Grains grains = grainsRepo.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Grains product not found with id: " + id));
-                    grains.setName(name);
-                    grains.setDescription(description);
-                    grains.setPrice(price);
-                    grains.setQuantity(quantity);
-                    if (image != null) grains.setImage(image);
-                    updatedProduct = grainsRepo.save(grains);
-                    System.out.println("[CategoryController] ✅ Updated in grains table");
-                    break;
-                    
-                case "vegetables":
-                    com.example.grocery.model.Vegetables vegetables = vegetablesRepo.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Vegetables product not found with id: " + id));
-                    vegetables.setName(name);
-                    vegetables.setDescription(description);
-                    vegetables.setPrice(price);
-                    vegetables.setQuantity(quantity);
-                    if (image != null) vegetables.setImage(image);
-                    updatedProduct = vegetablesRepo.save(vegetables);
-                    System.out.println("[CategoryController] ✅ Updated in vegetables table");
-                    break;
-                    
-                case "products":
-                    com.example.grocery.model.Product product = productRepo.findById(id)
-                        .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
-                    product.setName(name);
-                    product.setDescription(description);
-                    product.setPrice(price);
-                    product.setQuantity(quantity);
-                    if (image != null) product.setImage(image);
-                    updatedProduct = productRepo.save(product);
-                    System.out.println("[CategoryController] ✅ Updated in products table");
-                    break;
-                    
-                default:
-                    return ResponseEntity.badRequest().body(Map.of(
-                        "success", false,
-                        "error", "Invalid category: " + category + ". Valid categories: bakery, fruits, dairy, meat, beverages, grains, vegetables, products"
-                    ));
+            if (categoryChanged) {
+                System.out.println("[CategoryController] ⚠️ CATEGORY CHANGE DETECTED: " + oldCategory + " -> " + newCategory);
+                
+                // Step 1: Delete from old category table
+                deleteFromCategory(id, oldCategory);
+                System.out.println("[CategoryController] ✅ Deleted from " + oldCategory + " table");
+                
+                // Step 2: Create in new category table (use id from old product or generate new one)
+                updatedProduct = createInCategory(name, description, price, quantity, image, newCategory);
+                System.out.println("[CategoryController] ✅ Created in " + newCategory + " table");
+                
+            } else {
+                System.out.println("[CategoryController] ℹ️ No category change, updating in place");
+                
+                // Update in the same category table
+                updatedProduct = updateInCategory(id, name, description, price, quantity, image, newCategory);
+                System.out.println("[CategoryController] ✅ Updated in " + newCategory + " table");
             }
             
             System.out.println("[CategoryController] ===== UPDATE SUCCESSFUL =====");
             
             return ResponseEntity.ok(Map.of(
                 "success", true,
-                "message", "Product updated successfully in " + category + " category",
+                "message", categoryChanged ? 
+                    "Product moved from " + oldCategory + " to " + newCategory + " successfully" :
+                    "Product updated successfully in " + newCategory + " category",
                 "product", updatedProduct
             ));
             
         } catch (Exception e) {
-            System.err.println("[CategoryController] ❌ Update failed: " + e.getMessage());
+            System.err.println("[CategoryController] ❌ ERROR: " + e.getMessage());
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of(
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
                 "success", false,
                 "error", "Failed to update product: " + e.getMessage()
             ));
+        }
+    }
+    
+    // Helper method to delete product from a category table
+    private void deleteFromCategory(Long id, String category) {
+        switch (category) {
+            case "bakery":
+                bakeryRepo.deleteById(id);
+                break;
+            case "fruits":
+                fruitsRepo.deleteById(id);
+                break;
+            case "dairy":
+                dairyRepo.deleteById(id);
+                break;
+            case "meat":
+                meatRepo.deleteById(id);
+                break;
+            case "beverages":
+                beveragesRepo.deleteById(id);
+                break;
+            case "grains":
+                grainsRepo.deleteById(id);
+                break;
+            case "vegetables":
+                vegetablesRepo.deleteById(id);
+                break;
+            case "products":
+                productRepo.deleteById(id);
+                break;
+            default:
+                throw new RuntimeException("Invalid category for deletion: " + category);
+        }
+    }
+    
+    // Helper method to create product in a new category table
+    private Object createInCategory(String name, String description, Double price, Integer quantity, String image, String category) {
+        switch (category) {
+            case "bakery":
+                com.example.grocery.model.Bakery bakery = new com.example.grocery.model.Bakery();
+                bakery.setName(name);
+                bakery.setDescription(description);
+                bakery.setPrice(price);
+                bakery.setQuantity(quantity);
+                if (image != null) bakery.setImage(image);
+                return bakeryRepo.save(bakery);
+                
+            case "fruits":
+                com.example.grocery.model.Fruits fruits = new com.example.grocery.model.Fruits();
+                fruits.setName(name);
+                fruits.setDescription(description);
+                fruits.setPrice(price);
+                fruits.setQuantity(quantity);
+                if (image != null) fruits.setImage(image);
+                return fruitsRepo.save(fruits);
+                
+            case "dairy":
+                com.example.grocery.model.Dairy dairy = new com.example.grocery.model.Dairy();
+                dairy.setName(name);
+                dairy.setDescription(description);
+                dairy.setPrice(price);
+                dairy.setQuantity(quantity);
+                if (image != null) dairy.setImage(image);
+                return dairyRepo.save(dairy);
+                
+            case "meat":
+                com.example.grocery.model.Meat meat = new com.example.grocery.model.Meat();
+                meat.setName(name);
+                meat.setDescription(description);
+                meat.setPrice(price);
+                meat.setQuantity(quantity);
+                if (image != null) meat.setImage(image);
+                return meatRepo.save(meat);
+                
+            case "beverages":
+                com.example.grocery.model.Beverages beverages = new com.example.grocery.model.Beverages();
+                beverages.setName(name);
+                beverages.setDescription(description);
+                beverages.setPrice(price);
+                beverages.setQuantity(quantity);
+                if (image != null) beverages.setImage(image);
+                return beveragesRepo.save(beverages);
+                
+            case "grains":
+                com.example.grocery.model.Grains grains = new com.example.grocery.model.Grains();
+                grains.setName(name);
+                grains.setDescription(description);
+                grains.setPrice(price);
+                grains.setQuantity(quantity);
+                if (image != null) grains.setImage(image);
+                return grainsRepo.save(grains);
+                
+            case "vegetables":
+                com.example.grocery.model.Vegetables vegetables = new com.example.grocery.model.Vegetables();
+                vegetables.setName(name);
+                vegetables.setDescription(description);
+                vegetables.setPrice(price);
+                vegetables.setQuantity(quantity);
+                if (image != null) vegetables.setImage(image);
+                return vegetablesRepo.save(vegetables);
+                
+            case "products":
+                com.example.grocery.model.Product product = new com.example.grocery.model.Product();
+                product.setName(name);
+                product.setDescription(description);
+                product.setPrice(price);
+                product.setQuantity(quantity);
+                if (image != null) product.setImage(image);
+                return productRepo.save(product);
+                
+            default:
+                throw new RuntimeException("Invalid category for creation: " + category);
+        }
+    }
+    
+    // Helper method to update product in the same category table
+    private Object updateInCategory(Long id, String name, String description, Double price, Integer quantity, String image, String category) {
+        switch (category) {
+            case "bakery":
+                com.example.grocery.model.Bakery bakery = bakeryRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Bakery product not found with id: " + id));
+                bakery.setName(name);
+                bakery.setDescription(description);
+                bakery.setPrice(price);
+                bakery.setQuantity(quantity);
+                if (image != null) bakery.setImage(image);
+                return bakeryRepo.save(bakery);
+                    
+            case "fruits":
+                com.example.grocery.model.Fruits fruits = fruitsRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Fruits product not found with id: " + id));
+                fruits.setName(name);
+                fruits.setDescription(description);
+                fruits.setPrice(price);
+                fruits.setQuantity(quantity);
+                if (image != null) fruits.setImage(image);
+                return fruitsRepo.save(fruits);
+                
+            case "dairy":
+                com.example.grocery.model.Dairy dairy = dairyRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Dairy product not found with id: " + id));
+                dairy.setName(name);
+                dairy.setDescription(description);
+                dairy.setPrice(price);
+                dairy.setQuantity(quantity);
+                if (image != null) dairy.setImage(image);
+                return dairyRepo.save(dairy);
+                
+            case "meat":
+                com.example.grocery.model.Meat meat = meatRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Meat product not found with id: " + id));
+                meat.setName(name);
+                meat.setDescription(description);
+                meat.setPrice(price);
+                meat.setQuantity(quantity);
+                if (image != null) meat.setImage(image);
+                return meatRepo.save(meat);
+                
+            case "beverages":
+                com.example.grocery.model.Beverages beverages = beveragesRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Beverages product not found with id: " + id));
+                beverages.setName(name);
+                beverages.setDescription(description);
+                beverages.setPrice(price);
+                beverages.setQuantity(quantity);
+                if (image != null) beverages.setImage(image);
+                return beveragesRepo.save(beverages);
+                
+            case "grains":
+                com.example.grocery.model.Grains grains = grainsRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Grains product not found with id: " + id));
+                grains.setName(name);
+                grains.setDescription(description);
+                grains.setPrice(price);
+                grains.setQuantity(quantity);
+                if (image != null) grains.setImage(image);
+                return grainsRepo.save(grains);
+                
+            case "vegetables":
+                com.example.grocery.model.Vegetables vegetables = vegetablesRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Vegetables product not found with id: " + id));
+                vegetables.setName(name);
+                vegetables.setDescription(description);
+                vegetables.setPrice(price);
+                vegetables.setQuantity(quantity);
+                if (image != null) vegetables.setImage(image);
+                return vegetablesRepo.save(vegetables);
+                
+            case "products":
+                com.example.grocery.model.Product product = productRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+                product.setName(name);
+                product.setDescription(description);
+                product.setPrice(price);
+                product.setQuantity(quantity);
+                if (image != null) product.setImage(image);
+                return productRepo.save(product);
+                
+            default:
+                throw new RuntimeException("Invalid category for update: " + category);
         }
     }
 }
