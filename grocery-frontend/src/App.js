@@ -1961,30 +1961,78 @@ function App(){
   }
 
   function viewUserOrder(orderId) {
-    if (!user || user.guest || !user.id) return;
+    if (!user || user.guest || !user.id) {
+      showPopupMsg('Please login to view order details');
+      return;
+    }
+    
+    console.log('🔍 Viewing order:', orderId, 'for user:', user.id);
+    
     // Try to find the order in the already fetched orders first
-    const existingOrder = userOrders.find(order => order.id === orderId);
+    const existingOrder = userOrders.find(order => order.id == orderId); // Use == for type flexibility
     if (existingOrder) {
+      console.log('✅ Found order in local cache:', existingOrder);
       setViewedUserOrder(existingOrder);
       return;
     }
     
-    // If not found, fetch from server
-    axios.get(`${API}/orders/${orderId}`, { headers: { 'user-id': user.id } })
+    console.log('⚠️ Order not in cache, fetching from server...');
+    
+    // If not found, fetch from server with multiple endpoint attempts
+    const tryOrderEndpoint = (endpoint, description) => {
+      console.log(`🌐 Trying ${description}: ${endpoint}`);
+      return axios.get(endpoint, { headers: { 'user-id': user.id } });
+    };
+    
+    // First try the specific order endpoint
+    tryOrderEndpoint(`${API}/orders/${orderId}`, 'specific order endpoint')
       .then(r => {
-        // Verify this order belongs to the current user
+        console.log('✅ Order API response:', r.data);
         const order = r.data;
-        if (order.user_id === user.id || 
-            order.userId === user.id ||
-            order.customerId === user.id ||
-            order.customer_id === user.id) {
+        
+        // Verify this order belongs to the current user (with flexible field matching)
+        const belongsToUser = order.user_id == user.id || 
+                             order.userId == user.id ||
+                             order.customerId == user.id ||
+                             order.customer_id == user.id;
+        
+        if (belongsToUser) {
+          console.log('✅ Order belongs to user, displaying details');
           setViewedUserOrder(order);
         } else {
+          console.warn('❌ Order does not belong to current user:', {
+            orderId,
+            orderUserId: order.user_id || order.userId || order.customerId || order.customer_id,
+            currentUserId: user.id
+          });
           showPopupMsg('You can only view your own orders.');
         }
       })
       .catch(e => {
-        let msg = e.response?.data?.error || e.response?.data?.message || e.response?.data || e.message || 'Failed to view order';
+        console.error('❌ Failed to fetch order details:', e);
+        
+        // Try to find the order in user's order list as fallback
+        if (userOrders.length > 0) {
+          const fallbackOrder = userOrders.find(order => order.id == orderId);
+          if (fallbackOrder) {
+            console.log('✅ Found order in user orders list as fallback');
+            setViewedUserOrder(fallbackOrder);
+            return;
+          }
+        }
+        
+        // Provide specific error messages
+        let msg = 'Failed to view order details. ';
+        if (e.response?.status === 404) {
+          msg += 'Order not found or may have been deleted.';
+        } else if (e.response?.status === 401) {
+          msg += 'Please login again to view order details.';
+        } else if (e.response?.status === 403) {
+          msg += 'You do not have permission to view this order.';
+        } else {
+          msg += (e.response?.data?.error || e.response?.data?.message || e.message || 'Unknown error occurred');
+        }
+        
         if (typeof msg === 'object') msg = JSON.stringify(msg);
         showPopupMsg(msg);
       });
