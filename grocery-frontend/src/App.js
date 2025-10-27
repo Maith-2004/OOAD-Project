@@ -490,7 +490,11 @@ function App(){
         
         // Refresh orders to show new order
         if (user && !user.guest) {
-          fetchOrders();
+          if (user.role === 'customer') {
+            fetchUserOrders(); // Customers fetch their own orders
+          } else {
+            fetchOrders(); // Managers/employees fetch all orders
+          }
         }
       })
       .catch((error)=>{
@@ -1863,77 +1867,67 @@ function App(){
     // Try multiple endpoints to find the correct one
     const tryEndpoint = (endpoint, description) => {
       console.log(`🌐 Trying ${description}: ${endpoint}`);
-      return axios.get(endpoint, { headers: { 'user-id': user.id } });
+      return axios.get(endpoint, { 
+        headers: { 
+          'user-id': user.id,
+          'Authorization': `Bearer ${user.token || ''}` // Add auth token if available
+        } 
+      });
     };
     
-    // First try the customer-specific endpoint
-    tryEndpoint(`${API}/orders/users/${user.id}`, 'customer-specific endpoint')
-      .then(r => {
-        console.log('✅ Orders API response (customer-specific):', r.data);
-        // Handle different response formats
-        let orders = [];
-        if (Array.isArray(r.data)) {
-          orders = r.data;
-        } else if (r.data && Array.isArray(r.data.orders)) {
-          orders = r.data.orders;
-        } else if (r.data && Array.isArray(r.data.data)) {
-          orders = r.data.data;
+    // First try variations of the customer-specific endpoint
+    const endpoints = [
+      { url: `${API}/orders/user/${user.id}`, desc: 'customer endpoint (singular user)' },
+      { url: `${API}/orders/users/${user.id}`, desc: 'customer endpoint (plural users)' },
+      { url: `${API}/orders/customer/${user.id}`, desc: 'customer endpoint (explicit customer)' },
+      { url: `${API}/orders?customerId=${user.id}`, desc: 'orders with customerId query' },
+      { url: `${API}/orders?userId=${user.id}`, desc: 'orders with userId query' }
+    ];
+    
+    // Try each endpoint in sequence
+    const tryAllEndpoints = async () => {
+      for (const endpoint of endpoints) {
+        try {
+          console.log(`🔍 Attempting: ${endpoint.desc}`);
+          const response = await tryEndpoint(endpoint.url, endpoint.desc);
+          console.log('✅ Orders API response:', response.data);
+          
+          // Handle different response formats
+          let orders = [];
+          if (Array.isArray(response.data)) {
+            orders = response.data;
+          } else if (response.data && Array.isArray(response.data.orders)) {
+            orders = response.data.orders;
+          } else if (response.data && Array.isArray(response.data.data)) {
+            orders = response.data.data;
+          }
+          
+          // Filter to ensure only this user's orders
+          const filteredOrders = orders.filter(order => 
+            order.user_id === user.id || 
+            order.userId === user.id ||
+            order.customerId === user.id ||
+            order.customer_id === user.id
+          );
+          
+          safeSetUserOrders(filteredOrders);
+          console.log(`✅ Successfully loaded ${filteredOrders.length} orders from ${endpoint.desc}`);
+          setLoadingUserOrders(false);
+          return; // Success - exit
+        } catch (error) {
+          console.log(`❌ ${endpoint.desc} failed:`, error.response?.status || error.message);
+          // Continue to next endpoint
         }
-        safeSetUserOrders(orders);
-        console.log(`✅ Successfully loaded ${orders.length} orders`);
-      })
-      .catch(e1 => {
-        console.log('⚠️ Customer-specific endpoint failed, trying general orders endpoint...');
-        
-        // Fallback to general orders endpoint with filtering
-        tryEndpoint(`${API}/orders`, 'general orders endpoint')
-          .then(r => {
-            console.log('✅ Orders API response (general):', r.data);
-            let allOrders = Array.isArray(r.data) ? r.data : [];
-            
-            // Filter orders for current user
-            const userOrders = allOrders.filter(order => 
-              order.user_id === user.id || 
-              order.userId === user.id ||
-              order.customerId === user.id ||
-              order.customer_id === user.id
-            );
-            
-            console.log(`✅ Filtered ${userOrders.length} orders from ${allOrders.length} total orders`);
-            safeSetUserOrders(userOrders);
-          })
-          .catch(e2 => {
-            console.log('⚠️ General endpoint failed, trying query parameter approach...');
-            
-            // Try with query parameter
-            tryEndpoint(`${API}/orders?user_id=${user.id}`, 'query parameter endpoint')
-              .then(r => {
-                console.log('✅ Orders API response (query param):', r.data);
-                const orders = Array.isArray(r.data) ? r.data : [];
-                safeSetUserOrders(orders);
-                console.log(`✅ Successfully loaded ${orders.length} orders via query param`);
-              })
-              .catch(e3 => {
-                console.error('❌ All endpoints failed:', { e1: e1.message, e2: e2.message, e3: e3.message });
-                safeSetUserOrders([]);
-                
-                // Provide detailed error message
-                let msg = 'Unable to fetch your orders. ';
-                if (e3.response?.status === 404) {
-                  msg += 'The orders service may not be available.';
-                } else if (e3.response?.status === 401) {
-                  msg += 'Please login again to view your orders.';
-                } else if (e3.response?.status === 403) {
-                  msg += 'You do not have permission to view orders.';
-                } else {
-                  msg += (e3.response?.data?.error || e3.response?.data?.message || e3.message || 'Unknown error occurred');
-                }
-                
-                setUserOrderError(msg);
-              });
-          });
-      })
-      .finally(() => setLoadingUserOrders(false));
+      }
+      
+      // All endpoints failed
+      console.error('❌ All endpoints failed to fetch user orders');
+      safeSetUserOrders([]);
+      setLoadingUserOrders(false);
+      setUserOrderError('Unable to fetch your orders. Please try again later or contact support.');
+    };
+    
+    tryAllEndpoints();
   }
 
   function viewUserOrder(orderId) {
