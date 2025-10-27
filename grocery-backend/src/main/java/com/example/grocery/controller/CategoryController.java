@@ -575,20 +575,20 @@ public class CategoryController {
             
             System.out.println("[CategoryController] Found product in: " + category);
             
-            // Delete from the category table
+            // Soft delete from the category table
             deleteFromCategory(id, category);
-            System.out.println("[CategoryController] ✅ Deleted product from " + category + " table");
+            System.out.println("[CategoryController] ✅ Soft deleted product from " + category + " table");
             
-            // Verify deletion
+            // Verify soft deletion (product should now be inactive)
             if (productExistsInCategory(id, category)) {
-                throw new RuntimeException("Failed to delete product from " + category + " table");
+                throw new RuntimeException("Failed to soft delete product from " + category + " table");
             }
             
-            System.out.println("[CategoryController] ===== DELETE SUCCESSFUL =====");
+            System.out.println("[CategoryController] ===== SOFT DELETE SUCCESSFUL =====");
             
             return ResponseEntity.ok(Map.of(
                 "success", true,
-                "message", "Product deleted successfully from " + category + " category",
+                "message", "Product marked as inactive in " + category + " category",
                 "deletedId", id,
                 "category", category
             ));
@@ -646,28 +646,36 @@ public class CategoryController {
     
     // Helper method to find which category table a product exists in
     private String findProductCategory(Long id) {
-        if (bakeryRepo.existsById(id)) return "bakery";
-        if (fruitsRepo.existsById(id)) return "fruits";
-        if (dairyRepo.existsById(id)) return "dairy";
-        if (meatRepo.existsById(id)) return "meat";
-        if (beveragesRepo.existsById(id)) return "beverages";
-        if (grainsRepo.existsById(id)) return "grains";
-        if (vegetablesRepo.existsById(id)) return "vegetables";
-        if (productRepo.existsById(id)) return "products";
-        return null; // Product not found in any table
+        if (bakeryRepo.findById(id).map(item -> item.isActive()).orElse(false)) return "bakery";
+        if (fruitsRepo.findById(id).map(item -> item.isActive()).orElse(false)) return "fruits";
+        if (dairyRepo.findById(id).map(item -> item.isActive()).orElse(false)) return "dairy";
+        if (meatRepo.findById(id).map(item -> item.isActive()).orElse(false)) return "meat";
+        if (beveragesRepo.findById(id).map(item -> item.isActive()).orElse(false)) return "beverages";
+        if (grainsRepo.findById(id).map(item -> item.isActive()).orElse(false)) return "grains";
+        if (vegetablesRepo.findById(id).map(item -> item.isActive()).orElse(false)) return "vegetables";
+        if (productRepo.findById(id).map(item -> item.isActive()).orElse(false)) return "products";
+        return null; // Product not found in any table or inactive
     }
     
     // Helper method to check if product exists in a specific category
     private boolean productExistsInCategory(Long id, String category) {
         switch (category.toLowerCase()) {
-            case "bakery": return bakeryRepo.existsById(id);
-            case "fruits": return fruitsRepo.existsById(id);
-            case "dairy": return dairyRepo.existsById(id);
-            case "meat": return meatRepo.existsById(id);
-            case "beverages": return beveragesRepo.existsById(id);
-            case "grains": return grainsRepo.existsById(id);
-            case "vegetables": return vegetablesRepo.existsById(id);
-            case "products": return productRepo.existsById(id);
+            case "bakery": 
+                return bakeryRepo.findById(id).map(item -> item.isActive()).orElse(false);
+            case "fruits": 
+                return fruitsRepo.findById(id).map(item -> item.isActive()).orElse(false);
+            case "dairy": 
+                return dairyRepo.findById(id).map(item -> item.isActive()).orElse(false);
+            case "meat": 
+                return meatRepo.findById(id).map(item -> item.isActive()).orElse(false);
+            case "beverages": 
+                return beveragesRepo.findById(id).map(item -> item.isActive()).orElse(false);
+            case "grains": 
+                return grainsRepo.findById(id).map(item -> item.isActive()).orElse(false);
+            case "vegetables": 
+                return vegetablesRepo.findById(id).map(item -> item.isActive()).orElse(false);
+            case "products": 
+                return productRepo.findById(id).map(item -> item.isActive()).orElse(false);
             default: return false;
         }
     }
@@ -676,28 +684,52 @@ public class CategoryController {
     private void deleteFromCategory(Long id, String category) {
         switch (category) {
             case "bakery":
-                bakeryRepo.deleteById(id);
+                bakeryRepo.findById(id).ifPresent(item -> {
+                    item.setActive(false);
+                    bakeryRepo.save(item);
+                });
                 break;
             case "fruits":
-                fruitsRepo.deleteById(id);
+                fruitsRepo.findById(id).ifPresent(item -> {
+                    item.setActive(false);
+                    fruitsRepo.save(item);
+                });
                 break;
             case "dairy":
-                dairyRepo.deleteById(id);
+                dairyRepo.findById(id).ifPresent(item -> {
+                    item.setActive(false);
+                    dairyRepo.save(item);
+                });
                 break;
             case "meat":
-                meatRepo.deleteById(id);
+                meatRepo.findById(id).ifPresent(item -> {
+                    item.setActive(false);
+                    meatRepo.save(item);
+                });
                 break;
             case "beverages":
-                beveragesRepo.deleteById(id);
+                beveragesRepo.findById(id).ifPresent(item -> {
+                    item.setActive(false);
+                    beveragesRepo.save(item);
+                });
                 break;
             case "grains":
-                grainsRepo.deleteById(id);
+                grainsRepo.findById(id).ifPresent(item -> {
+                    item.setActive(false);
+                    grainsRepo.save(item);
+                });
                 break;
             case "vegetables":
-                vegetablesRepo.deleteById(id);
+                vegetablesRepo.findById(id).ifPresent(item -> {
+                    item.setActive(false);
+                    vegetablesRepo.save(item);
+                });
                 break;
             case "products":
-                productRepo.deleteById(id);
+                productRepo.findById(id).ifPresent(item -> {
+                    item.setActive(false);
+                    productRepo.save(item);
+                });
                 break;
             default:
                 throw new RuntimeException("Invalid category for deletion: " + category);

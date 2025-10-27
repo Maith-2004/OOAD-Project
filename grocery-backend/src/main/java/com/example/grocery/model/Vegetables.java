@@ -17,6 +17,9 @@ public class Vegetables {
     @Lob
     @Column(columnDefinition = "TEXT")
     private String image;
+    
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private boolean active = true;
 
     // Default constructor
     public Vegetables() {}
@@ -85,6 +88,14 @@ public class Vegetables {
 
     public void setImage(String image) {
         this.image = image;
+    }
+    
+    public boolean isActive() {
+        return active;
+    }
+    
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override

@@ -23,7 +23,7 @@ public class ProductController {
     private EmployeeRepository employeeRepo;
 
     @GetMapping
-    public List<Product> all(){ return repo.findAll(); }
+    public List<Product> all(){ return repo.findByActiveTrue(); }
 
     @PostMapping
     public Object createProduct(@RequestBody Product item, @RequestHeader("user-id") Long userId) {
@@ -126,12 +126,16 @@ public class ProductController {
                 if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Only manager or worker can delete general products"));
                 }
-                // Check if product exists
-                if (!repo.existsById(id)) {
+                // Check if product exists and is active
+                Optional<Product> productOpt = repo.findById(id);
+                if (!productOpt.isPresent()) {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Product not found with id: " + id));
                 }
-                repo.deleteById(id);
-                return ResponseEntity.ok(Map.of("status","deleted", "id", id));
+                // Soft delete: set active to false
+                Product product = productOpt.get();
+                product.setActive(false);
+                repo.save(product);
+                return ResponseEntity.ok(Map.of("status","deleted", "id", id, "message", "Product marked as inactive"));
             }
             Optional<Employee> empOpt = employeeRepo.findById(userId);
             if (empOpt.isPresent()) {
@@ -140,14 +144,24 @@ public class ProductController {
                 if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                     return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Only manager or worker can delete general products"));
                 }
-                // Check if product exists
-                if (!repo.existsById(id)) {
+                // Check if product exists and is active
+                Optional<Product> productOpt = repo.findById(id);
+                if (!productOpt.isPresent()) {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Product not found with id: " + id));
                 }
-                repo.deleteById(id);
-                return ResponseEntity.ok(Map.of("status","deleted", "id", id));
+                // Soft delete: set active to false
+                Product product = productOpt.get();
+                product.setActive(false);
+                repo.save(product);
+                return ResponseEntity.ok(Map.of("status","deleted", "id", id, "message", "Product marked as inactive"));
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            System.err.println("[ProductController] DELETE Error - Foreign Key Constraint: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                "error", "Cannot delete product: it is referenced in existing orders or other records",
+                "details", "This product cannot be deleted because it has been used in orders. Consider marking it as inactive instead."
+            ));
         } catch (Exception e) {
             System.err.println("[ProductController] DELETE Error: " + e.getMessage());
             e.printStackTrace();

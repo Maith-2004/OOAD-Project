@@ -7,6 +7,8 @@ import com.example.grocery.repo.BakeryRepository;
 import com.example.grocery.repo.UserRepository;
 import com.example.grocery.repo.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -75,35 +77,47 @@ public class BakeryController {
     }
 
     @DeleteMapping("/{id}")
-    public Object deleteBakery(@PathVariable Long id, @RequestHeader("user-id") Long userId) {
-        Optional<User> userOpt = userRepo.findById(userId);
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            String role = user.getRole();
-            if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
-                return Map.of("error", "Only manager or worker can delete bakery items");
+    public ResponseEntity<?> deleteBakery(@PathVariable Long id, @RequestHeader(value = "user-id", required = false) Long userId) {
+        try {
+            if (userId == null) {
+                return ResponseEntity.badRequest().body(Map.of("error", "user-id header is required"));
             }
-            // Check if product exists
-            if (!repo.existsById(id)) {
-                return Map.of("error", "Bakery product not found with id: " + id);
+            
+            Optional<User> userOpt = userRepo.findById(userId);
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                String role = user.getRole();
+                if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Only manager or worker can delete bakery items"));
+                }
+                if (!repo.existsById(id)) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Bakery product not found with id: " + id));
+                }
+                repo.deleteById(id);
+                return ResponseEntity.ok(Map.of("status","deleted", "id", id));
             }
-            repo.deleteById(id);
-            return Map.of("status","deleted", "id", id);
+            Optional<Employee> empOpt = employeeRepo.findById(userId);
+            if (empOpt.isPresent()) {
+                Employee emp = empOpt.get();
+                String role = emp.getRole();
+                if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Only manager or worker can delete bakery items"));
+                }
+                if (!repo.existsById(id)) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Bakery product not found with id: " + id));
+                }
+                repo.deleteById(id);
+                return ResponseEntity.ok(Map.of("status","deleted", "id", id));
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                "error", "Cannot delete bakery product: it is referenced in existing orders or other records"
+            ));
+        } catch (Exception e) {
+            System.err.println("[BakeryController] DELETE Error: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to delete bakery product: " + e.getMessage()));
         }
-        Optional<Employee> empOpt = employeeRepo.findById(userId);
-        if (empOpt.isPresent()) {
-            Employee emp = empOpt.get();
-            String role = emp.getRole();
-            if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
-                return Map.of("error", "Only manager or worker can delete bakery items");
-            }
-            // Check if product exists
-            if (!repo.existsById(id)) {
-                return Map.of("error", "Bakery product not found with id: " + id);
-            }
-            repo.deleteById(id);
-            return Map.of("status","deleted", "id", id);
-        }
-        return Map.of("error", "User not found");
     }
 }

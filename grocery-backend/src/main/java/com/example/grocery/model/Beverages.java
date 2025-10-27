@@ -16,6 +16,9 @@ public class Beverages {
     @Lob
     @Column(columnDefinition = "TEXT")
     private String image;
+    
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private boolean active = true;
 
     // Constructors
     public Beverages() {}
@@ -53,4 +56,7 @@ public class Beverages {
     
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
+    
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 }
