@@ -2870,6 +2870,18 @@ function App(){
                       const qty = qtys[pid] || 1;
                       // Create unique key using category and id to avoid duplicate keys across categories
                       const uniqueKey = `${product.category || 'product'}-${product.id || i}`;
+                      
+                      // Debug: Log product image info
+                      if (i === 0) {
+                        console.log('🖼️ First product image debug:', {
+                          name: product.name,
+                          hasImage: !!product.image,
+                          imageType: typeof product.image,
+                          imageLength: product.image?.length,
+                          imagePreview: product.image?.substring(0, 50) + '...'
+                        });
+                      }
+                      
                       return (
                       <div key={uniqueKey} style={{background:'#fff',borderRadius:'12px',boxShadow:'0 2px 8px rgba(0,0,0,0.08)',padding:'16px',position:'relative',minHeight:'320px',display:'flex',flexDirection:'column',border:'1px solid #f0f0f0'}}>
                         {/* Discount badge */}
@@ -2903,7 +2915,13 @@ function App(){
                         </div>
                         
                         {/* Product image */}
-                        <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'140px',marginBottom:'12px',borderRadius:'8px',backgroundColor:'#fafafa'}}>
+                        <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'140px',marginBottom:'12px',borderRadius:'8px',backgroundColor:'#fafafa',position:'relative'}}>
+                          {/* Debug overlay */}
+                          {product.image && product.image.trim() !== '' && (
+                            <div style={{position:'absolute',top:'5px',left:'5px',background:'rgba(0,255,0,0.7)',color:'white',padding:'2px 6px',fontSize:'10px',borderRadius:'3px',zIndex:10}}>
+                              Custom
+                            </div>
+                          )}
                           <img 
                             src={
                               product.image && product.image.trim() !== '' ? 
@@ -2918,9 +2936,14 @@ function App(){
                             } 
                             alt={product.name || 'Product'} 
                             style={{maxHeight:'120px',maxWidth:'100%',objectFit:'contain'}}
+                            onLoad={(e) => {
+                              console.log('✅ Image loaded successfully for:', product.name, 'src:', e.target.src.substring(0, 50));
+                            }}
                             onError={(e) => {
+                              console.error('❌ Image failed to load for:', product.name, 'src:', e.target.src.substring(0, 50));
                               // If image fails to load, use fallback
                               if (e.target.src !== '/FoodMart-1.0.0/images/thumb-bananas.png') {
+                                console.log('🔄 Switching to fallback image');
                                 e.target.src = '/FoodMart-1.0.0/images/thumb-bananas.png';
                               }
                             }}
