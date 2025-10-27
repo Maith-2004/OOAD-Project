@@ -1881,27 +1881,19 @@ function App(){
     if (!user || user.guest || !user.id) return;
     setLoadingUserOrders(true);
     setUserOrderError("");
-    axios.get(API + '/orders', { headers: { 'user-id': user.id } })
+    // ✅ Use the correct customer-specific endpoint
+    axios.get(`${API}/orders/users/${user.id}/orders`)
       .then(r => {
-        const filteredOrders = r.data.filter(order => 
-          order.user_id === user.id || 
-          order.userId === user.id ||
-          order.customerId === user.id ||
-          order.customer_id === user.id
-        );
-        setUserOrders(filteredOrders);
+        console.log('✅ Orders API response:', r.data);
+        // Response is already an array of orders for this user
+        setUserOrders(Array.isArray(r.data) ? r.data : []);
       })
       .catch(e => {
-        axios.get(`${API}/orders?user_id=${user.id}`, { headers: { 'user-id': user.id } })
-          .then(r => {
-            setUserOrders(r.data);
-          })
-          .catch(e2 => {
-            setUserOrders([]);
-            let msg = e2.response?.data?.error || e2.response?.data?.message || e2.response?.data || e2.message || 'Failed to fetch your orders';
-            if (typeof msg === 'object') msg = JSON.stringify(msg);
-            setUserOrderError(msg);
-          });
+        console.error('❌ Failed to fetch orders:', e);
+        setUserOrders([]);
+        let msg = e.response?.data?.error || e.response?.data?.message || e.response?.data || e.message || 'Failed to fetch your orders';
+        if (typeof msg === 'object') msg = JSON.stringify(msg);
+        setUserOrderError(msg);
       })
       .finally(() => setLoadingUserOrders(false));
   }
