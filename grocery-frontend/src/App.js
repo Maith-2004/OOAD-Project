@@ -264,6 +264,12 @@ function App(){
     })
     .then((response)=>{ 
       console.log('✅ Product update response:', response.data);
+      console.log('📸 UPDATE RESPONSE IMAGE CHECK:', {
+        hasImage: !!response.data.image,
+        imageType: typeof response.data.image,
+        imageLength: response.data.image ? response.data.image.length : 0,
+        imagePreview: response.data.image ? response.data.image.substring(0, 50) + '...' : 'NO IMAGE IN RESPONSE'
+      });
       
       // Immediately update local state with the new data (optimistic update)
       const updatedProduct = response.data;
@@ -747,6 +753,25 @@ function App(){
         const allProducts = response.data.products;
         console.log(`✅ Loaded ${allProducts.length} products from Category API`);
         console.log('🔍 Sample products:', allProducts.slice(0, 3).map(p => ({ name: p.name, category: p.category })));
+        
+        // DETAILED IMAGE FIELD ANALYSIS
+        console.log('📸 IMAGE FIELD ANALYSIS FOR ALL PRODUCTS:');
+        const imageStats = allProducts.map((p, idx) => ({
+          index: idx,
+          name: p.name,
+          hasImage: !!p.image,
+          imageType: typeof p.image,
+          imageLength: p.image ? p.image.length : 0,
+          imagePreview: p.image ? p.image.substring(0, 50) + '...' : 'NO IMAGE'
+        }));
+        console.log('Full image stats:', imageStats);
+        
+        const withImages = imageStats.filter(s => s.hasImage);
+        console.log(`📊 Products with images: ${withImages.length} / ${allProducts.length}`);
+        if (withImages.length > 0) {
+          console.log('Products that HAVE images:', withImages);
+        }
+        
         console.log('🔍 ALL product names:', allProducts.map(p => p.name));
         
         // Sort products into categories
