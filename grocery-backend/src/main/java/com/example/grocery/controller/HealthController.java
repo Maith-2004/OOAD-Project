@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 public class HealthController {
 
     @GetMapping("/health")
@@ -19,7 +19,7 @@ public class HealthController {
         );
     }
 
-    @GetMapping("/")
+    @GetMapping("/status")
     public Map<String, Object> root() {
         return Map.of(
             "message", "Shanthi Stores API is running",
