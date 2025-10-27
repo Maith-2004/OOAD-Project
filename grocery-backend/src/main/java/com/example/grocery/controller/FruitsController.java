@@ -28,7 +28,8 @@ public class FruitsController {
         Optional<User> userOpt = userRepo.findById(userId);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            if (!"manager".equalsIgnoreCase(user.getRole()) && !"worker".equalsIgnoreCase(user.getRole())) {
+            String role = user.getRole();
+            if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                 return Map.of("error", "Only manager or worker can create fruits items");
             }
             return repo.save(item);
@@ -36,7 +37,8 @@ public class FruitsController {
         Optional<Employee> empOpt = employeeRepo.findById(userId);
         if (empOpt.isPresent()) {
             Employee emp = empOpt.get();
-            if (!"manager".equalsIgnoreCase(emp.getRole()) && !"worker".equalsIgnoreCase(emp.getRole())) {
+            String role = emp.getRole();
+            if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                 return Map.of("error", "Only manager or worker can create fruits items");
             }
             return repo.save(item);
@@ -52,7 +54,8 @@ public class FruitsController {
         Optional<User> userOpt = userRepo.findById(userId);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            if (!"manager".equalsIgnoreCase(user.getRole()) && !"worker".equalsIgnoreCase(user.getRole())) {
+            String role = user.getRole();
+            if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                 return Map.of("error", "Only manager or worker can update fruits items");
             }
             item.setId(id);
@@ -61,7 +64,8 @@ public class FruitsController {
         Optional<Employee> empOpt = employeeRepo.findById(userId);
         if (empOpt.isPresent()) {
             Employee emp = empOpt.get();
-            if (!"manager".equalsIgnoreCase(emp.getRole()) && !"worker".equalsIgnoreCase(emp.getRole())) {
+            String role = emp.getRole();
+            if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                 return Map.of("error", "Only manager or worker can update fruits items");
             }
             item.setId(id);
@@ -75,7 +79,8 @@ public class FruitsController {
         Optional<User> userOpt = userRepo.findById(userId);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            if (!"manager".equalsIgnoreCase(user.getRole()) && !"worker".equalsIgnoreCase(user.getRole())) {
+            String role = user.getRole();
+            if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                 return Map.of("error", "Only manager or worker can delete fruits items");
             }
             repo.deleteById(id);
@@ -84,7 +89,8 @@ public class FruitsController {
         Optional<Employee> empOpt = employeeRepo.findById(userId);
         if (empOpt.isPresent()) {
             Employee emp = empOpt.get();
-            if (!"manager".equalsIgnoreCase(emp.getRole()) && !"worker".equalsIgnoreCase(emp.getRole())) {
+            String role = emp.getRole();
+            if (!"manager".equalsIgnoreCase(role) && !"worker".equalsIgnoreCase(role) && !"worker employee".equalsIgnoreCase(role)) {
                 return Map.of("error", "Only manager or worker can delete fruits items");
             }
             repo.deleteById(id);

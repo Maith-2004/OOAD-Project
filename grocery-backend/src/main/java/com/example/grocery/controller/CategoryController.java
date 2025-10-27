@@ -1,5 +1,7 @@
 package com.example.grocery.controller;
 
+import com.example.grocery.model.User;
+import com.example.grocery.model.Employee;
 import com.example.grocery.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,12 @@ public class CategoryController {
     
     @Autowired
     private ProductRepository productRepo;
+    
+    @Autowired
+    private UserRepository userRepo;
+    
+    @Autowired
+    private EmployeeRepository employeeRepo;
 
     /**
      * GET /api/categories
@@ -421,6 +429,12 @@ public class CategoryController {
             @RequestBody Map<String, Object> productData,
             @RequestHeader("user-id") Long userId) {
         try {
+            // Check authorization first
+            ResponseEntity<?> authCheck = checkAuthorization(userId);
+            if (authCheck != null) {
+                return authCheck; // Return error response
+            }
+            
             System.out.println("[CategoryController] ===== UPDATE PRODUCT REQUEST =====");
             System.out.println("[CategoryController] Product ID: " + id);
             System.out.println("[CategoryController] User ID: " + userId);
@@ -526,6 +540,108 @@ public class CategoryController {
                 "error", "Failed to update product: " + e.getMessage()
             ));
         }
+    }
+    
+    /**
+     * DELETE /api/categories/products/{id}
+     * Delete a product from any category table
+     * Automatically finds which table the product is in and deletes it
+     */
+    @Transactional
+    @DeleteMapping("/products/{id}")
+    public ResponseEntity<?> deleteProductFromCategory(
+            @PathVariable Long id,
+            @RequestHeader("user-id") Long userId) {
+        try {
+            // Check authorization first
+            ResponseEntity<?> authCheck = checkAuthorization(userId);
+            if (authCheck != null) {
+                return authCheck; // Return error response
+            }
+            
+            System.out.println("[CategoryController] ===== DELETE PRODUCT REQUEST =====");
+            System.out.println("[CategoryController] Product ID: " + id);
+            System.out.println("[CategoryController] User ID: " + userId);
+            
+            // Find which category the product belongs to
+            String category = findProductCategory(id);
+            
+            if (category == null) {
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "error", "Product with id " + id + " not found in any category table"
+                ));
+            }
+            
+            System.out.println("[CategoryController] Found product in: " + category);
+            
+            // Delete from the category table
+            deleteFromCategory(id, category);
+            System.out.println("[CategoryController] ✅ Deleted product from " + category + " table");
+            
+            // Verify deletion
+            if (productExistsInCategory(id, category)) {
+                throw new RuntimeException("Failed to delete product from " + category + " table");
+            }
+            
+            System.out.println("[CategoryController] ===== DELETE SUCCESSFUL =====");
+            
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Product deleted successfully from " + category + " category",
+                "deletedId", id,
+                "category", category
+            ));
+            
+        } catch (Exception e) {
+            System.err.println("[CategoryController] ❌ ERROR: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of(
+                "success", false,
+                "error", "Failed to delete product: " + e.getMessage()
+            ));
+        }
+    }
+    
+    // Helper method to check if user has manager or worker role
+    private ResponseEntity<?> checkAuthorization(Long userId) {
+        // Check users table first
+        Optional<User> userOpt = userRepo.findById(userId);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            String role = user.getRole();
+            if (!"manager".equalsIgnoreCase(role) && 
+                !"worker".equalsIgnoreCase(role) && 
+                !"worker employee".equalsIgnoreCase(role)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
+                    "success", false,
+                    "error", "Only manager or worker can perform this action"
+                ));
+            }
+            return null; // Authorized
+        }
+        
+        // Check employees table
+        Optional<Employee> empOpt = employeeRepo.findById(userId);
+        if (empOpt.isPresent()) {
+            Employee emp = empOpt.get();
+            String role = emp.getRole();
+            if (!"manager".equalsIgnoreCase(role) && 
+                !"worker".equalsIgnoreCase(role) && 
+                !"worker employee".equalsIgnoreCase(role)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
+                    "success", false,
+                    "error", "Only manager or worker can perform this action"
+                ));
+            }
+            return null; // Authorized
+        }
+        
+        // User not found in either table
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+            "success", false,
+            "error", "User not found"
+        ));
     }
     
     // Helper method to find which category table a product exists in
