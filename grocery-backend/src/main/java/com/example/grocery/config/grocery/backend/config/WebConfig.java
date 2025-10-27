@@ -1,4 +1,4 @@
-package com.example.grocery.config.grocery.backend.config;
+package com.grocery.backend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
