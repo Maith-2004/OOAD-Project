@@ -1881,19 +1881,81 @@ function App(){
     if (!user || user.guest || !user.id) return;
     setLoadingUserOrders(true);
     setUserOrderError("");
-    // ✅ Use the correct customer-specific endpoint
-    axios.get(`${API}/orders/users/${user.id}/orders`)
+    
+    console.log('🔍 Fetching orders for user:', user.id);
+    
+    // Try multiple endpoints to find the correct one
+    const tryEndpoint = (endpoint, description) => {
+      console.log(`🌐 Trying ${description}: ${endpoint}`);
+      return axios.get(endpoint, { headers: { 'user-id': user.id } });
+    };
+    
+    // First try the customer-specific endpoint
+    tryEndpoint(`${API}/orders/users/${user.id}`, 'customer-specific endpoint')
       .then(r => {
-        console.log('✅ Orders API response:', r.data);
-        // Response is already an array of orders for this user
-        setUserOrders(Array.isArray(r.data) ? r.data : []);
+        console.log('✅ Orders API response (customer-specific):', r.data);
+        // Handle different response formats
+        let orders = [];
+        if (Array.isArray(r.data)) {
+          orders = r.data;
+        } else if (r.data && Array.isArray(r.data.orders)) {
+          orders = r.data.orders;
+        } else if (r.data && Array.isArray(r.data.data)) {
+          orders = r.data.data;
+        }
+        setUserOrders(orders);
+        console.log(`✅ Successfully loaded ${orders.length} orders`);
       })
-      .catch(e => {
-        console.error('❌ Failed to fetch orders:', e);
-        setUserOrders([]);
-        let msg = e.response?.data?.error || e.response?.data?.message || e.response?.data || e.message || 'Failed to fetch your orders';
-        if (typeof msg === 'object') msg = JSON.stringify(msg);
-        setUserOrderError(msg);
+      .catch(e1 => {
+        console.log('⚠️ Customer-specific endpoint failed, trying general orders endpoint...');
+        
+        // Fallback to general orders endpoint with filtering
+        tryEndpoint(`${API}/orders`, 'general orders endpoint')
+          .then(r => {
+            console.log('✅ Orders API response (general):', r.data);
+            let allOrders = Array.isArray(r.data) ? r.data : [];
+            
+            // Filter orders for current user
+            const userOrders = allOrders.filter(order => 
+              order.user_id === user.id || 
+              order.userId === user.id ||
+              order.customerId === user.id ||
+              order.customer_id === user.id
+            );
+            
+            console.log(`✅ Filtered ${userOrders.length} orders from ${allOrders.length} total orders`);
+            setUserOrders(userOrders);
+          })
+          .catch(e2 => {
+            console.log('⚠️ General endpoint failed, trying query parameter approach...');
+            
+            // Try with query parameter
+            tryEndpoint(`${API}/orders?user_id=${user.id}`, 'query parameter endpoint')
+              .then(r => {
+                console.log('✅ Orders API response (query param):', r.data);
+                const orders = Array.isArray(r.data) ? r.data : [];
+                setUserOrders(orders);
+                console.log(`✅ Successfully loaded ${orders.length} orders via query param`);
+              })
+              .catch(e3 => {
+                console.error('❌ All endpoints failed:', { e1: e1.message, e2: e2.message, e3: e3.message });
+                setUserOrders([]);
+                
+                // Provide detailed error message
+                let msg = 'Unable to fetch your orders. ';
+                if (e3.response?.status === 404) {
+                  msg += 'The orders service may not be available.';
+                } else if (e3.response?.status === 401) {
+                  msg += 'Please login again to view your orders.';
+                } else if (e3.response?.status === 403) {
+                  msg += 'You do not have permission to view orders.';
+                } else {
+                  msg += (e3.response?.data?.error || e3.response?.data?.message || e3.message || 'Unknown error occurred');
+                }
+                
+                setUserOrderError(msg);
+              });
+          });
       })
       .finally(() => setLoadingUserOrders(false));
   }
