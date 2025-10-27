@@ -269,37 +269,44 @@ function App(){
       const updatedProduct = response.data;
       const category = (form.category || 'products').toLowerCase();
       
-      // Update the appropriate category array
-      const updateCategory = (categoryArray) => {
-        return categoryArray.map(p => p.id === id ? { ...p, ...updatedProduct } : p);
+      console.log('🔄 Updating local state for product:', id, 'in category:', category);
+      console.log('📦 Updated product data:', updatedProduct);
+      
+      // Ensure we use the form data with the updated response
+      const completeUpdate = {
+        ...updatedProduct,
+        name: form.name,
+        description: form.description,
+        price: parseFloat(form.price),
+        quantity: parseInt(form.quantity, 10),
+        category: category,
+        image: form.image || updatedProduct.image
       };
       
-      switch(category) {
-        case 'products':
-          setProducts(prev => updateCategory(prev));
-          break;
-        case 'bakery':
-          setBakery(prev => updateCategory(prev));
-          break;
-        case 'fruits':
-          setFruits(prev => updateCategory(prev));
-          break;
-        case 'dairy':
-          setDairy(prev => updateCategory(prev));
-          break;
-        case 'meat':
-          setMeat(prev => updateCategory(prev));
-          break;
-        case 'beverages':
-          setBeverages(prev => updateCategory(prev));
-          break;
-        case 'grains':
-          setGrains(prev => updateCategory(prev));
-          break;
-        case 'vegetables':
-          setVegetables(prev => updateCategory(prev));
-          break;
-      }
+      console.log('📦 Complete update data:', completeUpdate);
+      
+      // Update the appropriate category array - use == for flexible comparison
+      const updateCategory = (categoryArray) => {
+        const updated = categoryArray.map(p => {
+          if (p.id == id) { // Use == to handle string/number mismatch
+            console.log('✅ Found and updating product:', p.id, '→', completeUpdate);
+            return completeUpdate;
+          }
+          return p;
+        });
+        return updated;
+      };
+      
+      // Update all category states to handle products that might be in wrong category
+      console.log('🔄 Updating all category states...');
+      setProducts(prev => updateCategory(prev));
+      setBakery(prev => updateCategory(prev));
+      setFruits(prev => updateCategory(prev));
+      setDairy(prev => updateCategory(prev));
+      setMeat(prev => updateCategory(prev));
+      setBeverages(prev => updateCategory(prev));
+      setGrains(prev => updateCategory(prev));
+      setVegetables(prev => updateCategory(prev));
       
       showPopupMsg('Product updated successfully!'); 
       resetForm();
@@ -308,7 +315,7 @@ function App(){
       setTimeout(() => {
         console.log('🔄 Refetching products after update with cache-busting...');
         fetchAllProducts(true); // Pass true to indicate cache-busting needed
-      }, 500);
+      }, 800); // Increased delay to 800ms
     })
     .catch(e=>{
       console.error('❌ Product update failed:', e);
