@@ -96,11 +96,65 @@ function App(){
     
     setImageFile(file);
     
-    // Create preview
+    // Compress image before storing to avoid backend payload size limits
     const reader = new FileReader();
     reader.onloadend = () => {
-      setImagePreview(reader.result);
-      setForm({...form, image: reader.result}); // Store base64 in form
+      const img = new Image();
+      img.onload = () => {
+        // Create canvas for compression
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Calculate new dimensions (max 800px width/height to reduce payload)
+        let width = img.width;
+        let height = img.height;
+        const maxDimension = 800;
+        
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = (height / width) * maxDimension;
+            width = maxDimension;
+          } else {
+            width = (width / height) * maxDimension;
+            height = maxDimension;
+          }
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        // Draw and compress
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        // Convert to base64 with compression (0.7 quality for JPEG)
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+        
+        const originalKB = (reader.result.length / 1024).toFixed(2);
+        const compressedKB = (compressedBase64.length / 1024).toFixed(2);
+        
+        console.log('📸 Image compressed:', {
+          originalSize: originalKB + ' KB',
+          compressedSize: compressedKB + ' KB',
+          reduction: ((1 - compressedBase64.length / reader.result.length) * 100).toFixed(1) + '%',
+          originalDimensions: `${img.width}x${img.height}`,
+          newDimensions: `${width}x${height}`
+        });
+        
+        // Use compressed image if it's smaller, otherwise use original
+        const finalImage = compressedBase64.length < reader.result.length ? compressedBase64 : reader.result;
+        
+        setImagePreview(finalImage);
+        setForm({...form, image: finalImage}); // Store compressed base64
+      };
+      
+      img.onerror = () => {
+        console.error('Failed to load image for compression');
+        // Fallback to original if compression fails
+        setImagePreview(reader.result);
+        setForm({...form, image: reader.result});
+      };
+      
+      img.src = reader.result;
     };
     reader.readAsDataURL(file);
   }
@@ -210,13 +264,50 @@ function App(){
     })
     .then((response)=>{ 
       console.log('✅ Product update response:', response.data);
+      
+      // Immediately update local state with the new data (optimistic update)
+      const updatedProduct = response.data;
+      const category = (form.category || 'products').toLowerCase();
+      
+      // Update the appropriate category array
+      const updateCategory = (categoryArray) => {
+        return categoryArray.map(p => p.id === id ? { ...p, ...updatedProduct } : p);
+      };
+      
+      switch(category) {
+        case 'products':
+          setProducts(prev => updateCategory(prev));
+          break;
+        case 'bakery':
+          setBakery(prev => updateCategory(prev));
+          break;
+        case 'fruits':
+          setFruits(prev => updateCategory(prev));
+          break;
+        case 'dairy':
+          setDairy(prev => updateCategory(prev));
+          break;
+        case 'meat':
+          setMeat(prev => updateCategory(prev));
+          break;
+        case 'beverages':
+          setBeverages(prev => updateCategory(prev));
+          break;
+        case 'grains':
+          setGrains(prev => updateCategory(prev));
+          break;
+        case 'vegetables':
+          setVegetables(prev => updateCategory(prev));
+          break;
+      }
+      
       showPopupMsg('Product updated successfully!'); 
       resetForm();
       
-      // Wait a bit before refetching to ensure backend has processed the update
+      // Also refetch from backend to ensure sync (with cache-busting)
       setTimeout(() => {
-        console.log('🔄 Refetching products after update...');
-        fetchAllProducts();
+        console.log('🔄 Refetching products after update with cache-busting...');
+        fetchAllProducts(true); // Pass true to indicate cache-busting needed
       }, 500);
     })
     .catch(e=>{
@@ -637,11 +728,13 @@ function App(){
   //   }
   // }, [favourites, user]);
   
-  async function fetchAllProducts(){
+  async function fetchAllProducts(bustCache = false){
     try {
       // Use new Category API - fetch all products in one call
-      console.log('🔄 Fetching all products using Category API...');
-      const response = await axios.get(`${API}/categories/all-products`);
+      // Add cache-busting parameter if needed
+      const timestamp = bustCache ? `?t=${Date.now()}` : '';
+      console.log('🔄 Fetching all products using Category API...' + (bustCache ? ' (cache-busting)' : ''));
+      const response = await axios.get(`${API}/categories/all-products${timestamp}`);
       
       if (response.data.success && response.data.products) {
         const allProducts = response.data.products;
