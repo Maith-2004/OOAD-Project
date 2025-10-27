@@ -435,11 +435,10 @@ public class CategoryController {
                 ));
             }
             
+            // If oldCategory is not provided, assume same as newCategory (backward compatibility)
             if (oldCategory == null || oldCategory.trim().isEmpty()) {
-                return ResponseEntity.badRequest().body(Map.of(
-                    "success", false,
-                    "error", "oldCategory is required in request body"
-                ));
+                oldCategory = newCategory;
+                System.out.println("[CategoryController] ⚠️ oldCategory not provided, assuming same as category (no category change)");
             }
             
             newCategory = newCategory.toLowerCase();
