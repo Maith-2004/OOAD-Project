@@ -3645,6 +3645,68 @@ function App(){
         {page==='admin' && (
         <div>
           <h2>Admin Dashboard</h2>
+          
+          {/* DEBUG: Image Field Status for All Categories */}
+          <div style={{
+            background:'#fff3cd',
+            border:'2px solid #ffc107',
+            borderRadius:12,
+            padding:20,
+            marginBottom:24,
+            boxShadow:'0 2px 8px rgba(0,0,0,0.1)'
+          }}>
+            <h3 style={{marginTop:0, color:'#856404'}}>🔍 Image Field Debug - Category Tables</h3>
+            <p style={{color:'#856404', marginBottom:16}}>
+              Showing which category tables have products WITH image data:
+            </p>
+            <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))', gap:16}}>
+              {[
+                {name: 'Products', data: products, key: 'products'},
+                {name: 'Bakery', data: bakery, key: 'bakery'},
+                {name: 'Fruits', data: fruits, key: 'fruits'},
+                {name: 'Dairy', data: dairy, key: 'dairy'},
+                {name: 'Meat', data: meat, key: 'meat'},
+                {name: 'Beverages', data: beverages, key: 'beverages'},
+                {name: 'Grains', data: grains, key: 'grains'},
+                {name: 'Vegetables', data: vegetables, key: 'vegetables'}
+              ].map(cat => {
+                const total = cat.data.length;
+                const withImages = cat.data.filter(p => p.image && p.image.trim()).length;
+                const hasImageField = total > 0 ? (cat.data[0].hasOwnProperty('image') ? '✅' : '❌') : '❓';
+                const percentage = total > 0 ? Math.round((withImages / total) * 100) : 0;
+                
+                return (
+                  <div key={cat.key} style={{
+                    background: withImages > 0 ? '#d4edda' : '#f8d7da',
+                    border: `2px solid ${withImages > 0 ? '#28a745' : '#dc3545'}`,
+                    borderRadius:8,
+                    padding:12
+                  }}>
+                    <div style={{fontWeight:'bold', marginBottom:8}}>{cat.name}</div>
+                    <div style={{fontSize:14}}>
+                      <div>Total: {total}</div>
+                      <div>With Images: {withImages}</div>
+                      <div>Has Field: {hasImageField}</div>
+                      <div style={{fontWeight:'bold', color: percentage > 0 ? '#28a745' : '#dc3545'}}>
+                        {percentage}% filled
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{marginTop:16, padding:12, background:'#fff', borderRadius:8}}>
+              <strong>Legend:</strong>
+              <ul style={{margin:'8px 0', paddingLeft:20}}>
+                <li>✅ = Table has 'image' field in at least one product</li>
+                <li>❌ = Table is missing 'image' field</li>
+                <li>❓ = Table is empty, cannot check</li>
+                <li>🟢 Green box = At least one product has image data</li>
+                <li>🔴 Red box = No products have image data</li>
+              </ul>
+            </div>
+          </div>
+          
           <div style={{marginBottom:24, display:'flex', gap:16}}>
             <button onClick={()=>setShowProductCrud(v=>!v)} style={{padding:'10px 20px',fontSize:16,borderRadius:6,background:'#1976d2',color:'#fff',border:'none'}}>
               {showProductCrud ? 'Hide Product Management' : 'Manage Products'}
@@ -3939,6 +4001,7 @@ function App(){
                     <table style={{width:'100%', borderCollapse:'collapse'}}>
                       <thead>
                         <tr style={{background:'#e8f5e8'}}>
+                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
@@ -3949,6 +4012,14 @@ function App(){
                       <tbody>
                         {(Array.isArray(fruits) ? fruits : []).map(p=>(
                           <tr key={p.id}>
+                            <td style={{padding:8, border:'1px solid #ddd'}}>
+                              {p.image ? (
+                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
+                                  onError={(e) => {e.target.style.display = 'none';}} />
+                              ) : (
+                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
+                              )}
+                            </td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
@@ -3976,6 +4047,7 @@ function App(){
                     <table style={{width:'100%', borderCollapse:'collapse'}}>
                       <thead>
                         <tr style={{background:'#e3f2fd'}}>
+                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
@@ -3986,6 +4058,14 @@ function App(){
                       <tbody>
                         {(Array.isArray(dairy) ? dairy : []).map(p=>(
                           <tr key={p.id}>
+                            <td style={{padding:8, border:'1px solid #ddd'}}>
+                              {p.image ? (
+                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
+                                  onError={(e) => {e.target.style.display = 'none';}} />
+                              ) : (
+                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
+                              )}
+                            </td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
@@ -4013,6 +4093,7 @@ function App(){
                     <table style={{width:'100%', borderCollapse:'collapse'}}>
                       <thead>
                         <tr style={{background:'#fce4ec'}}>
+                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
@@ -4023,6 +4104,14 @@ function App(){
                       <tbody>
                         {(Array.isArray(meat) ? meat : []).map(p=>(
                           <tr key={p.id}>
+                            <td style={{padding:8, border:'1px solid #ddd'}}>
+                              {p.image ? (
+                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
+                                  onError={(e) => {e.target.style.display = 'none';}} />
+                              ) : (
+                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
+                              )}
+                            </td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
@@ -4050,6 +4139,7 @@ function App(){
                     <table style={{width:'100%', borderCollapse:'collapse'}}>
                       <thead>
                         <tr style={{background:'#f3e5f5'}}>
+                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
@@ -4060,6 +4150,14 @@ function App(){
                       <tbody>
                         {(Array.isArray(beverages) ? beverages : []).map(p=>(
                           <tr key={p.id}>
+                            <td style={{padding:8, border:'1px solid #ddd'}}>
+                              {p.image ? (
+                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
+                                  onError={(e) => {e.target.style.display = 'none';}} />
+                              ) : (
+                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
+                              )}
+                            </td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
@@ -4087,6 +4185,7 @@ function App(){
                     <table style={{width:'100%', borderCollapse:'collapse'}}>
                       <thead>
                         <tr style={{background:'#fff3e0'}}>
+                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
@@ -4097,6 +4196,14 @@ function App(){
                       <tbody>
                         {(Array.isArray(grains) ? grains : []).map(p=>(
                           <tr key={p.id}>
+                            <td style={{padding:8, border:'1px solid #ddd'}}>
+                              {p.image ? (
+                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
+                                  onError={(e) => {e.target.style.display = 'none';}} />
+                              ) : (
+                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
+                              )}
+                            </td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
@@ -4124,6 +4231,7 @@ function App(){
                     <table style={{width:'100%', borderCollapse:'collapse'}}>
                       <thead>
                         <tr style={{background:'#e8f5e8'}}>
+                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
                           <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
@@ -4134,6 +4242,14 @@ function App(){
                       <tbody>
                         {(Array.isArray(vegetables) ? vegetables : []).map(p=>(
                           <tr key={p.id}>
+                            <td style={{padding:8, border:'1px solid #ddd'}}>
+                              {p.image ? (
+                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
+                                  onError={(e) => {e.target.style.display = 'none';}} />
+                              ) : (
+                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
+                              )}
+                            </td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
                             <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
