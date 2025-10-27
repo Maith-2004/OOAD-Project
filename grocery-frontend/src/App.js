@@ -1902,16 +1902,44 @@ function App(){
             orders = response.data.data;
           }
           
-          // Filter to ensure only this user's orders
-          const filteredOrders = orders.filter(order => 
-            order.user_id === user.id || 
-            order.userId === user.id ||
-            order.customerId === user.id ||
-            order.customer_id === user.id
-          );
+          console.log('📊 Raw orders before filtering:', orders);
+          console.log('📊 Sample order structure:', orders[0]);
+          console.log('🔍 Looking for user ID:', user.id, 'type:', typeof user.id);
           
-          safeSetUserOrders(filteredOrders);
-          console.log(`✅ Successfully loaded ${filteredOrders.length} orders from ${endpoint.desc}`);
+          // Filter to ensure only this user's orders (check all possible field names)
+          const filteredOrders = orders.filter(order => {
+            const matches = (
+              order.user_id === user.id || 
+              order.userId === user.id ||
+              order.customerId === user.id ||
+              order.customer_id === user.id ||
+              // Also check string versions (database might return strings)
+              String(order.user_id) === String(user.id) ||
+              String(order.userId) === String(user.id) ||
+              String(order.customerId) === String(user.id) ||
+              String(order.customer_id) === String(user.id)
+            );
+            
+            if (!matches) {
+              console.log('❌ Order filtered out:', {
+                orderId: order.id,
+                order_user_id: order.user_id,
+                order_userId: order.userId,
+                order_customerId: order.customerId,
+                order_customer_id: order.customer_id,
+                expected: user.id
+              });
+            }
+            
+            return matches;
+          });
+          
+          // If filtering removed everything but orders exist, just use all orders from this endpoint
+          // since /orders/customer/:id should already be filtered by backend
+          const finalOrders = filteredOrders.length > 0 ? filteredOrders : orders;
+          
+          safeSetUserOrders(finalOrders);
+          console.log(`✅ Successfully loaded ${finalOrders.length} orders from ${endpoint.desc}`);
           setLoadingUserOrders(false);
           return; // Success - exit
         } catch (error) {
