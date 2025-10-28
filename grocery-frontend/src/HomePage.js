@@ -62,7 +62,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               position:'absolute',
               top:'14px',
               left:'14px',
-              background:'linear-gradient(135deg, #FFC107, #FFB300)',
+              background:'linear-gradient(135deg, #FFD54F, #FFCA28)',
               color:'#fff',
               fontWeight:'700',
               padding:'5px 12px',
@@ -70,7 +70,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               fontSize:'11px',
               zIndex:2,
               letterSpacing:'0.3px',
-              boxShadow:'0 3px 10px rgba(255, 193, 7, 0.4)',
+              boxShadow:'0 3px 10px rgba(255, 213, 79, 0.35)',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
             }}>-30% OFF</span>
             
@@ -109,7 +109,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               display:'flex',
               justifyContent:'center',
               alignItems:'center',
-              height:'140px',
+              height:'160px',
               marginBottom:'12px',
               borderRadius:'12px',
               backgroundColor:'#fafafa',
@@ -192,11 +192,11 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               }}>• 1 UNIT</span>
             </div>
             
-            {/* Price - YELLOW COLOR */}
+            {/* Price - LIGHT YELLOW COLOR */}
             <div style={{
               fontSize:'22px',
               fontWeight:'800',
-              color:'#F59E0B',
+              color:'#FFA726',
               marginBottom:'12px',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
               letterSpacing:'-0.5px'
@@ -226,8 +226,8 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
                 }} 
                 onClick={() => setQtys(q => ({ ...q, [pid]: Math.max(1, (q[pid] || 1) - 1) }))}
                 onMouseEnter={(e) => {
-                  e.target.style.background = '#fef3c7';
-                  e.target.style.borderColor = '#fcd34d';
+                  e.target.style.background = '#FFF9E6';
+                  e.target.style.borderColor = '#FFE082';
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.background = '#fff';
@@ -264,8 +264,8 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
                 }} 
                 onClick={() => setQtys(q => ({ ...q, [pid]: (q[pid] || 1) + 1 }))}
                 onMouseEnter={(e) => {
-                  e.target.style.background = '#fef3c7';
-                  e.target.style.borderColor = '#fcd34d';
+                  e.target.style.background = '#FFF9E6';
+                  e.target.style.borderColor = '#FFE082';
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.background = '#fff';
@@ -278,7 +278,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
                 style={{
                   flex:1,
                   marginLeft:'6px',
-                  background:'linear-gradient(135deg, #FFC107, #FFB300)',
+                  background:'linear-gradient(135deg, #FFD54F, #FFCA28)',
                   color:'#fff',
                   fontWeight:'700',
                   fontSize:'14px',
@@ -289,7 +289,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
                   transition:'all 0.3s',
                   fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
                   letterSpacing:'0.3px',
-                  boxShadow:'0 4px 14px rgba(255, 193, 7, 0.3)',
+                  boxShadow:'0 4px 14px rgba(255, 213, 79, 0.3)',
                   display:'flex',
                   alignItems:'center',
                   justifyContent:'center',
@@ -297,11 +297,11 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
                 }} 
                 onClick={() => handleAddToCart(product, i)}
                 onMouseEnter={(e) => {
-                  e.target.style.boxShadow='0 6px 18px rgba(255, 193, 7, 0.45)';
+                  e.target.style.boxShadow='0 6px 18px rgba(255, 213, 79, 0.45)';
                   e.target.style.transform='translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.boxShadow='0 4px 14px rgba(255, 193, 7, 0.3)';
+                  e.target.style.boxShadow='0 4px 14px rgba(255, 213, 79, 0.3)';
                   e.target.style.transform='translateY(0)';
                 }}
               >
