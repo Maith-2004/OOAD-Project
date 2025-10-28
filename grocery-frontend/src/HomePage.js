@@ -109,7 +109,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               display:'flex',
               justifyContent:'center',
               alignItems:'center',
-              height:'220px',
+              height:'190px',
               marginBottom:'8px',
               borderRadius:'12px',
               backgroundColor:'#fafafa',
@@ -198,7 +198,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               fontSize:'20px',
               fontWeight:'800',
               color:'#FFA726',
-              margin:'0 0 8px 0',
+              margin:'0 0 4px 0',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
               letterSpacing:'-0.5px'
             }}>

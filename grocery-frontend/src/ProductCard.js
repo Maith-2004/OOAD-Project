@@ -71,7 +71,7 @@ function ProductCard({product, addToCart}){
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '220px',
+        height: '190px',
         marginBottom: '8px',
         borderRadius: '12px',
         backgroundColor: '#fafafa',
@@ -154,7 +154,7 @@ function ProductCard({product, addToCart}){
         fontSize: '20px',
         fontWeight: '800',
         color: '#FFA726',
-        margin: '0 0 8px 0',
+        margin: '0 0 4px 0',
         fontFamily: '"Inter", "Segoe UI", system-ui, sans-serif',
         letterSpacing: '-0.5px'
       }}>
