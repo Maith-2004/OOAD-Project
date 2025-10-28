@@ -104,13 +104,13 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               </svg>
             </div>
             
-            {/* Product image - ADJUSTED TO FIT */}
+            {/* Product image - LARGER DISPLAY */}
             <div style={{
               display:'flex',
               justifyContent:'center',
               alignItems:'center',
-              height:'160px',
-              marginBottom:'12px',
+              height:'180px',
+              marginBottom:'10px',
               borderRadius:'12px',
               backgroundColor:'#fafafa',
               overflow:'hidden',
@@ -131,7 +131,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
                 style={{
                   width:'100%',
                   height:'100%',
-                  objectFit:'cover',
+                  objectFit:'contain',
                   objectPosition:'center'
                 }} 
               />
@@ -142,7 +142,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               fontWeight:'600',
               fontSize:'15px',
               color:'#1a1a1a',
-              marginBottom:'6px',
+              marginBottom:'4px',
               lineHeight:'1.3',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
               letterSpacing:'-0.2px',
@@ -155,7 +155,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
             <p style={{
               fontSize:'12px',
               color:'#6b7280',
-              marginBottom:'8px',
+              marginBottom:'6px',
               lineHeight:'1.4',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
               overflow:'hidden',
@@ -171,7 +171,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               display:'flex',
               alignItems:'center',
               gap:'8px',
-              marginBottom:'10px'
+              marginBottom:'6px'
             }}>
               <div style={{display:'flex',alignItems:'center',gap:'4px'}}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFB400">
@@ -197,7 +197,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               fontSize:'22px',
               fontWeight:'800',
               color:'#FFA726',
-              marginBottom:'12px',
+              marginBottom:'8px',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
               letterSpacing:'-0.5px'
             }}>
