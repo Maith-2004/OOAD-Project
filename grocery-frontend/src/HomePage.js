@@ -116,7 +116,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
 
 
   return (
-    <div className="shanthi-stores-home">
+    <div className="foodmart-home">
 
       {/* Admin Button for Managers */}
       {user && user.role === 'manager' && (
@@ -641,7 +641,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
                   <img src="/FoodMart-1.0.0/images/phone.png" alt="phone" className="image-float img-fluid" />
                 </div>
                 <div className="col-md-8">
-                  <h2 className="my-5">Shop faster with Shanthi Stores App</h2>
+                  <h2 className="my-5">Shop faster with FoodMart App</h2>
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis sed ptibus liberolectus nonet psryroin. Amet sed lorem posuere sit iaculis amet, ac urna. Adipiscing fames semper erat ac in suspendisse iaculis. Amet blandit tortor praesent ante vitae. A, enim pretiummi senectus magna. Sagittis sed ptibus liberolectus non et psryroin.</p>
                   <div className="d-flex gap-2 flex-wrap">
                     <img src="/FoodMart-1.0.0/images/app-store.jpg" alt="app-store" />
@@ -827,7 +827,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-6 copyright">
-              <p>&copy; 2023 Shanthi Stores. All rights reserved.</p>
+              <p>&copy; 2025 FoodMart. All rights reserved.</p>
             </div>
             <div className="col-md-6 credit-link text-start text-md-end">
 
