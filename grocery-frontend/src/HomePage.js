@@ -104,13 +104,13 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               </svg>
             </div>
             
-            {/* Product image - LARGER DISPLAY */}
+            {/* Product image - MAXIMUM SPACE */}
             <div style={{
               display:'flex',
               justifyContent:'center',
               alignItems:'center',
-              height:'180px',
-              marginBottom:'6px',
+              height:'200px',
+              marginBottom:'8px',
               borderRadius:'12px',
               backgroundColor:'#fafafa',
               overflow:'hidden',
@@ -142,8 +142,8 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               fontWeight:'600',
               fontSize:'15px',
               color:'#1a1a1a',
-              marginBottom:'2px',
-              lineHeight:'1.3',
+              margin:'0 0 4px 0',
+              lineHeight:'1.2',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
               letterSpacing:'-0.2px',
               overflow:'hidden',
@@ -151,44 +151,44 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               display:'-webkit-box',
               WebkitLineClamp:'2',
               WebkitBoxOrient:'vertical',
-              minHeight:'39px'
+              minHeight:'36px'
             }}>{product.name || 'Sunstar Fresh Melon Juice'}</h3>
             
             {/* Product description */}
             <p style={{
-              fontSize:'12px',
+              fontSize:'11px',
               color:'#6b7280',
-              marginBottom:'3px',
-              lineHeight:'1.4',
+              margin:'0 0 4px 0',
+              lineHeight:'1.3',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
               overflow:'hidden',
               textOverflow:'ellipsis',
               display:'-webkit-box',
               WebkitLineClamp:'2',
               WebkitBoxOrient:'vertical',
-              minHeight:'34px'
+              minHeight:'28px'
             }}>{product.description || 'Fresh and high quality product for your daily needs'}</p>
             
             {/* Rating */}
             <div style={{
               display:'flex',
               alignItems:'center',
-              gap:'8px',
-              marginBottom:'3px'
+              gap:'6px',
+              margin:'0 0 4px 0'
             }}>
-              <div style={{display:'flex',alignItems:'center',gap:'4px'}}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFB400">
+              <div style={{display:'flex',alignItems:'center',gap:'3px'}}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#FFB400">
                   <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                 </svg>
                 <span style={{
-                  fontSize:'13px',
+                  fontSize:'12px',
                   fontWeight:'700',
                   color:'#1a1a1a',
                   fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
                 }}>4.5</span>
               </div>
               <span style={{
-                fontSize:'11px',
+                fontSize:'10px',
                 color:'#9ca3af',
                 fontWeight:'500',
                 fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
@@ -197,14 +197,14 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
             
             {/* Price - LIGHT YELLOW COLOR */}
             <div style={{
-              fontSize:'22px',
+              fontSize:'20px',
               fontWeight:'800',
               color:'#FFA726',
-              marginBottom:'6px',
+              margin:'0 0 8px 0',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
               letterSpacing:'-0.5px'
             }}>
-              <span style={{fontSize:'15px', fontWeight:'600'}}>Rs.</span> {product.price ? product.price.toFixed(2) : '18.00'}
+              <span style={{fontSize:'14px', fontWeight:'600'}}>Rs.</span> {product.price ? product.price.toFixed(2) : '18.00'}
             </div>
             
             {/* Quantity controls and Add to Cart - YELLOW THEME */}
