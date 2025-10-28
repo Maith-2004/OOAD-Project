@@ -2867,39 +2867,101 @@ function App(){
                       const uniqueKey = `${product.category || 'product'}-${product.id || i}`;
                       
                       return (
-                      <div key={uniqueKey} style={{background:'#fff',borderRadius:'12px',boxShadow:'0 2px 8px rgba(0,0,0,0.08)',padding:'16px',position:'relative',minHeight:'320px',display:'flex',flexDirection:'column',border:'1px solid #f0f0f0'}}>
-                        {/* Discount badge */}
-                        <span style={{position:'absolute',top:'12px',left:'12px',background:'#4CAF50',color:'#fff',fontWeight:'600',padding:'4px 8px',borderRadius:'6px',fontSize:'12px',zIndex:2}}>-30%</span>
+                      <div 
+                        key={uniqueKey} 
+                        style={{
+                          background:'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
+                          borderRadius:'16px',
+                          boxShadow:'0 4px 20px rgba(0,0,0,0.08)',
+                          padding:'20px',
+                          position:'relative',
+                          minHeight:'360px',
+                          display:'flex',
+                          flexDirection:'column',
+                          border:'1px solid #e9ecef',
+                          transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                          cursor:'pointer',
+                          overflow:'hidden'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-8px)';
+                          e.currentTarget.style.boxShadow = '0 12px 40px rgba(0,0,0,0.15)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+                        }}
+                      >
+                        {/* Decorative gradient overlay */}
+                        <div style={{position:'absolute',top:0,right:0,width:'100px',height:'100px',background:'radial-gradient(circle, rgba(76,175,80,0.1) 0%, transparent 70%)',pointerEvents:'none'}}></div>
                         
-                        {/* Heart icon */}
+                        {/* Discount badge with glow */}
+                        <span style={{
+                          position:'absolute',
+                          top:'16px',
+                          left:'16px',
+                          background:'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
+                          color:'#fff',
+                          fontWeight:'700',
+                          padding:'6px 12px',
+                          borderRadius:'8px',
+                          fontSize:'11px',
+                          zIndex:2,
+                          boxShadow:'0 4px 12px rgba(76,175,80,0.4)',
+                          letterSpacing:'0.5px'
+                        }}>
+                          -30% OFF
+                        </span>
+                        
+                        {/* Heart icon with enhanced styling */}
                         <div 
                           style={{
                             position:'absolute',
-                            top:'12px',
-                            right:'12px',
-                            width:'32px',
-                            height:'32px',
-                            background:'#fff',
+                            top:'16px',
+                            right:'16px',
+                            width:'38px',
+                            height:'38px',
+                            background:'rgba(255,255,255,0.95)',
                             borderRadius:'50%',
                             display:'flex',
                             alignItems:'center',
                             justifyContent:'center',
                             cursor:'pointer',
-                            boxShadow:'0 2px 4px rgba(0,0,0,0.1)',
+                            boxShadow:'0 4px 12px rgba(0,0,0,0.12)',
                             zIndex:2,
-                            transition:'all 0.2s'
+                            transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            backdropFilter:'blur(10px)'
                           }}
                           onClick={() => toggleFavourite(product)}
-                          onMouseEnter={e => e.target.style.transform = 'scale(1.1)'}
-                          onMouseLeave={e => e.target.style.transform = 'scale(1)'}
+                          onMouseEnter={e => {
+                            e.target.style.transform = 'scale(1.15)';
+                            e.target.style.background = '#fff';
+                            e.target.style.boxShadow = '0 6px 16px rgba(255,71,87,0.3)';
+                          }}
+                          onMouseLeave={e => {
+                            e.target.style.transform = 'scale(1)';
+                            e.target.style.background = 'rgba(255,255,255,0.95)';
+                            e.target.style.boxShadow = '0 4px 12px rgba(0,0,0,0.12)';
+                          }}
                         >
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill={isInFavourites(product.id, product.category) ? "#ff4757" : "none"} stroke={isInFavourites(product.id, product.category) ? "#ff4757" : "#ccc"} strokeWidth="2">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill={isInFavourites(product.id, product.category) ? "#ff4757" : "none"} stroke={isInFavourites(product.id, product.category) ? "#ff4757" : "#999"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                           </svg>
                         </div>
                         
-                        {/* Product image */}
-                        <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'140px',marginBottom:'12px',borderRadius:'8px',backgroundColor:'#fafafa'}}>
+                        {/* Product image with enhanced container */}
+                        <div style={{
+                          display:'flex',
+                          justifyContent:'center',
+                          alignItems:'center',
+                          height:'160px',
+                          marginBottom:'16px',
+                          borderRadius:'12px',
+                          backgroundColor:'#fff',
+                          position:'relative',
+                          overflow:'hidden',
+                          boxShadow:'inset 0 2px 8px rgba(0,0,0,0.05)'
+                        }}>
                           <img 
                             src={
                               product.image && product.image.trim() !== '' ? 
@@ -2913,9 +2975,16 @@ function App(){
                                 )
                             } 
                             alt={product.name || 'Product'} 
-                            style={{maxHeight:'120px',maxWidth:'100%',objectFit:'contain'}}
+                            style={{
+                              maxHeight:'140px',
+                              maxWidth:'100%',
+                              objectFit:'contain',
+                              transition:'transform 0.3s ease',
+                              filter:'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
+                            }}
+                            onMouseEnter={(e) => e.target.style.transform = 'scale(1.05)'}
+                            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
                             onError={(e) => {
-                              // If image fails to load, use fallback
                               if (e.target.src !== '/FoodMart-1.0.0/images/thumb-bananas.png') {
                                 e.target.src = '/FoodMart-1.0.0/images/thumb-bananas.png';
                               }
@@ -2923,43 +2992,155 @@ function App(){
                           />
                         </div>
                         
-                        {/* Product name */}
-                        <h3 style={{fontWeight:'600',fontSize:'16px',color:'#333',marginBottom:'8px',lineHeight:'1.4'}}>{product.name}</h3>
+                        {/* Product name with better typography */}
+                        <h3 style={{
+                          fontWeight:'700',
+                          fontSize:'17px',
+                          color:'#2c3e50',
+                          marginBottom:'10px',
+                          lineHeight:'1.4',
+                          letterSpacing:'-0.3px',
+                          minHeight:'48px'
+                        }}>
+                          {product.name}
+                        </h3>
                         
-                        {/* Unit and rating */}
-                        <div style={{display:'flex',alignItems:'center',gap:'12px',marginBottom:'8px'}}>
-                          <span style={{fontSize:'12px',color:'#888',fontWeight:'500'}}>1 UNIT</span>
-                          <div style={{display:'flex',alignItems:'center',gap:'4px'}}>
+                        {/* Unit and rating with enhanced design */}
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'12px'}}>
+                          <span style={{
+                            fontSize:'11px',
+                            color:'#7f8c8d',
+                            fontWeight:'600',
+                            letterSpacing:'0.5px',
+                            padding:'4px 8px',
+                            background:'#f1f3f5',
+                            borderRadius:'6px'
+                          }}>
+                            1 UNIT
+                          </span>
+                          <div style={{display:'flex',alignItems:'center',gap:'4px',background:'#fff',padding:'4px 8px',borderRadius:'6px',boxShadow:'0 2px 6px rgba(0,0,0,0.05)'}}>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFB400">
                               <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                             </svg>
-                            <span style={{fontSize:'12px',fontWeight:'600',color:'#333'}}>4.5</span>
+                            <span style={{fontSize:'13px',fontWeight:'700',color:'#2c3e50'}}>4.5</span>
                           </div>
                         </div>
                         
-                        {/* Price */}
-                        <div style={{fontSize:'20px',fontWeight:'700',color:'#333',marginBottom:'16px'}}>Rs. {product.price ? product.price.toFixed(2) : '18.00'}</div>
+                        {/* Price with gradient text */}
+                        <div style={{
+                          fontSize:'24px',
+                          fontWeight:'800',
+                          background:'linear-gradient(135deg, #2c3e50 0%, #3498db 100%)',
+                          WebkitBackgroundClip:'text',
+                          WebkitTextFillColor:'transparent',
+                          marginBottom:'16px',
+                          letterSpacing:'-0.5px'
+                        }}>
+                          Rs. {product.price ? product.price.toFixed(2) : '18.00'}
+                        </div>
                         
-                        {/* Quantity controls and Add to Cart */}
-                        <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'auto'}}>
+                        {/* Quantity controls and Add to Cart with modern design */}
+                        <div style={{display:'flex',alignItems:'center',gap:'10px',marginTop:'auto'}}>
                           <button 
                             type="button" 
-                            style={{width:'32px',height:'32px',border:'1px solid #ddd',background:'#fff',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:'18px',fontWeight:'500',color:'#666'}} 
+                            style={{
+                              width:'36px',
+                              height:'36px',
+                              border:'none',
+                              background:'linear-gradient(135deg, #fff 0%, #f8f9fa 100%)',
+                              borderRadius:'8px',
+                              display:'flex',
+                              alignItems:'center',
+                              justifyContent:'center',
+                              cursor:'pointer',
+                              fontSize:'20px',
+                              fontWeight:'600',
+                              color:'#495057',
+                              boxShadow:'0 2px 8px rgba(0,0,0,0.1)',
+                              transition:'all 0.2s'
+                            }} 
                             onClick={() => setQtys(q => ({ ...q, [pid]: Math.max(1, (q[pid] || 1) - 1) }))}
+                            onMouseEnter={(e) => {
+                              e.target.style.transform = 'scale(1.05)';
+                              e.target.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.transform = 'scale(1)';
+                              e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                            }}
                           >
                             −
                           </button>
-                          <span style={{fontWeight:'600',fontSize:'16px',minWidth:'24px',textAlign:'center',color:'#333'}}>{qty}</span>
+                          <span style={{
+                            fontWeight:'700',
+                            fontSize:'16px',
+                            minWidth:'28px',
+                            textAlign:'center',
+                            color:'#2c3e50',
+                            padding:'8px',
+                            background:'#fff',
+                            borderRadius:'8px',
+                            boxShadow:'inset 0 2px 6px rgba(0,0,0,0.05)'
+                          }}>
+                            {qty}
+                          </span>
                           <button 
                             type="button" 
-                            style={{width:'32px',height:'32px',border:'1px solid #ddd',background:'#fff',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:'18px',fontWeight:'500',color:'#666'}} 
+                            style={{
+                              width:'36px',
+                              height:'36px',
+                              border:'none',
+                              background:'linear-gradient(135deg, #fff 0%, #f8f9fa 100%)',
+                              borderRadius:'8px',
+                              display:'flex',
+                              alignItems:'center',
+                              justifyContent:'center',
+                              cursor:'pointer',
+                              fontSize:'20px',
+                              fontWeight:'600',
+                              color:'#495057',
+                              boxShadow:'0 2px 8px rgba(0,0,0,0.1)',
+                              transition:'all 0.2s'
+                            }} 
                             onClick={() => setQtys(q => ({ ...q, [pid]: (q[pid] || 1) + 1 }))}
+                            onMouseEnter={(e) => {
+                              e.target.style.transform = 'scale(1.05)';
+                              e.target.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.transform = 'scale(1)';
+                              e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                            }}
                           >
                             +
                           </button>
                           <button 
-                            style={{flex:1,marginLeft:'12px',background:'#f8f9fa',color:'#666',fontWeight:'500',fontSize:'14px',padding:'8px 16px',border:'1px solid #e9ecef',borderRadius:'6px',cursor:'pointer',transition:'all 0.2s'}} 
+                            style={{
+                              flex:1,
+                              marginLeft:'8px',
+                              background:'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)',
+                              color:'#fff',
+                              fontWeight:'600',
+                              fontSize:'14px',
+                              padding:'10px 18px',
+                              border:'none',
+                              borderRadius:'10px',
+                              cursor:'pointer',
+                              transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                              boxShadow:'0 4px 12px rgba(76,175,80,0.3)',
+                              letterSpacing:'0.3px'
+                            }} 
                             onClick={() => addToCart({ ...product, cartQty: qty })}
+                            onMouseEnter={(e) => {
+                              e.target.style.transform = 'translateY(-2px)';
+                              e.target.style.boxShadow = '0 6px 20px rgba(76,175,80,0.4)';
+                              e.target.style.background = 'linear-gradient(135deg, #45a049 0%, #3d8b40 100%)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.transform = 'translateY(0)';
+                              e.target.style.boxShadow = '0 4px 12px rgba(76,175,80,0.3)';
+                              e.target.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+                            }}
                           >
                             Add to Cart
                           </button>
