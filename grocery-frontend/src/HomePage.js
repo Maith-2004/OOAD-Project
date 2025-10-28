@@ -30,18 +30,18 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
 
   // Helper for product grid (trending, best sellers, etc.)
   const renderProductGrid = (count = 10) => (
-    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))',gap:'20px',padding:'0'}}>
+    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))',gap:'16px',padding:'0'}}>
       {(loading ? Array(count).fill({}) : products.slice(0, count)).map((product, i) => {
         const pid = product.id || i;
         const qty = qtys[pid] || 1;
         return (
           <div key={pid} style={{
             background:'#fff',
-            borderRadius:'16px',
-            boxShadow:'0 4px 16px rgba(0,0,0,0.06)',
-            padding:'20px',
+            borderRadius:'14px',
+            boxShadow:'0 2px 12px rgba(0,0,0,0.06)',
+            padding:'14px',
             position:'relative',
-            minHeight:'360px',
+            minHeight:'320px',
             display:'flex',
             flexDirection:'column',
             border:'1px solid #e8e8e8',
@@ -49,70 +49,71 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
             cursor:'pointer'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
-            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.1)';
+            e.currentTarget.style.transform = 'translateY(-3px)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)';
+            e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.06)';
             e.currentTarget.style.transform = 'translateY(0)';
           }}>
             {/* Discount badge */}
             <span style={{
               position:'absolute',
-              top:'16px',
-              left:'16px',
-              background:'linear-gradient(135deg, #4CAF50, #388e3e)',
+              top:'10px',
+              left:'10px',
+              background:'linear-gradient(135deg, #7AB730, #9ED645)',
               color:'#fff',
               fontWeight:'700',
-              padding:'6px 12px',
-              borderRadius:'8px',
-              fontSize:'11px',
+              padding:'4px 10px',
+              borderRadius:'6px',
+              fontSize:'10px',
               zIndex:2,
               letterSpacing:'0.3px',
-              boxShadow:'0 4px 12px rgba(76, 175, 80, 0.3)',
+              boxShadow:'0 2px 8px rgba(122, 183, 48, 0.3)',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
             }}>-30% OFF</span>
             
             {/* Heart icon */}
             <div style={{
               position:'absolute',
-              top:'16px',
-              right:'16px',
-              width:'36px',
-              height:'36px',
-              background:'#fff',
+              top:'10px',
+              right:'10px',
+              width:'32px',
+              height:'32px',
+              background:'rgba(255,255,255,0.95)',
               borderRadius:'50%',
               display:'flex',
               alignItems:'center',
               justifyContent:'center',
               cursor:'pointer',
-              boxShadow:'0 2px 8px rgba(0,0,0,0.08)',
+              boxShadow:'0 2px 6px rgba(0,0,0,0.08)',
               zIndex:2,
               transition:'all 0.2s'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(244, 67, 54, 0.2)';
+              e.currentTarget.style.boxShadow = '0 3px 10px rgba(244, 67, 54, 0.2)';
               e.currentTarget.querySelector('svg').style.fill = '#f44336';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+              e.currentTarget.style.boxShadow = '0 2px 6px rgba(0,0,0,0.08)';
               e.currentTarget.querySelector('svg').style.fill = '#ccc';
             }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc" style={{transition:'fill 0.2s'}}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#ccc" style={{transition:'fill 0.2s'}}>
                 <path d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
               </svg>
             </div>
             
-            {/* Product image */}
+            {/* Product image - COMPACT */}
             <div style={{
               display:'flex',
               justifyContent:'center',
               alignItems:'center',
-              height:'160px',
-              marginBottom:'16px',
-              borderRadius:'12px',
-              backgroundColor:'#f8f9fa',
-              border:'1px solid #f0f0f0'
+              height:'140px',
+              marginBottom:'12px',
+              borderRadius:'10px',
+              backgroundColor:'#fafafa',
+              overflow:'hidden',
+              position:'relative'
             }}>
               <img 
                 src={
@@ -127,82 +128,84 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
                 } 
                 alt={product.name || 'Product'} 
                 style={{
-                  maxHeight:'140px',
-                  maxWidth:'90%',
-                  objectFit:'contain',
-                  filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.05))'
+                  width:'100%',
+                  height:'100%',
+                  objectFit:'cover',
+                  objectPosition:'center'
                 }} 
               />
             </div>
             
-            {/* Product name */}
+            {/* Product name - COMPACT */}
             <h3 style={{
               fontWeight:'600',
-              fontSize:'15px',
+              fontSize:'14px',
               color:'#1a1a1a',
-              marginBottom:'10px',
-              lineHeight:'1.4',
+              marginBottom:'8px',
+              lineHeight:'1.3',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
               letterSpacing:'-0.2px',
-              minHeight:'42px'
+              minHeight:'36px',
+              overflow:'hidden',
+              textOverflow:'ellipsis',
+              display:'-webkit-box',
+              WebkitLineClamp:'2',
+              WebkitBoxOrient:'vertical'
             }}>{product.name || 'Sunstar Fresh Melon Juice'}</h3>
             
-            {/* Unit and rating */}
+            {/* Rating - COMPACT */}
             <div style={{
               display:'flex',
               alignItems:'center',
-              gap:'12px',
-              marginBottom:'12px',
-              paddingBottom:'12px',
-              borderBottom:'1px solid #f0f0f0'
+              gap:'6px',
+              marginBottom:'10px'
             }}>
-              <span style={{
-                fontSize:'11px',
-                color:'#6b7280',
-                fontWeight:'600',
-                letterSpacing:'0.5px',
-                fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
-              }}>1 UNIT</span>
-              <div style={{display:'flex',alignItems:'center',gap:'4px'}}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFB400">
+              <div style={{display:'flex',alignItems:'center',gap:'3px'}}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#FFB400">
                   <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                 </svg>
                 <span style={{
-                  fontSize:'13px',
+                  fontSize:'12px',
                   fontWeight:'700',
                   color:'#1a1a1a',
                   fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
                 }}>4.5</span>
               </div>
+              <span style={{
+                fontSize:'11px',
+                color:'#9ca3af',
+                fontWeight:'500',
+                fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
+              }}>• 1 UNIT</span>
             </div>
             
-            {/* Price */}
+            {/* Price - PROFESSIONAL GREEN COLOR */}
             <div style={{
-              fontSize:'22px',
-              fontWeight:'700',
-              color:'#2d3748',
-              marginBottom:'16px',
+              fontSize:'20px',
+              fontWeight:'800',
+              color:'#7AB730',
+              marginBottom:'12px',
               fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
               letterSpacing:'-0.5px'
             }}>
-              <span style={{fontSize:'16px', color:'#6b7280', fontWeight:'500'}}>Rs.</span> {product.price ? product.price.toFixed(2) : '18.00'}
+              <span style={{fontSize:'14px', fontWeight:'600'}}>Rs.</span> {product.price ? product.price.toFixed(2) : '18.00'}
             </div>
             
-            {/* Quantity controls and Add to Cart */}
-            <div style={{display:'flex',alignItems:'center',gap:'10px',marginTop:'auto'}}>
+            {/* Quantity controls and Add to Cart - COMPACT */}
+            <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'auto'}}>
               <button 
                 type="button" 
                 style={{
-                  width:'36px',
-                  height:'36px',
+                  width:'32px',
+                  height:'32px',
                   border:'1px solid #e0e0e0',
                   background:'#fff',
-                  borderRadius:'8px',
+                  borderRadius:'7px',
                   display:'flex',
                   alignItems:'center',
                   justifyContent:'center',
                   cursor:'pointer',
-                  fontSize:'18px',
+                  fontSize:'16px',
                   fontWeight:'600',
                   color:'#4a5568',
                   transition:'all 0.2s',
@@ -222,8 +225,8 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               </button>
               <span style={{
                 fontWeight:'700',
-                fontSize:'15px',
-                minWidth:'28px',
+                fontSize:'13px',
+                minWidth:'26px',
                 textAlign:'center',
                 color:'#1a1a1a',
                 fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
@@ -231,16 +234,16 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               <button 
                 type="button" 
                 style={{
-                  width:'36px',
-                  height:'36px',
+                  width:'32px',
+                  height:'32px',
                   border:'1px solid #e0e0e0',
                   background:'#fff',
-                  borderRadius:'8px',
+                  borderRadius:'7px',
                   display:'flex',
                   alignItems:'center',
                   justifyContent:'center',
                   cursor:'pointer',
-                  fontSize:'18px',
+                  fontSize:'16px',
                   fontWeight:'600',
                   color:'#4a5568',
                   transition:'all 0.2s',
@@ -261,31 +264,38 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               <button 
                 style={{
                   flex:1,
-                  marginLeft:'8px',
+                  marginLeft:'4px',
                   background:'linear-gradient(135deg, #7AB730, #9ED645)',
                   color:'#fff',
-                  fontWeight:'600',
-                  fontSize:'13px',
-                  padding:'10px 14px',
+                  fontWeight:'700',
+                  fontSize:'12px',
+                  padding:'8px 10px',
                   border:'none',
-                  borderRadius:'8px',
+                  borderRadius:'7px',
                   cursor:'pointer',
                   transition:'all 0.2s',
                   fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
-                  letterSpacing:'0.2px',
-                  boxShadow:'0 4px 12px rgba(122, 183, 48, 0.25)'
+                  letterSpacing:'0.3px',
+                  boxShadow:'0 3px 10px rgba(122, 183, 48, 0.25)',
+                  display:'flex',
+                  alignItems:'center',
+                  justifyContent:'center',
+                  gap:'5px'
                 }} 
                 onClick={() => handleAddToCart(product, i)}
                 onMouseEnter={(e) => {
-                  e.target.style.boxShadow='0 6px 16px rgba(122, 183, 48, 0.35)';
-                  e.target.style.transform='translateY(-1px)';
+                  e.target.style.boxShadow='0 5px 15px rgba(122, 183, 48, 0.35)';
+                  e.target.style.transform='translateY(-2px)';
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.boxShadow='0 4px 12px rgba(122, 183, 48, 0.25)';
+                  e.target.style.boxShadow='0 3px 10px rgba(122, 183, 48, 0.25)';
                   e.target.style.transform='translateY(0)';
                 }}
               >
-                Add to Cart
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                Add
               </button>
             </div>
           </div>
