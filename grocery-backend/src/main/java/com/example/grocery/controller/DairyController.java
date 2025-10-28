@@ -21,7 +21,7 @@ public class DairyController {
     private EmployeeRepository employeeRepo;
 
     @GetMapping
-    public List<Dairy> all(){ return repo.findAll(); }
+    public List<Dairy> all(){ return repo.findByActiveTrue(); }
 
     @PostMapping
     public Object createDairy(@RequestBody Dairy item, @RequestHeader("user-id") Long userId) {

@@ -23,7 +23,7 @@ public class BakeryController {
     private EmployeeRepository employeeRepo;
 
     @GetMapping
-    public List<Bakery> all(){ return repo.findAll(); }
+    public List<Bakery> all(){ return repo.findByActiveTrue(); }
 
     @PostMapping
     public Object createBakery(@RequestBody Bakery item, @RequestHeader("user-id") Long userId) {

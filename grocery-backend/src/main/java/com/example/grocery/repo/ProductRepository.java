@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByActiveTrue();
     Optional<Product> findByIdAndActiveTrue(Long id);
+    long countByActiveTrue();
 }

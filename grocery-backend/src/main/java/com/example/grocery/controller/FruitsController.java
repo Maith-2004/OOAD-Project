@@ -21,7 +21,7 @@ public class FruitsController {
     private EmployeeRepository employeeRepo;
 
     @GetMapping
-    public List<Fruits> all(){ return repo.findAll(); }
+    public List<Fruits> all(){ return repo.findByActiveTrue(); }
 
     @PostMapping
     public Object createFruits(@RequestBody Fruits item, @RequestHeader("user-id") Long userId) {

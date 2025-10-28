@@ -21,7 +21,7 @@ public class GrainsController {
     private EmployeeRepository employeeRepo;
 
     @GetMapping
-    public List<Grains> all(){ return repo.findAll(); }
+    public List<Grains> all(){ return repo.findByActiveTrue(); }
 
     @PostMapping
     public Object createGrains(@RequestBody Grains item, @RequestHeader("user-id") Long userId) {

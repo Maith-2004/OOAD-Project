@@ -264,19 +264,10 @@ function App(){
     })
     .then((response)=>{ 
       console.log('✅ Product update response:', response.data);
-      console.log('📸 UPDATE RESPONSE IMAGE CHECK:', {
-        hasImage: !!response.data.image,
-        imageType: typeof response.data.image,
-        imageLength: response.data.image ? response.data.image.length : 0,
-        imagePreview: response.data.image ? response.data.image.substring(0, 50) + '...' : 'NO IMAGE IN RESPONSE'
-      });
       
       // Immediately update local state with the new data (optimistic update)
       const updatedProduct = response.data;
       const category = (form.category || 'products').toLowerCase();
-      
-      console.log('🔄 Updating local state for product:', id, 'in category:', category);
-      console.log('📦 Updated product data:', updatedProduct);
       
       // Ensure we use the form data with the updated response
       const completeUpdate = {
@@ -752,27 +743,6 @@ function App(){
       if (response.data.success && response.data.products) {
         const allProducts = response.data.products;
         console.log(`✅ Loaded ${allProducts.length} products from Category API`);
-        console.log('🔍 Sample products:', allProducts.slice(0, 3).map(p => ({ name: p.name, category: p.category })));
-        
-        // DETAILED IMAGE FIELD ANALYSIS
-        console.log('📸 IMAGE FIELD ANALYSIS FOR ALL PRODUCTS:');
-        const imageStats = allProducts.map((p, idx) => ({
-          index: idx,
-          name: p.name,
-          hasImage: !!p.image,
-          imageType: typeof p.image,
-          imageLength: p.image ? p.image.length : 0,
-          imagePreview: p.image ? p.image.substring(0, 50) + '...' : 'NO IMAGE'
-        }));
-        console.log('Full image stats:', imageStats);
-        
-        const withImages = imageStats.filter(s => s.hasImage);
-        console.log(`📊 Products with images: ${withImages.length} / ${allProducts.length}`);
-        if (withImages.length > 0) {
-          console.log('Products that HAVE images:', withImages);
-        }
-        
-        console.log('🔍 ALL product names:', allProducts.map(p => p.name));
         
         // Sort products into categories
         const categorizedProducts = {
@@ -2896,17 +2866,6 @@ function App(){
                       // Create unique key using category and id to avoid duplicate keys across categories
                       const uniqueKey = `${product.category || 'product'}-${product.id || i}`;
                       
-                      // Debug: Log product image info
-                      if (i === 0) {
-                        console.log('🖼️ First product image debug:', {
-                          name: product.name,
-                          hasImage: !!product.image,
-                          imageType: typeof product.image,
-                          imageLength: product.image?.length,
-                          imagePreview: product.image?.substring(0, 50) + '...'
-                        });
-                      }
-                      
                       return (
                       <div key={uniqueKey} style={{background:'#fff',borderRadius:'12px',boxShadow:'0 2px 8px rgba(0,0,0,0.08)',padding:'16px',position:'relative',minHeight:'320px',display:'flex',flexDirection:'column',border:'1px solid #f0f0f0'}}>
                         {/* Discount badge */}
@@ -2940,13 +2899,7 @@ function App(){
                         </div>
                         
                         {/* Product image */}
-                        <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'140px',marginBottom:'12px',borderRadius:'8px',backgroundColor:'#fafafa',position:'relative'}}>
-                          {/* Debug overlay */}
-                          {product.image && product.image.trim() !== '' && (
-                            <div style={{position:'absolute',top:'5px',left:'5px',background:'rgba(0,255,0,0.7)',color:'white',padding:'2px 6px',fontSize:'10px',borderRadius:'3px',zIndex:10}}>
-                              Custom
-                            </div>
-                          )}
+                        <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'140px',marginBottom:'12px',borderRadius:'8px',backgroundColor:'#fafafa'}}>
                           <img 
                             src={
                               product.image && product.image.trim() !== '' ? 
@@ -2961,14 +2914,9 @@ function App(){
                             } 
                             alt={product.name || 'Product'} 
                             style={{maxHeight:'120px',maxWidth:'100%',objectFit:'contain'}}
-                            onLoad={(e) => {
-                              console.log('✅ Image loaded successfully for:', product.name, 'src:', e.target.src.substring(0, 50));
-                            }}
                             onError={(e) => {
-                              console.error('❌ Image failed to load for:', product.name, 'src:', e.target.src.substring(0, 50));
                               // If image fails to load, use fallback
                               if (e.target.src !== '/FoodMart-1.0.0/images/thumb-bananas.png') {
-                                console.log('🔄 Switching to fallback image');
                                 e.target.src = '/FoodMart-1.0.0/images/thumb-bananas.png';
                               }
                             }}
@@ -3645,68 +3593,6 @@ function App(){
         {page==='admin' && (
         <div>
           <h2>Admin Dashboard</h2>
-          
-          {/* DEBUG: Image Field Status for All Categories */}
-          <div style={{
-            background:'#fff3cd',
-            border:'2px solid #ffc107',
-            borderRadius:12,
-            padding:20,
-            marginBottom:24,
-            boxShadow:'0 2px 8px rgba(0,0,0,0.1)'
-          }}>
-            <h3 style={{marginTop:0, color:'#856404'}}>🔍 Image Field Debug - Category Tables</h3>
-            <p style={{color:'#856404', marginBottom:16}}>
-              Showing which category tables have products WITH image data:
-            </p>
-            <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))', gap:16}}>
-              {[
-                {name: 'Products', data: products, key: 'products'},
-                {name: 'Bakery', data: bakery, key: 'bakery'},
-                {name: 'Fruits', data: fruits, key: 'fruits'},
-                {name: 'Dairy', data: dairy, key: 'dairy'},
-                {name: 'Meat', data: meat, key: 'meat'},
-                {name: 'Beverages', data: beverages, key: 'beverages'},
-                {name: 'Grains', data: grains, key: 'grains'},
-                {name: 'Vegetables', data: vegetables, key: 'vegetables'}
-              ].map(cat => {
-                const total = cat.data.length;
-                const withImages = cat.data.filter(p => p.image && p.image.trim()).length;
-                const hasImageField = total > 0 ? (cat.data[0].hasOwnProperty('image') ? '✅' : '❌') : '❓';
-                const percentage = total > 0 ? Math.round((withImages / total) * 100) : 0;
-                
-                return (
-                  <div key={cat.key} style={{
-                    background: withImages > 0 ? '#d4edda' : '#f8d7da',
-                    border: `2px solid ${withImages > 0 ? '#28a745' : '#dc3545'}`,
-                    borderRadius:8,
-                    padding:12
-                  }}>
-                    <div style={{fontWeight:'bold', marginBottom:8}}>{cat.name}</div>
-                    <div style={{fontSize:14}}>
-                      <div>Total: {total}</div>
-                      <div>With Images: {withImages}</div>
-                      <div>Has Field: {hasImageField}</div>
-                      <div style={{fontWeight:'bold', color: percentage > 0 ? '#28a745' : '#dc3545'}}>
-                        {percentage}% filled
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div style={{marginTop:16, padding:12, background:'#fff', borderRadius:8}}>
-              <strong>Legend:</strong>
-              <ul style={{margin:'8px 0', paddingLeft:20}}>
-                <li>✅ = Table has 'image' field in at least one product</li>
-                <li>❌ = Table is missing 'image' field</li>
-                <li>❓ = Table is empty, cannot check</li>
-                <li>🟢 Green box = At least one product has image data</li>
-                <li>🔴 Red box = No products have image data</li>
-              </ul>
-            </div>
-          </div>
-          
           <div style={{marginBottom:24, display:'flex', gap:16}}>
             <button onClick={()=>setShowProductCrud(v=>!v)} style={{padding:'10px 20px',fontSize:16,borderRadius:6,background:'#1976d2',color:'#fff',border:'none'}}>
               {showProductCrud ? 'Hide Product Management' : 'Manage Products'}

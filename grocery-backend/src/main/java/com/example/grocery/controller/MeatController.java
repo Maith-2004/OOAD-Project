@@ -21,7 +21,7 @@ public class MeatController {
     private EmployeeRepository employeeRepo;
 
     @GetMapping
-    public List<Meat> all(){ return repo.findAll(); }
+    public List<Meat> all(){ return repo.findByActiveTrue(); }
 
     @PostMapping
     public Object createMeat(@RequestBody Meat item, @RequestHeader("user-id") Long userId) {

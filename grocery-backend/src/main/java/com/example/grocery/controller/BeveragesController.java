@@ -21,7 +21,7 @@ public class BeveragesController {
     private EmployeeRepository employeeRepo;
 
     @GetMapping
-    public List<Beverages> all(){ return repo.findAll(); }
+    public List<Beverages> all(){ return repo.findByActiveTrue(); }
 
     @PostMapping
     public Object createBeverages(@RequestBody Beverages item, @RequestHeader("user-id") Long userId) {

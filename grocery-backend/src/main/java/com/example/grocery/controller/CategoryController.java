@@ -62,7 +62,7 @@ public class CategoryController {
                 "id", 1,
                 "name", "Bakery",
                 "endpoint", "/api/bakery",
-                "count", bakeryRepo.count(),
+                "count", bakeryRepo.countByActiveTrue(),
                 "icon", "🥖",
                 "description", "Fresh bread, cakes, and baked goods"
             ));
@@ -72,7 +72,7 @@ public class CategoryController {
                 "id", 2,
                 "name", "Fruits",
                 "endpoint", "/api/fruits",
-                "count", fruitsRepo.count(),
+                "count", fruitsRepo.countByActiveTrue(),
                 "icon", "🍎",
                 "description", "Fresh seasonal fruits"
             ));
@@ -82,7 +82,7 @@ public class CategoryController {
                 "id", 3,
                 "name", "Dairy",
                 "endpoint", "/api/dairy",
-                "count", dairyRepo.count(),
+                "count", dairyRepo.countByActiveTrue(),
                 "icon", "🥛",
                 "description", "Milk, cheese, yogurt, and dairy products"
             ));
@@ -92,7 +92,7 @@ public class CategoryController {
                 "id", 4,
                 "name", "Meat",
                 "endpoint", "/api/meat",
-                "count", meatRepo.count(),
+                "count", meatRepo.countByActiveTrue(),
                 "icon", "🥩",
                 "description", "Fresh meat and poultry"
             ));
@@ -102,7 +102,7 @@ public class CategoryController {
                 "id", 5,
                 "name", "Beverages",
                 "endpoint", "/api/beverages",
-                "count", beveragesRepo.count(),
+                "count", beveragesRepo.countByActiveTrue(),
                 "icon", "🥤",
                 "description", "Soft drinks, juices, and beverages"
             ));
@@ -112,7 +112,7 @@ public class CategoryController {
                 "id", 6,
                 "name", "Grains",
                 "endpoint", "/api/grains",
-                "count", grainsRepo.count(),
+                "count", grainsRepo.countByActiveTrue(),
                 "icon", "🌾",
                 "description", "Rice, wheat, and grain products"
             ));
@@ -122,7 +122,7 @@ public class CategoryController {
                 "id", 7,
                 "name", "Vegetables",
                 "endpoint", "/api/vegetables",
-                "count", vegetablesRepo.count(),
+                "count", vegetablesRepo.countByActiveTrue(),
                 "icon", "🥬",
                 "description", "Fresh vegetables"
             ));
@@ -132,7 +132,7 @@ public class CategoryController {
                 "id", 8,
                 "name", "Products",
                 "endpoint", "/api/products",
-                "count", productRepo.count(),
+                "count", productRepo.countByActiveTrue(),
                 "icon", "🛒",
                 "description", "General grocery products"
             ));
