@@ -109,7 +109,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               display:'flex',
               justifyContent:'center',
               alignItems:'center',
-              height:'200px',
+              height:'220px',
               marginBottom:'8px',
               borderRadius:'12px',
               backgroundColor:'#fafafa',
@@ -150,8 +150,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               textOverflow:'ellipsis',
               display:'-webkit-box',
               WebkitLineClamp:'2',
-              WebkitBoxOrient:'vertical',
-              minHeight:'36px'
+              WebkitBoxOrient:'vertical'
             }}>{product.name || 'Sunstar Fresh Melon Juice'}</h3>
             
             {/* Product description */}
@@ -165,8 +164,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
               textOverflow:'ellipsis',
               display:'-webkit-box',
               WebkitLineClamp:'2',
-              WebkitBoxOrient:'vertical',
-              minHeight:'28px'
+              WebkitBoxOrient:'vertical'
             }}>{product.description || 'Fresh and high quality product for your daily needs'}</p>
             
             {/* Rating */}
