@@ -219,36 +219,36 @@ public class CategoryController {
         try {
             List<Map<String, Object>> allProducts = new ArrayList<>();
             
-            // Add products from each category with category label
-            bakeryRepo.findAll().forEach(item -> 
+            // Add products from each category with category label - ONLY ACTIVE PRODUCTS
+            bakeryRepo.findByActiveTrue().forEach(item -> 
                 allProducts.add(createProductMap(item, "Bakery", "🥖"))
             );
             
-            fruitsRepo.findAll().forEach(item -> 
+            fruitsRepo.findByActiveTrue().forEach(item -> 
                 allProducts.add(createProductMap(item, "Fruits", "🍎"))
             );
             
-            dairyRepo.findAll().forEach(item -> 
+            dairyRepo.findByActiveTrue().forEach(item -> 
                 allProducts.add(createProductMap(item, "Dairy", "🥛"))
             );
             
-            meatRepo.findAll().forEach(item -> 
+            meatRepo.findByActiveTrue().forEach(item -> 
                 allProducts.add(createProductMap(item, "Meat", "🥩"))
             );
             
-            beveragesRepo.findAll().forEach(item -> 
+            beveragesRepo.findByActiveTrue().forEach(item -> 
                 allProducts.add(createProductMap(item, "Beverages", "🥤"))
             );
             
-            grainsRepo.findAll().forEach(item -> 
+            grainsRepo.findByActiveTrue().forEach(item -> 
                 allProducts.add(createProductMap(item, "Grains", "🌾"))
             );
             
-            vegetablesRepo.findAll().forEach(item -> 
+            vegetablesRepo.findByActiveTrue().forEach(item -> 
                 allProducts.add(createProductMap(item, "Vegetables", "🥬"))
             );
             
-            productRepo.findAll().forEach(item -> 
+            productRepo.findByActiveTrue().forEach(item -> 
                 allProducts.add(createProductMap(item, "Products", "🛒"))
             );
             
@@ -283,36 +283,36 @@ public class CategoryController {
             String query = q.toLowerCase();
             List<Map<String, Object>> results = new ArrayList<>();
             
-            // Search in each category
-            bakeryRepo.findAll().stream()
+            // Search in each category - ONLY ACTIVE PRODUCTS
+            bakeryRepo.findByActiveTrue().stream()
                 .filter(item -> matchesSearch(item, query))
                 .forEach(item -> results.add(createProductMap(item, "Bakery", "🥖")));
             
-            fruitsRepo.findAll().stream()
+            fruitsRepo.findByActiveTrue().stream()
                 .filter(item -> matchesSearch(item, query))
                 .forEach(item -> results.add(createProductMap(item, "Fruits", "🍎")));
             
-            dairyRepo.findAll().stream()
+            dairyRepo.findByActiveTrue().stream()
                 .filter(item -> matchesSearch(item, query))
                 .forEach(item -> results.add(createProductMap(item, "Dairy", "🥛")));
             
-            meatRepo.findAll().stream()
+            meatRepo.findByActiveTrue().stream()
                 .filter(item -> matchesSearch(item, query))
                 .forEach(item -> results.add(createProductMap(item, "Meat", "🥩")));
             
-            beveragesRepo.findAll().stream()
+            beveragesRepo.findByActiveTrue().stream()
                 .filter(item -> matchesSearch(item, query))
                 .forEach(item -> results.add(createProductMap(item, "Beverages", "🥤")));
             
-            grainsRepo.findAll().stream()
+            grainsRepo.findByActiveTrue().stream()
                 .filter(item -> matchesSearch(item, query))
                 .forEach(item -> results.add(createProductMap(item, "Grains", "🌾")));
             
-            vegetablesRepo.findAll().stream()
+            vegetablesRepo.findByActiveTrue().stream()
                 .filter(item -> matchesSearch(item, query))
                 .forEach(item -> results.add(createProductMap(item, "Vegetables", "🥬")));
             
-            productRepo.findAll().stream()
+            productRepo.findByActiveTrue().stream()
                 .filter(item -> matchesSearch(item, query))
                 .forEach(item -> results.add(createProductMap(item, "Products", "🛒")));
             
