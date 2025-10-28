@@ -244,14 +244,15 @@ function App(){
     
     console.log('📝 Updating product:', id, 'with data:', form);
     
-    // Prepare payload with all fields including category
+    // Prepare payload with all fields including category and oldCategory
     const payload = {
       name: form.name,
       description: form.description,
       price: parseFloat(form.price), // Ensure number
       quantity: parseInt(form.quantity, 10), // Ensure integer
       image: form.image || null,
-      category: form.category || 'products' // Include category
+      category: form.category || 'products', // Include category
+      oldCategory: form.oldCategory || form.category || 'products' // ⚠️ CRITICAL: Must send oldCategory to prevent duplication
     };
     
     console.log('📤 Sending product update payload:', payload);
@@ -2421,119 +2422,771 @@ function App(){
   // Show login modal if user wants to sign in from guest mode
   if(!user || (showLogin || showRegister || showManagerLogin || showManagerRegister)){
     return (
-  <div style={{fontFamily:'Nunito, Open Sans, Arial',padding:0,margin:0,minHeight:'100vh',background:'url("/FoodMart-1.0.0/images/bg-leaves-img-pattern.png") repeat, linear-gradient(135deg,#f8fafc 0%,#e3f2fd 100%)',display:'flex',alignItems:'center',justifyContent:'center'}}>
-        <div style={{background:'#fff',borderRadius:20,boxShadow:'0 8px 32px rgba(0,0,0,0.18)',padding:48,minWidth:340,maxWidth:400,width:'100%',border:'1px solid #eee',position:'relative'}}>
-          <img src="/FoodMart-1.0.0/images/logo.png" alt="Shanthi Stores Logo" style={{width:80,display:'block',margin:'0 auto 18px'}}/>
-          <h1 style={{textAlign:'center',color:'#7b1fa2',marginBottom:24,fontWeight:700,letterSpacing:1,fontFamily:'Nunito'}}>Shanthi Stores</h1>
-          <div style={{marginBottom:10, display:'flex', flexDirection:'column', gap:18}}>
-            {(!showLogin && !showRegister && !showManagerLogin && !showManagerRegister) && (
-              <div style={{display:'flex', gap:16,justifyContent:'center'}}>
-                <button onClick={()=>{setShowLogin(true); setShowRegister(false); setShowManagerLogin(false); setShowManagerRegister(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} style={{padding:'14px 36px',fontSize:20,borderRadius:10,background:'#1976d2',color:'#fff',border:'none',fontWeight:700,boxShadow:'0 2px 8px rgba(25,118,210,0.12)',transition:'0.2s'}}>Sign In</button>
-                <button onClick={()=>{setShowRegister(true); setShowLogin(false); setShowManagerLogin(false); setShowManagerRegister(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} style={{padding:'14px 36px',fontSize:20,borderRadius:10,background:'#7b1fa2',color:'#fff',border:'none',fontWeight:700,boxShadow:'0 2px 8px rgba(123,31,162,0.12)',transition:'0.2s'}}>Sign Up</button>
-                <button onClick={() => setUser({guest: true})} style={{padding:'14px 36px',fontSize:20,borderRadius:10,background:'#4caf50',color:'#fff',border:'none',fontWeight:700,boxShadow:'0 2px 8px rgba(76,175,80,0.12)',transition:'0.2s',marginTop:'12px',width:'100%'}}>Browse as Guest</button>
-              </div>
-            )}
-            {showLogin && !showRegister && !showManagerLogin && (
-              <>
-                <input placeholder="Email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} style={{padding:'14px',fontSize:18,borderRadius:8,border:'1px solid #ccc',marginBottom:12,fontFamily:'Open Sans'}}/>
-                <input placeholder="Password" type="password" value={form.password} onChange={e=>setForm({...form,password:e.target.value})} style={{padding:'14px',fontSize:18,borderRadius:8,border:'1px solid #ccc',marginBottom:12,fontFamily:'Open Sans'}}/>
-                <div style={{display:'flex', gap:16,justifyContent:'center'}}>
-                  <button onClick={login} style={{padding:'12px 32px',fontSize:18,borderRadius:8,background:'#1976d2',color:'#fff',border:'none',fontWeight:700}}>Sign In</button>
-                  <button onClick={()=>{setShowLogin(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} style={{padding:'12px 32px',fontSize:18,borderRadius:8,background:'#eee',color:'#333',border:'none',fontWeight:700}}>Back</button>
-                </div>
-              </>
-            )}
-            {showRegister && !showLogin && !showManagerLogin && !showManagerRegister && (
-              <>
-                <input placeholder="Username" value={form.username} onChange={e=>setForm({...form,username:e.target.value})} style={{padding:'14px',fontSize:18,borderRadius:8,border:'1px solid #ccc',marginBottom:12,fontFamily:'Open Sans'}}/>
-                <input placeholder="Email" value={form.email} onChange={e=>setForm({...form,email:e.target.value})} style={{padding:'14px',fontSize:18,borderRadius:8,border:'1px solid #ccc',marginBottom:12,fontFamily:'Open Sans'}}/>
-                <input placeholder="Password" type="password" value={form.password} onChange={e=>setForm({...form,password:e.target.value})} style={{padding:'14px',fontSize:18,borderRadius:8,border:'1px solid #ccc',marginBottom:12,fontFamily:'Open Sans'}}/>
-                <input placeholder="Address" value={form.address} onChange={e=>setForm({...form,address:e.target.value})} style={{padding:'14px',fontSize:18,borderRadius:8,border:'1px solid #ccc',marginBottom:12,fontFamily:'Open Sans'}}/>
-                <input placeholder="Phone Number" value={form.phone} onChange={e=>setForm({...form,phone:e.target.value})} style={{padding:'14px',fontSize:18,borderRadius:8,border:'1px solid #ccc',marginBottom:12,fontFamily:'Open Sans'}}/>
-                <div style={{display:'flex', gap:16,justifyContent:'center'}}>
-                  <button onClick={register} style={{padding:'12px 32px',fontSize:18,borderRadius:8,background:'#7b1fa2',color:'#fff',border:'none',fontWeight:700}}>Sign Up</button>
-                  <button onClick={()=>{setShowRegister(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} style={{padding:'12px 32px',fontSize:18,borderRadius:8,background:'#eee',color:'#333',border:'#000',fontWeight:700}}>Back</button>
-                </div>
-              </>
-            )}
-
-          </div>
+  <div style={{
+    fontFamily:'Inter, Nunito, sans-serif',
+    padding:0,
+    margin:0,
+    minHeight:'100vh',
+    background:'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'center',
+    position:'relative',
+    overflow:'hidden'
+  }}>
+    {/* Animated background shapes */}
+    <div style={{position:'absolute',top:'-10%',left:'-5%',width:'40%',height:'40%',background:'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',borderRadius:'50%',filter:'blur(60px)'}}></div>
+    <div style={{position:'absolute',bottom:'-10%',right:'-5%',width:'50%',height:'50%',background:'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',borderRadius:'50%',filter:'blur(80px)'}}></div>
+    
+    <div style={{
+      background:'rgba(255, 255, 255, 0.95)',
+      backdropFilter:'blur(20px) saturate(180%)',
+      borderRadius:24,
+      boxShadow:'0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.2)',
+      padding:'48px 40px',
+      minWidth:380,
+      maxWidth:440,
+      width:'100%',
+      border:'1px solid rgba(255,255,255,0.3)',
+      position:'relative',
+      zIndex:1
+    }}>
+      {/* Logo with enhanced styling */}
+      <div style={{textAlign:'center',marginBottom:32}}>
+        <div style={{
+          width:90,
+          height:90,
+          margin:'0 auto 20px',
+          background:'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          borderRadius:'50%',
+          display:'flex',
+          alignItems:'center',
+          justifyContent:'center',
+          boxShadow:'0 8px 24px rgba(102,126,234,0.4)',
+          border:'4px solid rgba(255,255,255,0.9)'
+        }}>
+          <img src="/FoodMart-1.0.0/images/logo.png" alt="Shanthi Stores Logo" style={{width:60,height:60,objectFit:'contain'}}/>
         </div>
+        <h1 style={{
+          margin:0,
+          color:'#2d3748',
+          fontSize:32,
+          fontWeight:800,
+          letterSpacing:'-0.5px',
+          background:'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          WebkitBackgroundClip:'text',
+          WebkitTextFillColor:'transparent'
+        }}>
+          Shanthi Stores
+        </h1>
+        <p style={{color:'#718096',fontSize:15,marginTop:8,fontWeight:500}}>Your neighborhood grocery store</p>
       </div>
+      
+      <div style={{display:'flex', flexDirection:'column', gap:16}}>
+        {(!showLogin && !showRegister && !showManagerLogin && !showManagerRegister) && (
+          <div style={{display:'flex', flexDirection:'column', gap:14}}>
+            <button 
+              onClick={()=>{setShowLogin(true); setShowRegister(false); setShowManagerLogin(false); setShowManagerRegister(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} 
+              style={{
+                padding:'16px 28px',
+                fontSize:17,
+                borderRadius:12,
+                background:'linear-gradient(135deg, #4299e1 0%, #3182ce 100%)',
+                color:'#fff',
+                border:'none',
+                fontWeight:700,
+                boxShadow:'0 6px 20px rgba(66,153,225,0.4)',
+                transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                cursor:'pointer',
+                letterSpacing:'0.3px'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 10px 30px rgba(66,153,225,0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 6px 20px rgba(66,153,225,0.4)';
+              }}
+            >
+              🔐 Sign In to Your Account
+            </button>
+            <button 
+              onClick={()=>{setShowRegister(true); setShowLogin(false); setShowManagerLogin(false); setShowManagerRegister(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} 
+              style={{
+                padding:'16px 28px',
+                fontSize:17,
+                borderRadius:12,
+                background:'linear-gradient(135deg, #9f7aea 0%, #805ad5 100%)',
+                color:'#fff',
+                border:'none',
+                fontWeight:700,
+                boxShadow:'0 6px 20px rgba(159,122,234,0.4)',
+                transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                cursor:'pointer',
+                letterSpacing:'0.3px'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 10px 30px rgba(159,122,234,0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 6px 20px rgba(159,122,234,0.4)';
+              }}
+            >
+              ✨ Create New Account
+            </button>
+            
+            <div style={{display:'flex',alignItems:'center',gap:12,margin:'8px 0'}}>
+              <div style={{flex:1,height:1,background:'linear-gradient(to right, transparent, #cbd5e0, transparent)'}}></div>
+              <span style={{color:'#a0aec0',fontSize:13,fontWeight:600}}>OR</span>
+              <div style={{flex:1,height:1,background:'linear-gradient(to right, transparent, #cbd5e0, transparent)'}}></div>
+            </div>
+            
+            <button 
+              onClick={() => setUser({guest: true})} 
+              style={{
+                padding:'14px 28px',
+                fontSize:16,
+                borderRadius:12,
+                background:'linear-gradient(135deg, #48bb78 0%, #38a169 100%)',
+                color:'#fff',
+                border:'none',
+                fontWeight:600,
+                boxShadow:'0 4px 16px rgba(72,187,120,0.3)',
+                transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                cursor:'pointer',
+                letterSpacing:'0.2px'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 8px 24px rgba(72,187,120,0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 16px rgba(72,187,120,0.3)';
+              }}
+            >
+              👤 Continue as Guest
+            </button>
+          </div>
+        )}
+        
+        {showLogin && !showRegister && !showManagerLogin && (
+          <>
+            <h2 style={{fontSize:24,fontWeight:700,color:'#2d3748',marginBottom:12,textAlign:'center'}}>Welcome Back!</h2>
+            <p style={{fontSize:14,color:'#718096',marginBottom:20,textAlign:'center'}}>Sign in to access your account</p>
+            
+            <div style={{marginBottom:18}}>
+              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Email Address</label>
+              <input 
+                placeholder="your.email@example.com" 
+                value={form.email} 
+                onChange={e=>setForm({...form,email:e.target.value})} 
+                style={{
+                  width:'100%',
+                  padding:'14px 16px',
+                  fontSize:16,
+                  borderRadius:10,
+                  border:'2px solid #e2e8f0',
+                  fontFamily:'Inter, sans-serif',
+                  outline:'none',
+                  transition:'all 0.2s',
+                  background:'#fff',
+                  boxSizing:'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#4299e1';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(66,153,225,0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e2e8f0';
+                  e.target.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+            
+            <div style={{marginBottom:24}}>
+              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Password</label>
+              <input 
+                placeholder="Enter your password" 
+                type="password" 
+                value={form.password} 
+                onChange={e=>setForm({...form,password:e.target.value})} 
+                style={{
+                  width:'100%',
+                  padding:'14px 16px',
+                  fontSize:16,
+                  borderRadius:10,
+                  border:'2px solid #e2e8f0',
+                  fontFamily:'Inter, sans-serif',
+                  outline:'none',
+                  transition:'all 0.2s',
+                  background:'#fff',
+                  boxSizing:'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#4299e1';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(66,153,225,0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e2e8f0';
+                  e.target.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+            
+            <div style={{display:'flex', gap:12}}>
+              <button 
+                onClick={login} 
+                style={{
+                  flex:1,
+                  padding:'14px 24px',
+                  fontSize:17,
+                  borderRadius:10,
+                  background:'linear-gradient(135deg, #4299e1 0%, #3182ce 100%)',
+                  color:'#fff',
+                  border:'none',
+                  fontWeight:700,
+                  cursor:'pointer',
+                  boxShadow:'0 6px 20px rgba(66,153,225,0.4)',
+                  transition:'all 0.3s'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 10px 30px rgba(66,153,225,0.5)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 6px 20px rgba(66,153,225,0.4)';
+                }}
+              >
+                Sign In
+              </button>
+              <button 
+                onClick={()=>{setShowLogin(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} 
+                style={{
+                  padding:'14px 24px',
+                  fontSize:17,
+                  borderRadius:10,
+                  background:'#f7fafc',
+                  color:'#4a5568',
+                  border:'2px solid #e2e8f0',
+                  fontWeight:600,
+                  cursor:'pointer',
+                  transition:'all 0.2s'
+                }}
+                onMouseEnter={(e) => e.target.style.background = '#edf2f7'}
+                onMouseLeave={(e) => e.target.style.background = '#f7fafc'}
+              >
+                Back
+              </button>
+            </div>
+          </>
+        )}
+        
+        {showRegister && !showLogin && !showManagerLogin && !showManagerRegister && (
+          <>
+            <h2 style={{fontSize:24,fontWeight:700,color:'#2d3748',marginBottom:12,textAlign:'center'}}>Create Account</h2>
+            <p style={{fontSize:14,color:'#718096',marginBottom:20,textAlign:'center'}}>Join us and start shopping!</p>
+            
+            <div style={{marginBottom:16}}>
+              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Username</label>
+              <input 
+                placeholder="Choose a username" 
+                value={form.username} 
+                onChange={e=>setForm({...form,username:e.target.value})} 
+                style={{
+                  width:'100%',
+                  padding:'12px 14px',
+                  fontSize:15,
+                  borderRadius:10,
+                  border:'2px solid #e2e8f0',
+                  fontFamily:'Inter, sans-serif',
+                  outline:'none',
+                  transition:'all 0.2s',
+                  background:'#fff',
+                  boxSizing:'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#9f7aea';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(159,122,234,0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e2e8f0';
+                  e.target.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+            
+            <div style={{marginBottom:16}}>
+              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Email Address</label>
+              <input 
+                placeholder="your.email@example.com" 
+                value={form.email} 
+                onChange={e=>setForm({...form,email:e.target.value})} 
+                style={{
+                  width:'100%',
+                  padding:'12px 14px',
+                  fontSize:15,
+                  borderRadius:10,
+                  border:'2px solid #e2e8f0',
+                  fontFamily:'Inter, sans-serif',
+                  outline:'none',
+                  transition:'all 0.2s',
+                  background:'#fff',
+                  boxSizing:'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#9f7aea';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(159,122,234,0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e2e8f0';
+                  e.target.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+            
+            <div style={{marginBottom:16}}>
+              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Password</label>
+              <input 
+                placeholder="Create a strong password" 
+                type="password" 
+                value={form.password} 
+                onChange={e=>setForm({...form,password:e.target.value})} 
+                style={{
+                  width:'100%',
+                  padding:'12px 14px',
+                  fontSize:15,
+                  borderRadius:10,
+                  border:'2px solid #e2e8f0',
+                  fontFamily:'Inter, sans-serif',
+                  outline:'none',
+                  transition:'all 0.2s',
+                  background:'#fff',
+                  boxSizing:'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#9f7aea';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(159,122,234,0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e2e8f0';
+                  e.target.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+            
+            <div style={{marginBottom:16}}>
+              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Delivery Address</label>
+              <input 
+                placeholder="Street address, city" 
+                value={form.address} 
+                onChange={e=>setForm({...form,address:e.target.value})} 
+                style={{
+                  width:'100%',
+                  padding:'12px 14px',
+                  fontSize:15,
+                  borderRadius:10,
+                  border:'2px solid #e2e8f0',
+                  fontFamily:'Inter, sans-serif',
+                  outline:'none',
+                  transition:'all 0.2s',
+                  background:'#fff',
+                  boxSizing:'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#9f7aea';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(159,122,234,0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e2e8f0';
+                  e.target.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+            
+            <div style={{marginBottom:20}}>
+              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Phone Number</label>
+              <input 
+                placeholder="Your contact number" 
+                value={form.phone} 
+                onChange={e=>setForm({...form,phone:e.target.value})} 
+                style={{
+                  width:'100%',
+                  padding:'12px 14px',
+                  fontSize:15,
+                  borderRadius:10,
+                  border:'2px solid #e2e8f0',
+                  fontFamily:'Inter, sans-serif',
+                  outline:'none',
+                  transition:'all 0.2s',
+                  background:'#fff',
+                  boxSizing:'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#9f7aea';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(159,122,234,0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#e2e8f0';
+                  e.target.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+            
+            <div style={{display:'flex', gap:12}}>
+              <button 
+                onClick={register} 
+                style={{
+                  flex:1,
+                  padding:'14px 24px',
+                  fontSize:17,
+                  borderRadius:10,
+                  background:'linear-gradient(135deg, #9f7aea 0%, #805ad5 100%)',
+                  color:'#fff',
+                  border:'none',
+                  fontWeight:700,
+                  cursor:'pointer',
+                  boxShadow:'0 6px 20px rgba(159,122,234,0.4)',
+                  transition:'all 0.3s'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-2px)';
+                  e.target.style.boxShadow = '0 10px 30px rgba(159,122,234,0.5)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = '0 6px 20px rgba(159,122,234,0.4)';
+                }}
+              >
+                Sign Up
+              </button>
+              <button 
+                onClick={()=>{setShowRegister(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} 
+                style={{
+                  padding:'14px 24px',
+                  fontSize:17,
+                  borderRadius:10,
+                  background:'#f7fafc',
+                  color:'#4a5568',
+                  border:'2px solid #e2e8f0',
+                  fontWeight:600,
+                  cursor:'pointer',
+                  transition:'all 0.2s'
+                }}
+                onMouseEnter={(e) => e.target.style.background = '#edf2f7'}
+                onMouseLeave={(e) => e.target.style.background = '#f7fafc'}
+              >
+                Back
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  </div>
     );
   }
 
   // Employee Login Modal
   if (showEmployeeLogin) {
     return (
-      <div style={{fontFamily:'Nunito, Arial',minHeight:'100vh',background:'linear-gradient(135deg,#667eea 0%,#764ba2 100%)',display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
-        <div style={{background:'#fff',borderRadius:16,padding:40,width:'100%',maxWidth:420,boxShadow:'0 20px 60px rgba(0,0,0,0.15)'}}>
-          <div style={{textAlign:'center',marginBottom:32}}>
-            <div style={{fontSize:48,marginBottom:16}}>👷</div>
-            <h2 style={{margin:0,color:'#333',fontSize:28,fontWeight:700}}>Employee Login</h2>
-            <p style={{color:'#666',marginTop:8,fontSize:16}}>Access your staff dashboard</p>
+      <div style={{
+        fontFamily:'Inter, Nunito, sans-serif',
+        minHeight:'100vh',
+        background:'linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%)',
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'center',
+        padding:20,
+        position:'relative',
+        overflow:'hidden'
+      }}>
+        {/* Animated background elements */}
+        <div style={{position:'absolute',top:'10%',left:'10%',width:'300px',height:'300px',background:'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)',borderRadius:'50%',filter:'blur(80px)'}}></div>
+        <div style={{position:'absolute',bottom:'10%',right:'10%',width:'400px',height:'400px',background:'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)',borderRadius:'50%',filter:'blur(100px)'}}></div>
+        
+        <div style={{
+          background:'rgba(255, 255, 255, 0.98)',
+          backdropFilter:'blur(30px) saturate(180%)',
+          borderRadius:24,
+          padding:48,
+          width:'100%',
+          maxWidth:460,
+          boxShadow:'0 30px 80px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.3)',
+          border:'1px solid rgba(255,255,255,0.4)',
+          position:'relative',
+          zIndex:1
+        }}>
+          <div style={{textAlign:'center',marginBottom:36}}>
+            <div style={{
+              width:80,
+              height:80,
+              margin:'0 auto 20px',
+              background:'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)',
+              borderRadius:'50%',
+              display:'flex',
+              alignItems:'center',
+              justifyContent:'center',
+              fontSize:42,
+              boxShadow:'0 10px 30px rgba(245,87,108,0.4)',
+              border:'4px solid rgba(255,255,255,0.95)'
+            }}>
+              👷
+            </div>
+            <h2 style={{
+              margin:0,
+              color:'#2d3748',
+              fontSize:30,
+              fontWeight:800,
+              letterSpacing:'-0.5px',
+              background:'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)',
+              WebkitBackgroundClip:'text',
+              WebkitTextFillColor:'transparent'
+            }}>
+              Employee Portal
+            </h2>
+            <p style={{color:'#718096',marginTop:10,fontSize:16,fontWeight:500}}>Access your staff dashboard</p>
           </div>
 
-          {/* Quick Demo Login Buttons */}
-          <div style={{marginBottom:24}}>
-            <p style={{fontSize:14,color:'#666',marginBottom:12,textAlign:'center'}}>Quick Demo Login:</p>
-            <div style={{display:'flex',flexDirection:'column',gap:8}}>
+          {/* Quick Demo Login Buttons - Enhanced */}
+          <div style={{
+            marginBottom:28,
+            background:'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+            padding:20,
+            borderRadius:16,
+            border:'2px solid #e2e8f0',
+            boxShadow:'inset 0 2px 8px rgba(0,0,0,0.05)'
+          }}>
+            <p style={{
+              fontSize:13,
+              color:'#4a5568',
+              marginBottom:14,
+              textAlign:'center',
+              fontWeight:700,
+              textTransform:'uppercase',
+              letterSpacing:'0.5px'
+            }}>
+              🚀 Quick Demo Access
+            </p>
+            <div style={{display:'flex',flexDirection:'column',gap:10}}>
               <button 
                 onClick={() => employeeLogin({email:'alex.rodriguez@grocery.com', password:'password', role:'Delivery'})}
-                style={{padding:'8px 12px',border:'1px solid #28a745',borderRadius:6,background:'#f8f9fa',cursor:'pointer',fontSize:12,color:'#28a745',fontWeight:600}}
+                style={{
+                  padding:'12px 16px',
+                  border:'2px solid #48bb78',
+                  borderRadius:10,
+                  background:'linear-gradient(135deg, #ffffff 0%, #f0fff4 100%)',
+                  cursor:'pointer',
+                  fontSize:14,
+                  color:'#22543d',
+                  fontWeight:700,
+                  transition:'all 0.3s',
+                  boxShadow:'0 2px 8px rgba(72,187,120,0.15)',
+                  display:'flex',
+                  alignItems:'center',
+                  gap:8
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateX(4px)';
+                  e.target.style.boxShadow = '0 4px 16px rgba(72,187,120,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateX(0)';
+                  e.target.style.boxShadow = '0 2px 8px rgba(72,187,120,0.15)';
+                }}
               >
-                🚚 Delivery Staff (Alex Rodriguez)
+                <span style={{fontSize:18}}>🚚</span> Delivery Staff - Alex Rodriguez
               </button>
               <button 
                 onClick={() => employeeLogin({email:'sarah.johnson@grocery.com', password:'password', role:'Worker'})}
-                style={{padding:'8px 12px',border:'1px solid #007bff',borderRadius:6,background:'#f8f9fa',cursor:'pointer',fontSize:12,color:'#007bff',fontWeight:600}}
+                style={{
+                  padding:'12px 16px',
+                  border:'2px solid #4299e1',
+                  borderRadius:10,
+                  background:'linear-gradient(135deg, #ffffff 0%, #ebf8ff 100%)',
+                  cursor:'pointer',
+                  fontSize:14,
+                  color:'#2c5282',
+                  fontWeight:700,
+                  transition:'all 0.3s',
+                  boxShadow:'0 2px 8px rgba(66,153,225,0.15)',
+                  display:'flex',
+                  alignItems:'center',
+                  gap:8
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateX(4px)';
+                  e.target.style.boxShadow = '0 4px 16px rgba(66,153,225,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateX(0)';
+                  e.target.style.boxShadow = '0 2px 8px rgba(66,153,225,0.15)';
+                }}
               >
-                👷 Store Worker (Sarah Johnson)
+                <span style={{fontSize:18}}>👷</span> Store Worker - Sarah Johnson
               </button>
               <button 
                 onClick={() => employeeLogin({email:'lisa.davis@grocery.com', password:'password', role:'Payment Handler'})}
-                style={{padding:'8px 12px',border:'1px solid #ffc107',borderRadius:6,background:'#f8f9fa',cursor:'pointer',fontSize:12,color:'#e68900',fontWeight:600}}
+                style={{
+                  padding:'12px 16px',
+                  border:'2px solid #f6ad55',
+                  borderRadius:10,
+                  background:'linear-gradient(135deg, #ffffff 0%, #fffaf0 100%)',
+                  cursor:'pointer',
+                  fontSize:14,
+                  color:'#7c2d12',
+                  fontWeight:700,
+                  transition:'all 0.3s',
+                  boxShadow:'0 2px 8px rgba(246,173,85,0.15)',
+                  display:'flex',
+                  alignItems:'center',
+                  gap:8
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateX(4px)';
+                  e.target.style.boxShadow = '0 4px 16px rgba(246,173,85,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateX(0)';
+                  e.target.style.boxShadow = '0 2px 8px rgba(246,173,85,0.15)';
+                }}
               >
-                💰 Payment Handler (Lisa Davis)
+                <span style={{fontSize:18}}>💰</span> Payment Handler - Lisa Davis
               </button>
             </div>
           </div>
 
+          <div style={{
+            display:'flex',
+            alignItems:'center',
+            gap:12,
+            margin:'24px 0'
+          }}>
+            <div style={{flex:1,height:2,background:'linear-gradient(to right, transparent, #cbd5e0, transparent)'}}></div>
+            <span style={{color:'#a0aec0',fontSize:13,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.5px'}}>Or Login Manually</span>
+            <div style={{flex:1,height:2,background:'linear-gradient(to right, transparent, #cbd5e0, transparent)'}}></div>
+          </div>
+
           <div style={{marginBottom:20}}>
-            <label style={{display:'block',marginBottom:8,color:'#333',fontWeight:600,fontSize:14}}>Email</label>
+            <label style={{display:'block',marginBottom:10,color:'#4a5568',fontWeight:700,fontSize:14,letterSpacing:'0.3px'}}>Work Email</label>
             <input
               type="email"
               value={employeeLoginForm.email}
               onChange={e => setEmployeeLoginForm(prev => ({...prev, email: e.target.value}))}
-              style={{width:'100%',padding:'12px 16px',border:'2px solid #e9ecef',borderRadius:8,fontSize:16,transition:'border-color 0.2s'}}
-              placeholder="Enter your work email"
+              style={{
+                width:'100%',
+                padding:'14px 16px',
+                border:'2px solid #e2e8f0',
+                borderRadius:12,
+                fontSize:16,
+                transition:'all 0.2s',
+                outline:'none',
+                background:'#fff',
+                fontFamily:'Inter, sans-serif',
+                boxSizing:'border-box'
+              }}
+              placeholder="employee@grocery.com"
+              onFocus={(e) => {
+                e.target.style.borderColor = '#f5576c';
+                e.target.style.boxShadow = '0 0 0 3px rgba(245,87,108,0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#e2e8f0';
+                e.target.style.boxShadow = 'none';
+              }}
             />
           </div>
 
-          <div style={{marginBottom:24}}>
-            <label style={{display:'block',marginBottom:8,color:'#333',fontWeight:600,fontSize:14}}>Password</label>
+          <div style={{marginBottom:28}}>
+            <label style={{display:'block',marginBottom:10,color:'#4a5568',fontWeight:700,fontSize:14,letterSpacing:'0.3px'}}>Password</label>
             <input
               type="password"
               value={employeeLoginForm.password}
               onChange={e => setEmployeeLoginForm(prev => ({...prev, password: e.target.value}))}
-              style={{width:'100%',padding:'12px 16px',border:'2px solid #e9ecef',borderRadius:8,fontSize:16,transition:'border-color 0.2s'}}
+              style={{
+                width:'100%',
+                padding:'14px 16px',
+                border:'2px solid #e2e8f0',
+                borderRadius:12,
+                fontSize:16,
+                transition:'all 0.2s',
+                outline:'none',
+                background:'#fff',
+                fontFamily:'Inter, sans-serif',
+                boxSizing:'border-box'
+              }}
               placeholder="Enter your password"
+              onFocus={(e) => {
+                e.target.style.borderColor = '#f5576c';
+                e.target.style.boxShadow = '0 0 0 3px rgba(245,87,108,0.1)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#e2e8f0';
+                e.target.style.boxShadow = 'none';
+              }}
             />
           </div>
 
           <div style={{display:'flex',gap:12}}>
             <button
               onClick={() => employeeLogin()}
-              style={{flex:1,padding:'12px 24px',background:'linear-gradient(135deg,#ff9800 0%,#f57c00 100%)',color:'#fff',border:'none',borderRadius:8,fontSize:16,fontWeight:700,cursor:'pointer',transition:'transform 0.2s'}}
+              style={{
+                flex:1,
+                padding:'16px 28px',
+                background:'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)',
+                color:'#fff',
+                border:'none',
+                borderRadius:12,
+                fontSize:17,
+                fontWeight:800,
+                cursor:'pointer',
+                transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow:'0 8px 24px rgba(245,87,108,0.4)',
+                letterSpacing:'0.3px'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 12px 32px rgba(245,87,108,0.5)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 8px 24px rgba(245,87,108,0.4)';
+              }}
             >
-              Login as Staff
+              Login to Dashboard
             </button>
             <button
               onClick={() => setShowEmployeeLogin(false)}
-              style={{padding:'12px 24px',background:'#6c757d',color:'#fff',border:'none',borderRadius:8,fontSize:16,fontWeight:600,cursor:'pointer'}}
+              style={{
+                padding:'16px 24px',
+                background:'#f7fafc',
+                color:'#4a5568',
+                border:'2px solid #e2e8f0',
+                borderRadius:12,
+                fontSize:17,
+                fontWeight:700,
+                cursor:'pointer',
+                transition:'all 0.2s'
+              }}
+              onMouseEnter={(e) => e.target.style.background = '#edf2f7'}
+              onMouseLeave={(e) => e.target.style.background = '#f7fafc'}
             >
               Cancel
             </button>
+          </div>
+          
+          <div style={{
+            marginTop:24,
+            textAlign:'center',
+            fontSize:12,
+            color:'#a0aec0',
+            fontWeight:500
+          }}>
+            🔒 Secure employee access only
           </div>
         </div>
       </div>
@@ -3772,40 +4425,243 @@ function App(){
         </div>}
 
         {page==='admin' && (
-        <div>
-          <h2>Admin Dashboard</h2>
-          <div style={{marginBottom:24, display:'flex', gap:16}}>
-            <button onClick={()=>setShowProductCrud(v=>!v)} style={{padding:'10px 20px',fontSize:16,borderRadius:6,background:'#1976d2',color:'#fff',border:'none'}}>
-              {showProductCrud ? 'Hide Product Management' : 'Manage Products'}
-            </button>
-            <button onClick={()=>{setShowUserCrud(v=>!v); if(!showUserCrud) fetchUsers();}} style={{padding:'10px 20px',fontSize:16,borderRadius:6,background:'#388e3c',color:'#fff',border:'none'}}>
-              {showUserCrud ? 'Hide User Management' : 'Manage Users'}
-            </button>
-            <button onClick={()=>{setShowEmployeeCrud(v=>!v); if(!showEmployeeCrud) fetchEmployees();}} style={{padding:'10px 20px',fontSize:16,borderRadius:6,background:'#fbc02d',color:'#333',border:'none'}}>
-              {showEmployeeCrud ? 'Hide Employee Management' : 'Manage Employees'}
-            </button>
-            <button onClick={()=>{setShowOrderCrud(v=>!v); if(!showOrderCrud) fetchOrders();}} style={{padding:'10px 20px',fontSize:16,borderRadius:6,background:'#7b1fa2',color:'#fff',border:'none'}}>
-              {showOrderCrud ? 'Hide Order Management' : 'Manage Orders'}
-            </button>
+        <div style={{
+          background:'linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)',
+          minHeight:'100vh',
+          padding:'0',
+          margin:'0'
+        }}>
+          {/* Admin Dashboard Header */}
+          <div style={{
+            background:'linear-gradient(135deg, rgba(30, 30, 30, 0.98), rgba(20, 20, 20, 0.95))',
+            backdropFilter:'blur(20px) saturate(180%)',
+            borderBottom:'2px solid rgba(122, 183, 48, 0.3)',
+            padding:'32px 48px',
+            boxShadow:'0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(122, 183, 48, 0.2)',
+            marginBottom:'40px'
+          }}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'24px'}}>
+              <div>
+                <h2 style={{
+                  margin:0,
+                  fontSize:36,
+                  fontWeight:800,
+                  background:'linear-gradient(135deg, #7AB730 0%, #9ED645 100%)',
+                  WebkitBackgroundClip:'text',
+                  WebkitTextFillColor:'transparent',
+                  letterSpacing:'-0.5px',
+                  textShadow:'0 4px 8px rgba(122, 183, 48, 0.3)'
+                }}>
+                  🎛️ Admin Dashboard
+                </h2>
+                <p style={{
+                  margin:'8px 0 0 0',
+                  fontSize:15,
+                  color:'rgba(255, 255, 255, 0.6)',
+                  fontWeight:500
+                }}>
+                  Manage your store's products, users, employees, and orders
+                </p>
+              </div>
+              <div style={{
+                background:'rgba(122, 183, 48, 0.1)',
+                padding:'12px 20px',
+                borderRadius:12,
+                border:'1px solid rgba(122, 183, 48, 0.3)',
+                display:'flex',
+                alignItems:'center',
+                gap:10
+              }}>
+                <div style={{
+                  width:10,
+                  height:10,
+                  borderRadius:'50%',
+                  background:'#7AB730',
+                  boxShadow:'0 0 12px rgba(122, 183, 48, 0.8)',
+                  animation:'pulse 2s infinite'
+                }}></div>
+                <span style={{color:'rgba(255, 255, 255, 0.9)',fontSize:14,fontWeight:600}}>System Active</span>
+              </div>
+            </div>
+            
+            {/* Management Cards Grid */}
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))',gap:16}}>
+              <button 
+                onClick={()=>setShowProductCrud(v=>!v)} 
+                style={{
+                  padding:'20px 24px',
+                  fontSize:16,
+                  borderRadius:14,
+                  background:showProductCrud ? 'linear-gradient(135deg, #4299e1 0%, #3182ce 100%)' : 'linear-gradient(135deg, rgba(66, 153, 225, 0.15), rgba(49, 130, 206, 0.15))',
+                  color:showProductCrud ? '#fff' : 'rgba(255, 255, 255, 0.8)',
+                  border:showProductCrud ? 'none' : '2px solid rgba(66, 153, 225, 0.3)',
+                  cursor:'pointer',
+                  transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  fontWeight:700,
+                  boxShadow:showProductCrud ? '0 8px 24px rgba(66, 153, 225, 0.4)' : '0 4px 12px rgba(0, 0, 0, 0.2)',
+                  display:'flex',
+                  flexDirection:'column',
+                  alignItems:'flex-start',
+                  gap:8,
+                  textAlign:'left'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-4px)';
+                  e.target.style.boxShadow = showProductCrud ? '0 12px 32px rgba(66, 153, 225, 0.5)' : '0 8px 20px rgba(66, 153, 225, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = showProductCrud ? '0 8px 24px rgba(66, 153, 225, 0.4)' : '0 4px 12px rgba(0, 0, 0, 0.2)';
+                }}
+              >
+                <span style={{fontSize:28}}>📦</span>
+                <span>{showProductCrud ? 'Hide Products' : 'Manage Products'}</span>
+              </button>
+              
+              <button 
+                onClick={()=>{setShowUserCrud(v=>!v); if(!showUserCrud) fetchUsers();}} 
+                style={{
+                  padding:'20px 24px',
+                  fontSize:16,
+                  borderRadius:14,
+                  background:showUserCrud ? 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)' : 'linear-gradient(135deg, rgba(72, 187, 120, 0.15), rgba(56, 161, 105, 0.15))',
+                  color:showUserCrud ? '#fff' : 'rgba(255, 255, 255, 0.8)',
+                  border:showUserCrud ? 'none' : '2px solid rgba(72, 187, 120, 0.3)',
+                  cursor:'pointer',
+                  transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  fontWeight:700,
+                  boxShadow:showUserCrud ? '0 8px 24px rgba(72, 187, 120, 0.4)' : '0 4px 12px rgba(0, 0, 0, 0.2)',
+                  display:'flex',
+                  flexDirection:'column',
+                  alignItems:'flex-start',
+                  gap:8,
+                  textAlign:'left'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-4px)';
+                  e.target.style.boxShadow = showUserCrud ? '0 12px 32px rgba(72, 187, 120, 0.5)' : '0 8px 20px rgba(72, 187, 120, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = showUserCrud ? '0 8px 24px rgba(72, 187, 120, 0.4)' : '0 4px 12px rgba(0, 0, 0, 0.2)';
+                }}
+              >
+                <span style={{fontSize:28}}>👥</span>
+                <span>{showUserCrud ? 'Hide Users' : 'Manage Users'}</span>
+              </button>
+              
+              <button 
+                onClick={()=>{setShowEmployeeCrud(v=>!v); if(!showEmployeeCrud) fetchEmployees();}} 
+                style={{
+                  padding:'20px 24px',
+                  fontSize:16,
+                  borderRadius:14,
+                  background:showEmployeeCrud ? 'linear-gradient(135deg, #f6ad55 0%, #ed8936 100%)' : 'linear-gradient(135deg, rgba(246, 173, 85, 0.15), rgba(237, 137, 54, 0.15))',
+                  color:showEmployeeCrud ? '#fff' : 'rgba(255, 255, 255, 0.8)',
+                  border:showEmployeeCrud ? 'none' : '2px solid rgba(246, 173, 85, 0.3)',
+                  cursor:'pointer',
+                  transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  fontWeight:700,
+                  boxShadow:showEmployeeCrud ? '0 8px 24px rgba(246, 173, 85, 0.4)' : '0 4px 12px rgba(0, 0, 0, 0.2)',
+                  display:'flex',
+                  flexDirection:'column',
+                  alignItems:'flex-start',
+                  gap:8,
+                  textAlign:'left'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-4px)';
+                  e.target.style.boxShadow = showEmployeeCrud ? '0 12px 32px rgba(246, 173, 85, 0.5)' : '0 8px 20px rgba(246, 173, 85, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = showEmployeeCrud ? '0 8px 24px rgba(246, 173, 85, 0.4)' : '0 4px 12px rgba(0, 0, 0, 0.2)';
+                }}
+              >
+                <span style={{fontSize:28}}>👷</span>
+                <span>{showEmployeeCrud ? 'Hide Employees' : 'Manage Employees'}</span>
+              </button>
+              
+              <button 
+                onClick={()=>{setShowOrderCrud(v=>!v); if(!showOrderCrud) fetchOrders();}} 
+                style={{
+                  padding:'20px 24px',
+                  fontSize:16,
+                  borderRadius:14,
+                  background:showOrderCrud ? 'linear-gradient(135deg, #9f7aea 0%, #805ad5 100%)' : 'linear-gradient(135deg, rgba(159, 122, 234, 0.15), rgba(128, 90, 213, 0.15))',
+                  color:showOrderCrud ? '#fff' : 'rgba(255, 255, 255, 0.8)',
+                  border:showOrderCrud ? 'none' : '2px solid rgba(159, 122, 234, 0.3)',
+                  cursor:'pointer',
+                  transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  fontWeight:700,
+                  boxShadow:showOrderCrud ? '0 8px 24px rgba(159, 122, 234, 0.4)' : '0 4px 12px rgba(0, 0, 0, 0.2)',
+                  display:'flex',
+                  flexDirection:'column',
+                  alignItems:'flex-start',
+                  gap:8,
+                  textAlign:'left'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-4px)';
+                  e.target.style.boxShadow = showOrderCrud ? '0 12px 32px rgba(159, 122, 234, 0.5)' : '0 8px 20px rgba(159, 122, 234, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)';
+                  e.target.style.boxShadow = showOrderCrud ? '0 8px 24px rgba(159, 122, 234, 0.4)' : '0 4px 12px rgba(0, 0, 0, 0.2)';
+                }}
+              >
+                <span style={{fontSize:28}}>📋</span>
+                <span>{showOrderCrud ? 'Hide Orders' : 'Manage Orders'}</span>
+              </button>
+            </div>
           </div>
           {showProductCrud && (
-            <div style={{display:'flex', flexDirection:'column', gap:24, maxWidth:600, margin:'0 auto'}}>
+            <div style={{display:'flex', flexDirection:'column', gap:24, maxWidth:800, margin:'0 auto 40px',padding:'0 24px'}}>
               {/* Product Create/Edit Section */}
-              <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#f9f9f9'}}>
-                <h3 style={{marginTop:0}}>{editingProductId ? 'Edit Product' : 'Create Product'}</h3>
+              <div style={{
+                border:'2px solid rgba(122, 183, 48, 0.3)',
+                borderRadius:16,
+                padding:32,
+                background:'linear-gradient(135deg, rgba(30, 30, 30, 0.98), rgba(20, 20, 20, 0.95))',
+                backdropFilter:'blur(20px) saturate(180%)',
+                boxShadow:'0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(122, 183, 48, 0.2)'
+              }}>
+                <h3 style={{
+                  marginTop:0,
+                  fontSize:24,
+                  fontWeight:700,
+                  color:'rgba(255, 255, 255, 0.95)',
+                  marginBottom:24,
+                  display:'flex',
+                  alignItems:'center',
+                  gap:12
+                }}>
+                  <span style={{fontSize:28}}>{editingProductId ? '✏️' : '➕'}</span>
+                  {editingProductId ? 'Edit Product' : 'Create New Product'}
+                </h3>
                 
                 {/* Drag and Drop Image Zone */}
-                <div style={{marginBottom:16}}>
+                <div style={{marginBottom:20}}>
+                  <label style={{
+                    display:'block',
+                    marginBottom:12,
+                    color:'rgba(255, 255, 255, 0.8)',
+                    fontSize:14,
+                    fontWeight:600,
+                    letterSpacing:'0.3px'
+                  }}>
+                    Product Image
+                  </label>
                   <div 
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
                     style={{
-                      border: isDragging ? '3px dashed #f9a825' : '2px dashed #ccc',
-                      borderRadius: 12,
-                      padding: 24,
+                      border: isDragging ? '3px dashed #7AB730' : '2px dashed rgba(122, 183, 48, 0.4)',
+                      borderRadius: 14,
+                      padding: 28,
                       textAlign: 'center',
-                      background: isDragging ? '#fff9e6' : '#fafafa',
+                      background: isDragging ? 'rgba(122, 183, 48, 0.15)' : 'rgba(40, 40, 40, 0.6)',
                       transition: 'all 0.3s ease',
                       cursor: 'pointer',
                       position: 'relative'
@@ -3819,9 +4675,10 @@ function App(){
                           alt="Product preview" 
                           style={{
                             maxWidth: '100%',
-                            maxHeight: 200,
+                            maxHeight: 220,
                             objectFit: 'contain',
-                            borderRadius: 8
+                            borderRadius: 10,
+                            boxShadow:'0 4px 16px rgba(0, 0, 0, 0.3)'
                           }}
                           onError={(e) => {
                             e.target.src = '/FoodMart-1.0.0/images/product-thumb-1.png';
@@ -3834,51 +4691,56 @@ function App(){
                           }}
                           style={{
                             position: 'absolute',
-                            top: 8,
-                            right: 8,
-                            background: '#ff4757',
+                            top: 10,
+                            right: 10,
+                            background: 'linear-gradient(135deg, #ff4757 0%, #e84352 100%)',
                             color: 'white',
                             border: 'none',
                             borderRadius: '50%',
-                            width: 32,
-                            height: 32,
-                            fontSize: 18,
+                            width: 36,
+                            height: 36,
+                            fontSize: 20,
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                            boxShadow: '0 4px 12px rgba(255, 71, 87, 0.4)',
+                            fontWeight:700,
+                            transition:'all 0.2s'
                           }}
+                          onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+                          onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
                           title="Remove image"
                         >
                           ×
                         </button>
-                        <p style={{marginTop: 12, fontSize: 12, color: '#666'}}>
+                        <p style={{marginTop: 14, fontSize: 13, color: 'rgba(255, 255, 255, 0.6)',fontWeight:500}}>
                           Click to change image or drag & drop a new one
                         </p>
                       </div>
                     ) : (
                       <div>
                         <div style={{
-                          fontSize: 48,
-                          marginBottom: 8,
-                          color: isDragging ? '#f9a825' : '#999'
+                          fontSize: 56,
+                          marginBottom: 12,
+                          color: isDragging ? '#7AB730' : 'rgba(122, 183, 48, 0.6)',
+                          transition:'all 0.3s'
                         }}>
                           📸
                         </div>
                         <p style={{
-                          margin: '8px 0',
-                          fontSize: 16,
-                          fontWeight: '600',
-                          color: isDragging ? '#f9a825' : '#333'
+                          margin: '10px 0',
+                          fontSize: 17,
+                          fontWeight: '700',
+                          color: isDragging ? '#7AB730' : 'rgba(255, 255, 255, 0.9)'
                         }}>
-                          {isDragging ? 'Drop image here' : 'Drag & Drop Image Here'}
+                          {isDragging ? 'Drop image here!' : 'Drag & Drop Image Here'}
                         </p>
-                        <p style={{margin: '4px 0', fontSize: 12, color: '#666'}}>
-                          or click to browse
+                        <p style={{margin: '6px 0', fontSize: 13, color: 'rgba(255, 255, 255, 0.5)',fontWeight:500}}>
+                          or click to browse files
                         </p>
-                        <p style={{margin: '8px 0 0', fontSize: 11, color: '#999'}}>
-                          Supports: JPG, PNG, GIF, WebP (Max 5MB)
+                        <p style={{margin: '10px 0 0', fontSize: 11, color: 'rgba(255, 255, 255, 0.4)'}}>
+                          Supports: JPG, PNG, GIF, WebP • Max 5MB
                         </p>
                       </div>
                     )}
@@ -3895,12 +4757,12 @@ function App(){
                   <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    margin: '16px 0',
-                    gap: 8
+                    margin: '18px 0',
+                    gap: 10
                   }}>
-                    <div style={{flex: 1, height: 1, background: '#ddd'}}></div>
-                    <span style={{fontSize: 12, color: '#999', fontWeight: '600'}}>OR</span>
-                    <div style={{flex: 1, height: 1, background: '#ddd'}}></div>
+                    <div style={{flex: 1, height: 2, background: 'linear-gradient(to right, transparent, rgba(122, 183, 48, 0.3), transparent)'}}></div>
+                    <span style={{fontSize: 12, color: 'rgba(255, 255, 255, 0.5)', fontWeight: '700',letterSpacing:'0.5px'}}>OR</span>
+                    <div style={{flex: 1, height: 2, background: 'linear-gradient(to right, transparent, rgba(122, 183, 48, 0.3), transparent)'}}></div>
                   </div>
                   
                   {/* URL Input */}
@@ -3914,56 +4776,268 @@ function App(){
                     }}
                     style={{
                       width: '100%',
-                      padding: '10px',
-                      border: '1px solid #ccc',
-                      borderRadius: '6px',
+                      padding: '12px 14px',
+                      border: '2px solid rgba(122, 183, 48, 0.3)',
+                      borderRadius: '10px',
                       fontSize: '14px',
-                      boxSizing: 'border-box'
+                      boxSizing: 'border-box',
+                      background:'rgba(40, 40, 40, 0.6)',
+                      color:'rgba(255, 255, 255, 0.9)',
+                      outline:'none',
+                      transition:'all 0.2s'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#7AB730';
+                      e.target.style.boxShadow = '0 0 0 3px rgba(122, 183, 48, 0.15)';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = 'rgba(122, 183, 48, 0.3)';
+                      e.target.style.boxShadow = 'none';
                     }}
                   />
                   
                   {/* Helper text */}
                   <div style={{
-                    marginTop: 8,
-                    padding: 8,
-                    background: '#e3f2fd',
-                    borderRadius: 4,
-                    fontSize: 11,
-                    color: '#1976d2'
+                    marginTop: 10,
+                    padding: 12,
+                    background: 'rgba(122, 183, 48, 0.1)',
+                    borderRadius: 8,
+                    fontSize: 12,
+                    color: 'rgba(122, 183, 48, 0.9)',
+                    border:'1px solid rgba(122, 183, 48, 0.2)'
                   }}>
                     💡 <strong>Tip:</strong> Use local images like /FoodMart-1.0.0/images/thumb-bananas.png or external URLs
                   </div>
                 </div>
                 
-                <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12}}>
-                  <select 
-                    value={form.category || 'products'} 
-                    onChange={e=>setForm({...form,category:e.target.value})}
-                    style={{padding:'8px', border:'1px solid #ccc', borderRadius:'4px'}}
-                  >
-                    <option value="products">General Products</option>
-                    <option value="bakery">Bakery Items</option>
-                    <option value="fruits">Fruits</option>
-                    <option value="dairy">Dairy Products</option>
-                    <option value="meat">Meat</option>
-                    <option value="beverages">Beverages</option>
-                    <option value="grains">Grains</option>
-                    <option value="vegetables">Vegetables</option>
-                  </select>
-                  <input placeholder="Name" value={form.name||''} onChange={e=>setForm({...form,name:e.target.value})}/>
-                  <input placeholder="Description" value={form.description||''} onChange={e=>setForm({...form,description:e.target.value})}/>
-                  <input placeholder="Price" type="number" value={form.price||''} onChange={e=>setForm({...form,price:parseFloat(e.target.value)})}/>
-                  <input placeholder="Quantity" type="number" value={form.quantity||''} onChange={e=>setForm({...form,quantity:parseInt(e.target.value||0)})}/>
+                <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:14,marginTop:8}}>
+                  <div>
+                    <label style={{display:'block',marginBottom:8,color:'rgba(255, 255, 255, 0.8)',fontSize:14,fontWeight:600}}>Category</label>
+                    <select 
+                      value={form.category || 'products'} 
+                      onChange={e=>setForm({...form,category:e.target.value})}
+                      style={{
+                        width:'100%',
+                        padding:'12px 14px', 
+                        border:'2px solid rgba(122, 183, 48, 0.3)', 
+                        borderRadius:'10px',
+                        background:'rgba(40, 40, 40, 0.6)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:14,
+                        outline:'none',
+                        cursor:'pointer',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = '#7AB730';
+                        e.target.style.boxShadow = '0 0 0 3px rgba(122, 183, 48, 0.15)';
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = 'rgba(122, 183, 48, 0.3)';
+                        e.target.style.boxShadow = 'none';
+                      }}
+                    >
+                      <option value="products">General Products</option>
+                      <option value="bakery">Bakery Items</option>
+                      <option value="fruits">Fruits</option>
+                      <option value="dairy">Dairy Products</option>
+                      <option value="meat">Meat</option>
+                      <option value="beverages">Beverages</option>
+                      <option value="grains">Grains</option>
+                      <option value="vegetables">Vegetables</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{display:'block',marginBottom:8,color:'rgba(255, 255, 255, 0.8)',fontSize:14,fontWeight:600}}>Product Name</label>
+                    <input 
+                      placeholder="Enter product name" 
+                      value={form.name||''} 
+                      onChange={e=>setForm({...form,name:e.target.value})}
+                      style={{
+                        width:'100%',
+                        padding:'12px 14px',
+                        border:'2px solid rgba(122, 183, 48, 0.3)',
+                        borderRadius:'10px',
+                        fontSize:14,
+                        background:'rgba(40, 40, 40, 0.6)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        outline:'none',
+                        transition:'all 0.2s',
+                        boxSizing:'border-box'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = '#7AB730';
+                        e.target.style.boxShadow = '0 0 0 3px rgba(122, 183, 48, 0.15)';
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = 'rgba(122, 183, 48, 0.3)';
+                        e.target.style.boxShadow = 'none';
+                      }}
+                    />
+                  </div>
+                  <div style={{gridColumn:'1 / -1'}}>
+                    <label style={{display:'block',marginBottom:8,color:'rgba(255, 255, 255, 0.8)',fontSize:14,fontWeight:600}}>Description</label>
+                    <input 
+                      placeholder="Enter product description" 
+                      value={form.description||''} 
+                      onChange={e=>setForm({...form,description:e.target.value})}
+                      style={{
+                        width:'100%',
+                        padding:'12px 14px',
+                        border:'2px solid rgba(122, 183, 48, 0.3)',
+                        borderRadius:'10px',
+                        fontSize:14,
+                        background:'rgba(40, 40, 40, 0.6)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        outline:'none',
+                        transition:'all 0.2s',
+                        boxSizing:'border-box'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = '#7AB730';
+                        e.target.style.boxShadow = '0 0 0 3px rgba(122, 183, 48, 0.15)';
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = 'rgba(122, 183, 48, 0.3)';
+                        e.target.style.boxShadow = 'none';
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{display:'block',marginBottom:8,color:'rgba(255, 255, 255, 0.8)',fontSize:14,fontWeight:600}}>Price (Rs.)</label>
+                    <input 
+                      placeholder="0.00" 
+                      type="number" 
+                      value={form.price||''} 
+                      onChange={e=>setForm({...form,price:parseFloat(e.target.value)})}
+                      style={{
+                        width:'100%',
+                        padding:'12px 14px',
+                        border:'2px solid rgba(122, 183, 48, 0.3)',
+                        borderRadius:'10px',
+                        fontSize:14,
+                        background:'rgba(40, 40, 40, 0.6)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        outline:'none',
+                        transition:'all 0.2s',
+                        boxSizing:'border-box'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = '#7AB730';
+                        e.target.style.boxShadow = '0 0 0 3px rgba(122, 183, 48, 0.15)';
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = 'rgba(122, 183, 48, 0.3)';
+                        e.target.style.boxShadow = 'none';
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{display:'block',marginBottom:8,color:'rgba(255, 255, 255, 0.8)',fontSize:14,fontWeight:600}}>Stock Quantity</label>
+                    <input 
+                      placeholder="0" 
+                      type="number" 
+                      value={form.quantity||''} 
+                      onChange={e=>setForm({...form,quantity:parseInt(e.target.value||0)})}
+                      style={{
+                        width:'100%',
+                        padding:'12px 14px',
+                        border:'2px solid rgba(122, 183, 48, 0.3)',
+                        borderRadius:'10px',
+                        fontSize:14,
+                        background:'rgba(40, 40, 40, 0.6)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        outline:'none',
+                        transition:'all 0.2s',
+                        boxSizing:'border-box'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = '#7AB730';
+                        e.target.style.boxShadow = '0 0 0 3px rgba(122, 183, 48, 0.15)';
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = 'rgba(122, 183, 48, 0.3)';
+                        e.target.style.boxShadow = 'none';
+                      }}
+                    />
+                  </div>
                 </div>
                 
-                <div style={{marginTop:16, display:'flex', gap:12}}>
+                <div style={{marginTop:24, display:'flex', gap:14}}>
                   {editingProductId ? (
                     <>
-                      <button onClick={()=>managerUpdateProduct(editingProductId)}>Update Product</button>
-                      <button onClick={resetForm}>Cancel</button>
+                      <button 
+                        onClick={()=>managerUpdateProduct(editingProductId)}
+                        style={{
+                          flex:1,
+                          padding:'14px 24px',
+                          fontSize:16,
+                          borderRadius:10,
+                          background:'linear-gradient(135deg, #7AB730 0%, #9ED645 100%)',
+                          color:'#fff',
+                          border:'none',
+                          fontWeight:700,
+                          cursor:'pointer',
+                          boxShadow:'0 6px 20px rgba(122, 183, 48, 0.4)',
+                          transition:'all 0.3s'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.transform = 'translateY(-2px)';
+                          e.target.style.boxShadow = '0 10px 30px rgba(122, 183, 48, 0.5)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.transform = 'translateY(0)';
+                          e.target.style.boxShadow = '0 6px 20px rgba(122, 183, 48, 0.4)';
+                        }}
+                      >
+                        ✓ Update Product
+                      </button>
+                      <button 
+                        onClick={resetForm}
+                        style={{
+                          padding:'14px 24px',
+                          fontSize:16,
+                          borderRadius:10,
+                          background:'rgba(255, 255, 255, 0.1)',
+                          color:'rgba(255, 255, 255, 0.8)',
+                          border:'2px solid rgba(255, 255, 255, 0.2)',
+                          fontWeight:600,
+                          cursor:'pointer',
+                          transition:'all 0.2s'
+                        }}
+                        onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.15)'}
+                        onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.1)'}
+                      >
+                        Cancel
+                      </button>
                     </>
                   ) : (
-                    <button onClick={managerCreateProduct}>Create Product</button>
+                    <button 
+                      onClick={managerCreateProduct}
+                      style={{
+                        flex:1,
+                        padding:'14px 24px',
+                        fontSize:16,
+                        borderRadius:10,
+                        background:'linear-gradient(135deg, #7AB730 0%, #9ED645 100%)',
+                        color:'#fff',
+                        border:'none',
+                        fontWeight:700,
+                        cursor:'pointer',
+                        boxShadow:'0 6px 20px rgba(122, 183, 48, 0.4)',
+                        transition:'all 0.3s'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.transform = 'translateY(-2px)';
+                        e.target.style.boxShadow = '0 10px 30px rgba(122, 183, 48, 0.5)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.transform = 'translateY(0)';
+                        e.target.style.boxShadow = '0 6px 20px rgba(122, 183, 48, 0.4)';
+                      }}
+                    >
+                      ➕ Create Product
+                    </button>
                   )}
                 </div>
               </div>
@@ -4001,7 +5075,7 @@ function App(){
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
                             <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
                               <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'products',image:p.image||''});
+                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'products',oldCategory:'products',image:p.image||''});
                                 setImagePreview(p.image || '');
                                 setImageFile(null);
                                 setEditingProductId(p.id);
@@ -4047,7 +5121,7 @@ function App(){
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
                             <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
                               <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'bakery',image:p.image||''});
+                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'bakery',oldCategory:'bakery',image:p.image||''});
                                 setImagePreview(p.image || '');
                                 setImageFile(null);
                                 setEditingProductId(p.id);
@@ -4093,7 +5167,7 @@ function App(){
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
                             <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
                               <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'fruits',image:p.image||''});
+                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'fruits',oldCategory:'fruits',image:p.image||''});
                                 setImagePreview(p.image || '');
                                 setImageFile(null);
                                 setEditingProductId(p.id);
@@ -4139,7 +5213,7 @@ function App(){
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
                             <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
                               <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'dairy',image:p.image||''});
+                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'dairy',oldCategory:'dairy',image:p.image||''});
                                 setImagePreview(p.image || '');
                                 setImageFile(null);
                                 setEditingProductId(p.id);
@@ -4185,7 +5259,7 @@ function App(){
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
                             <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
                               <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'meat',image:p.image||''});
+                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'meat',oldCategory:'meat',image:p.image||''});
                                 setImagePreview(p.image || '');
                                 setImageFile(null);
                                 setEditingProductId(p.id);
@@ -4231,7 +5305,7 @@ function App(){
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
                             <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
                               <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'beverages',image:p.image||''});
+                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'beverages',oldCategory:'beverages',image:p.image||''});
                                 setImagePreview(p.image || '');
                                 setImageFile(null);
                                 setEditingProductId(p.id);
@@ -4277,7 +5351,7 @@ function App(){
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
                             <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
                               <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'grains',image:p.image||''});
+                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'grains',oldCategory:'grains',image:p.image||''});
                                 setImagePreview(p.image || '');
                                 setImageFile(null);
                                 setEditingProductId(p.id);
@@ -4323,7 +5397,7 @@ function App(){
                             <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
                             <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
                               <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'vegetables',image:p.image||''});
+                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'vegetables',oldCategory:'vegetables',image:p.image||''});
                                 setImagePreview(p.image || '');
                                 setImageFile(null);
                                 setEditingProductId(p.id);

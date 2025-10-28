@@ -451,21 +451,25 @@ public class CategoryController {
                 ));
             }
             
-            newCategory = newCategory.toLowerCase();
-            
-            // If oldCategory is not provided, try to find which table the product currently exists in
+            // CRITICAL: oldCategory MUST be provided to prevent duplication
+            // When frontend updates product (including picture updates), it MUST send oldCategory
             if (oldCategory == null || oldCategory.trim().isEmpty()) {
-                System.out.println("[CategoryController] ⚠️ oldCategory not provided, searching for product in all tables...");
-                oldCategory = findProductCategory(id);
-                if (oldCategory == null) {
-                    return ResponseEntity.badRequest().body(Map.of(
-                        "success", false,
-                        "error", "Product with id " + id + " not found in any category table"
-                    ));
-                }
-                System.out.println("[CategoryController] ✅ Found product in: " + oldCategory);
-            } else {
-                oldCategory = oldCategory.toLowerCase();
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "error", "oldCategory is required in request body to prevent duplication. Frontend must send the current category."
+                ));
+            }
+            
+            newCategory = newCategory.toLowerCase();
+            oldCategory = oldCategory.toLowerCase();
+            
+            // Verify product actually exists in oldCategory before proceeding
+            if (!productExistsInCategory(id, oldCategory)) {
+                System.err.println("[CategoryController] ❌ Product ID " + id + " not found in oldCategory '" + oldCategory + "'");
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "error", "Product with id " + id + " not found in category '" + oldCategory + "'. Cannot update."
+                ));
             }
             
             System.out.println("[CategoryController] Old category: " + oldCategory);
