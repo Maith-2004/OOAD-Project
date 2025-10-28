@@ -2465,7 +2465,7 @@ function App(){
           boxShadow:'0 8px 24px rgba(102,126,234,0.4)',
           border:'4px solid rgba(255,255,255,0.9)'
         }}>
-          <img src="/shanthi-logo.png" alt="Shanthi Stores Logo" style={{width:60,height:60,objectFit:'contain'}}/>
+          <img src="/FoodMart-1.0.0/images/a.png" alt="Shanthi Stores Logo" style={{width:60,height:60,objectFit:'contain'}}/>
         </div>
         <h1 style={{
           margin:0,
@@ -3211,7 +3211,7 @@ function App(){
         <div style={{width:'100%',padding:'16px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:20}}>
           {/* Logo Section */}
           <div style={{display:'flex',alignItems:'center',gap:12,minWidth:'250px'}}>
-            <img src="/shanthi-logo.png" alt="Shanthi Stores logo" style={{height:50}} />
+            <img src="/FoodMart-1.0.0/images/a.png" alt="Shanthi Stores logo" style={{height:50}} />
             <div>
               <div style={{fontWeight:700,fontSize:22,color:'#333',lineHeight:1}}>SHANTHI <span style={{color:'#ffa726'}}>STORES</span></div>
               <div style={{fontSize:12,color:'#888',textTransform:'uppercase',letterSpacing:1}}>GROCERY STORE</div>
@@ -3386,7 +3386,7 @@ function App(){
         <div style={{background:isEmployeePage ? 'linear-gradient(135deg, rgba(30, 30, 30, 0.98), rgba(20, 20, 20, 0.95))' : '#fff',backdropFilter:isEmployeePage ? 'blur(20px) saturate(180%)' : 'none',borderBottom:isEmployeePage ? '2px solid rgba(122, 183, 48, 0.3)' : '1px solid #eee',fontSize:16,padding:'16px 0',boxShadow:isEmployeePage ? '0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(122, 183, 48, 0.2)' : 'none'}}>
           <div style={{textAlign:'center',cursor:'pointer'}} onClick={() => setPage('home')}>
             <div style={{display:'inline-flex',alignItems:'center',gap:12}}>
-              <img src="/shanthi-logo.png" alt="Shanthi Stores logo" style={{height:40,filter:isEmployeePage ? 'drop-shadow(0 0 10px rgba(122, 183, 48, 0.3))' : 'none'}} />
+              <img src="/FoodMart-1.0.0/images/a.png" alt="Shanthi Stores logo" style={{height:40,filter:isEmployeePage ? 'drop-shadow(0 0 10px rgba(122, 183, 48, 0.3))' : 'none'}} />
               <div style={{fontWeight:700,fontSize:22,color:isEmployeePage ? 'rgba(255, 255, 255, 0.95)' : '#333',fontFamily:'Nunito, sans-serif',textShadow:isEmployeePage ? '0 2px 4px rgba(0, 0, 0, 0.5)' : 'none'}}>
                 SHANTHI <span style={{color:'#ffa726',textShadow:isEmployeePage ? '0 0 20px rgba(255, 167, 38, 0.5)' : 'none'}}>STORES</span> - GROCERY STORE
               </div>
@@ -5045,369 +5045,505 @@ function App(){
               <div style={{display:'flex', flexDirection:'column', gap:24}}>
                 {/* General Products Table */}
                 {products.length > 0 && (
-                  <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#fff'}}>
-                    <h3 style={{margin:'0 0 16px 0', color:'#333', fontSize:'18px'}}>General Products ({products.length})</h3>
-                    <table style={{width:'100%', borderCollapse:'collapse'}}>
-                      <thead>
-                        <tr style={{background:'#f8f9fa'}}>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Quantity</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(Array.isArray(products) ? products : []).map(p=>(
-                          <tr key={p.id}>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>
-                              {p.image ? (
-                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
-                                  onError={(e) => {e.target.style.display = 'none';}} />
-                              ) : (
-                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
-                              )}
-                            </td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
-                            <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
-                              <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'products',oldCategory:'products',image:p.image||''});
-                                setImagePreview(p.image || '');
-                                setImageFile(null);
-                                setEditingProductId(p.id);
-                              }} style={{marginRight:8, padding:'4px 8px', fontSize:'12px'}}>Edit</button>
-                              <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'4px 8px', fontSize:'12px', background:'#dc3545', color:'white', border:'none', borderRadius:'4px'}}>Delete</button>
-                            </td>
+                  <div style={{
+                    border:'1px solid rgba(122, 183, 48, 0.2)', 
+                    borderRadius:16, 
+                    padding:24, 
+                    background:'linear-gradient(135deg, rgba(30, 30, 30, 0.6), rgba(20, 20, 20, 0.4))',
+                    backdropFilter:'blur(10px)',
+                    boxShadow:'0 8px 32px rgba(0, 0, 0, 0.4)'
+                  }}>
+                    <h3 style={{margin:'0 0 20px 0', color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                      📦 General Products ({products.length})
+                    </h3>
+                    <div style={{overflowX:'auto'}}>
+                      <table style={{width:'100%', borderCollapse:'separate', borderSpacing:0}}>
+                        <thead>
+                          <tr style={{background:'linear-gradient(135deg, rgba(122, 183, 48, 0.2), rgba(122, 183, 48, 0.1))'}}>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(122, 183, 48, 0.2)', textAlign:'left', width:'90px', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Image</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(122, 183, 48, 0.2)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Name</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(122, 183, 48, 0.2)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Description</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(122, 183, 48, 0.2)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'100px'}}>Price</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(122, 183, 48, 0.2)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'90px'}}>Quantity</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(122, 183, 48, 0.2)', textAlign:'center', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'160px'}}>Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {(Array.isArray(products) ? products : []).map(p=>(
+                            <tr key={p.id} style={{background:'rgba(40, 40, 40, 0.4)', transition:'all 0.2s'}} 
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(122, 183, 48, 0.1)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(40, 40, 40, 0.4)'}>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(122, 183, 48, 0.15)'}}>
+                                {p.image ? (
+                                  <img src={p.image} alt={p.name} style={{width:'70px', height:'70px', objectFit:'cover', borderRadius:'8px', border:'2px solid rgba(122, 183, 48, 0.3)'}} 
+                                    onError={(e) => {e.target.style.display = 'none';}} />
+                                ) : (
+                                  <div style={{width:'70px', height:'70px', background:'rgba(60, 60, 60, 0.6)', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'11px', color:'rgba(255, 255, 255, 0.4)', border:'1px dashed rgba(122, 183, 48, 0.3)'}}>No Image</div>
+                                )}
+                              </td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(122, 183, 48, 0.15)', color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{p.name}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(122, 183, 48, 0.15)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{p.description}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(122, 183, 48, 0.15)', color:'#7AB730', fontWeight:600, fontSize:'14px'}}>Rs. {p.price}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(122, 183, 48, 0.15)', color:'rgba(255, 255, 255, 0.8)', textAlign:'center', fontWeight:500}}>{p.quantity}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(122, 183, 48, 0.15)', textAlign:'center'}}>
+                                <button onClick={()=>{
+                                  setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'products',oldCategory:'products',image:p.image||''});
+                                  setImagePreview(p.image || '');
+                                  setImageFile(null);
+                                  setEditingProductId(p.id);
+                                }} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #2196f3, #1976d2)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>✏️ Edit</button>
+                                <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #f44336, #d32f2f)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>🗑️ Delete</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
 
                 {/* Bakery Items Table */}
                 {bakery.length > 0 && (
-                  <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#fff'}}>
-                    <h3 style={{margin:'0 0 16px 0', color:'#333', fontSize:'18px'}}>Bakery Items ({bakery.length})</h3>
-                    <table style={{width:'100%', borderCollapse:'collapse'}}>
-                      <thead>
-                        <tr style={{background:'#fff8e1'}}>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Quantity</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(Array.isArray(bakery) ? bakery : []).map(p=>(
-                          <tr key={p.id}>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>
-                              {p.image ? (
-                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
-                                  onError={(e) => {e.target.style.display = 'none';}} />
-                              ) : (
-                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
-                              )}
-                            </td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
-                            <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
-                              <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'bakery',oldCategory:'bakery',image:p.image||''});
-                                setImagePreview(p.image || '');
-                                setImageFile(null);
-                                setEditingProductId(p.id);
-                              }} style={{marginRight:8, padding:'4px 8px', fontSize:'12px'}}>Edit</button>
-                              <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'4px 8px', fontSize:'12px', background:'#dc3545', color:'white', border:'none', borderRadius:'4px'}}>Delete</button>
-                            </td>
+                  <div style={{
+                    border:'1px solid rgba(255, 193, 7, 0.3)', 
+                    borderRadius:16, 
+                    padding:24, 
+                    background:'linear-gradient(135deg, rgba(40, 30, 20, 0.6), rgba(30, 25, 20, 0.4))',
+                    backdropFilter:'blur(10px)',
+                    boxShadow:'0 8px 32px rgba(255, 193, 7, 0.15)'
+                  }}>
+                    <h3 style={{margin:'0 0 20px 0', color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                      🥐 Bakery Items ({bakery.length})
+                    </h3>
+                    <div style={{overflowX:'auto'}}>
+                      <table style={{width:'100%', borderCollapse:'separate', borderSpacing:0}}>
+                        <thead>
+                          <tr style={{background:'linear-gradient(135deg, rgba(255, 193, 7, 0.25), rgba(255, 193, 7, 0.15))'}}>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 193, 7, 0.3)', textAlign:'left', width:'90px', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Image</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 193, 7, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Name</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 193, 7, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Description</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 193, 7, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'100px'}}>Price</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 193, 7, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'90px'}}>Quantity</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 193, 7, 0.3)', textAlign:'center', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'160px'}}>Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {(Array.isArray(bakery) ? bakery : []).map(p=>(
+                            <tr key={p.id} style={{background:'rgba(40, 35, 30, 0.4)', transition:'all 0.2s'}} 
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 193, 7, 0.1)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(40, 35, 30, 0.4)'}>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 193, 7, 0.2)'}}>
+                                {p.image ? (
+                                  <img src={p.image} alt={p.name} style={{width:'70px', height:'70px', objectFit:'cover', borderRadius:'8px', border:'2px solid rgba(255, 193, 7, 0.4)'}} 
+                                    onError={(e) => {e.target.style.display = 'none';}} />
+                                ) : (
+                                  <div style={{width:'70px', height:'70px', background:'rgba(60, 55, 50, 0.6)', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'11px', color:'rgba(255, 255, 255, 0.4)', border:'1px dashed rgba(255, 193, 7, 0.4)'}}>No Image</div>
+                                )}
+                              </td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 193, 7, 0.2)', color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{p.name}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 193, 7, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{p.description}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 193, 7, 0.2)', color:'#ffc107', fontWeight:600, fontSize:'14px'}}>Rs. {p.price}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 193, 7, 0.2)', color:'rgba(255, 255, 255, 0.8)', textAlign:'center', fontWeight:500}}>{p.quantity}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 193, 7, 0.2)', textAlign:'center'}}>
+                                <button onClick={()=>{
+                                  setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'bakery',oldCategory:'bakery',image:p.image||''});
+                                  setImagePreview(p.image || '');
+                                  setImageFile(null);
+                                  setEditingProductId(p.id);
+                                }} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #2196f3, #1976d2)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>✏️ Edit</button>
+                                <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #f44336, #d32f2f)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>🗑️ Delete</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
 
                 {/* Fruits Table */}
                 {fruits.length > 0 && (
-                  <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#fff'}}>
-                    <h3 style={{margin:'0 0 16px 0', color:'#333', fontSize:'18px'}}>Fruits ({fruits.length})</h3>
-                    <table style={{width:'100%', borderCollapse:'collapse'}}>
-                      <thead>
-                        <tr style={{background:'#e8f5e8'}}>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Quantity</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(Array.isArray(fruits) ? fruits : []).map(p=>(
-                          <tr key={p.id}>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>
-                              {p.image ? (
-                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
-                                  onError={(e) => {e.target.style.display = 'none';}} />
-                              ) : (
-                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
-                              )}
-                            </td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
-                            <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
-                              <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'fruits',oldCategory:'fruits',image:p.image||''});
-                                setImagePreview(p.image || '');
-                                setImageFile(null);
-                                setEditingProductId(p.id);
-                              }} style={{marginRight:8, padding:'4px 8px', fontSize:'12px'}}>Edit</button>
-                              <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'4px 8px', fontSize:'12px', background:'#dc3545', color:'white', border:'none', borderRadius:'4px'}}>Delete</button>
-                            </td>
+                  <div style={{
+                    border:'1px solid rgba(76, 175, 80, 0.3)', 
+                    borderRadius:16, 
+                    padding:24, 
+                    background:'linear-gradient(135deg, rgba(30, 40, 30, 0.6), rgba(20, 35, 25, 0.4))',
+                    backdropFilter:'blur(10px)',
+                    boxShadow:'0 8px 32px rgba(76, 175, 80, 0.15)'
+                  }}>
+                    <h3 style={{margin:'0 0 20px 0', color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                      🍎 Fruits ({fruits.length})
+                    </h3>
+                    <div style={{overflowX:'auto'}}>
+                      <table style={{width:'100%', borderCollapse:'separate', borderSpacing:0}}>
+                        <thead>
+                          <tr style={{background:'linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(76, 175, 80, 0.15))'}}>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(76, 175, 80, 0.3)', textAlign:'left', width:'90px', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Image</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(76, 175, 80, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Name</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(76, 175, 80, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Description</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(76, 175, 80, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'100px'}}>Price</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(76, 175, 80, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'90px'}}>Quantity</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(76, 175, 80, 0.3)', textAlign:'center', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'160px'}}>Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {(Array.isArray(fruits) ? fruits : []).map(p=>(
+                            <tr key={p.id} style={{background:'rgba(35, 45, 35, 0.4)', transition:'all 0.2s'}} 
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(76, 175, 80, 0.1)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(35, 45, 35, 0.4)'}>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(76, 175, 80, 0.2)'}}>
+                                {p.image ? (
+                                  <img src={p.image} alt={p.name} style={{width:'70px', height:'70px', objectFit:'cover', borderRadius:'8px', border:'2px solid rgba(76, 175, 80, 0.4)'}} 
+                                    onError={(e) => {e.target.style.display = 'none';}} />
+                                ) : (
+                                  <div style={{width:'70px', height:'70px', background:'rgba(55, 65, 55, 0.6)', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'11px', color:'rgba(255, 255, 255, 0.4)', border:'1px dashed rgba(76, 175, 80, 0.4)'}}>No Image</div>
+                                )}
+                              </td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(76, 175, 80, 0.2)', color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{p.name}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(76, 175, 80, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{p.description}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(76, 175, 80, 0.2)', color:'#4caf50', fontWeight:600, fontSize:'14px'}}>Rs. {p.price}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(76, 175, 80, 0.2)', color:'rgba(255, 255, 255, 0.8)', textAlign:'center', fontWeight:500}}>{p.quantity}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(76, 175, 80, 0.2)', textAlign:'center'}}>
+                                <button onClick={()=>{
+                                  setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'fruits',oldCategory:'fruits',image:p.image||''});
+                                  setImagePreview(p.image || '');
+                                  setImageFile(null);
+                                  setEditingProductId(p.id);
+                                }} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #2196f3, #1976d2)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>✏️ Edit</button>
+                                <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #f44336, #d32f2f)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>🗑️ Delete</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
 
                 {/* Dairy Products Table */}
                 {dairy.length > 0 && (
-                  <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#fff'}}>
-                    <h3 style={{margin:'0 0 16px 0', color:'#333', fontSize:'18px'}}>Dairy Products ({dairy.length})</h3>
-                    <table style={{width:'100%', borderCollapse:'collapse'}}>
-                      <thead>
-                        <tr style={{background:'#e3f2fd'}}>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Quantity</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(Array.isArray(dairy) ? dairy : []).map(p=>(
-                          <tr key={p.id}>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>
-                              {p.image ? (
-                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
-                                  onError={(e) => {e.target.style.display = 'none';}} />
-                              ) : (
-                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
-                              )}
-                            </td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
-                            <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
-                              <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'dairy',oldCategory:'dairy',image:p.image||''});
-                                setImagePreview(p.image || '');
-                                setImageFile(null);
-                                setEditingProductId(p.id);
-                              }} style={{marginRight:8, padding:'4px 8px', fontSize:'12px'}}>Edit</button>
-                              <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'4px 8px', fontSize:'12px', background:'#dc3545', color:'white', border:'none', borderRadius:'4px'}}>Delete</button>
-                            </td>
+                  <div style={{
+                    border:'1px solid rgba(33, 150, 243, 0.3)', 
+                    borderRadius:16, 
+                    padding:24, 
+                    background:'linear-gradient(135deg, rgba(25, 35, 45, 0.6), rgba(20, 30, 40, 0.4))',
+                    backdropFilter:'blur(10px)',
+                    boxShadow:'0 8px 32px rgba(33, 150, 243, 0.15)'
+                  }}>
+                    <h3 style={{margin:'0 0 20px 0', color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                      🥛 Dairy Products ({dairy.length})
+                    </h3>
+                    <div style={{overflowX:'auto'}}>
+                      <table style={{width:'100%', borderCollapse:'separate', borderSpacing:0}}>
+                        <thead>
+                          <tr style={{background:'linear-gradient(135deg, rgba(33, 150, 243, 0.25), rgba(33, 150, 243, 0.15))'}}>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', width:'90px', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Image</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Name</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Description</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'100px'}}>Price</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'90px'}}>Quantity</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'center', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'160px'}}>Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {(Array.isArray(dairy) ? dairy : []).map(p=>(
+                            <tr key={p.id} style={{background:'rgba(30, 40, 50, 0.4)', transition:'all 0.2s'}} 
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(33, 150, 243, 0.1)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(30, 40, 50, 0.4)'}>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)'}}>
+                                {p.image ? (
+                                  <img src={p.image} alt={p.name} style={{width:'70px', height:'70px', objectFit:'cover', borderRadius:'8px', border:'2px solid rgba(33, 150, 243, 0.4)'}} 
+                                    onError={(e) => {e.target.style.display = 'none';}} />
+                                ) : (
+                                  <div style={{width:'70px', height:'70px', background:'rgba(50, 60, 70, 0.6)', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'11px', color:'rgba(255, 255, 255, 0.4)', border:'1px dashed rgba(33, 150, 243, 0.4)'}}>No Image</div>
+                                )}
+                              </td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{p.name}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{p.description}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', color:'#2196f3', fontWeight:600, fontSize:'14px'}}>Rs. {p.price}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', color:'rgba(255, 255, 255, 0.8)', textAlign:'center', fontWeight:500}}>{p.quantity}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', textAlign:'center'}}>
+                                <button onClick={()=>{
+                                  setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'dairy',oldCategory:'dairy',image:p.image||''});
+                                  setImagePreview(p.image || '');
+                                  setImageFile(null);
+                                  setEditingProductId(p.id);
+                                }} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #2196f3, #1976d2)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>✏️ Edit</button>
+                                <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #f44336, #d32f2f)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>🗑️ Delete</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
 
                 {/* Meat Products Table */}
                 {meat.length > 0 && (
-                  <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#fff'}}>
-                    <h3 style={{margin:'0 0 16px 0', color:'#333', fontSize:'18px'}}>Meat Products ({meat.length})</h3>
-                    <table style={{width:'100%', borderCollapse:'collapse'}}>
-                      <thead>
-                        <tr style={{background:'#fce4ec'}}>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Quantity</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(Array.isArray(meat) ? meat : []).map(p=>(
-                          <tr key={p.id}>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>
-                              {p.image ? (
-                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
-                                  onError={(e) => {e.target.style.display = 'none';}} />
-                              ) : (
-                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
-                              )}
-                            </td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
-                            <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
-                              <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'meat',oldCategory:'meat',image:p.image||''});
-                                setImagePreview(p.image || '');
-                                setImageFile(null);
-                                setEditingProductId(p.id);
-                              }} style={{marginRight:8, padding:'4px 8px', fontSize:'12px'}}>Edit</button>
-                              <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'4px 8px', fontSize:'12px', background:'#dc3545', color:'white', border:'none', borderRadius:'4px'}}>Delete</button>
-                            </td>
+                  <div style={{
+                    border:'1px solid rgba(244, 67, 54, 0.3)', 
+                    borderRadius:16, 
+                    padding:24, 
+                    background:'linear-gradient(135deg, rgba(45, 25, 25, 0.6), rgba(35, 20, 20, 0.4))',
+                    backdropFilter:'blur(10px)',
+                    boxShadow:'0 8px 32px rgba(244, 67, 54, 0.15)'
+                  }}>
+                    <h3 style={{margin:'0 0 20px 0', color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                      🥩 Meat Products ({meat.length})
+                    </h3>
+                    <div style={{overflowX:'auto'}}>
+                      <table style={{width:'100%', borderCollapse:'separate', borderSpacing:0}}>
+                        <thead>
+                          <tr style={{background:'linear-gradient(135deg, rgba(244, 67, 54, 0.25), rgba(244, 67, 54, 0.15))'}}>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(244, 67, 54, 0.3)', textAlign:'left', width:'90px', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Image</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(244, 67, 54, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Name</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(244, 67, 54, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Description</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(244, 67, 54, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'100px'}}>Price</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(244, 67, 54, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'90px'}}>Quantity</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(244, 67, 54, 0.3)', textAlign:'center', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'160px'}}>Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {(Array.isArray(meat) ? meat : []).map(p=>(
+                            <tr key={p.id} style={{background:'rgba(45, 30, 30, 0.4)', transition:'all 0.2s'}} 
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(244, 67, 54, 0.1)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(45, 30, 30, 0.4)'}>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(244, 67, 54, 0.2)'}}>
+                                {p.image ? (
+                                  <img src={p.image} alt={p.name} style={{width:'70px', height:'70px', objectFit:'cover', borderRadius:'8px', border:'2px solid rgba(244, 67, 54, 0.4)'}} 
+                                    onError={(e) => {e.target.style.display = 'none';}} />
+                                ) : (
+                                  <div style={{width:'70px', height:'70px', background:'rgba(65, 50, 50, 0.6)', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'11px', color:'rgba(255, 255, 255, 0.4)', border:'1px dashed rgba(244, 67, 54, 0.4)'}}>No Image</div>
+                                )}
+                              </td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(244, 67, 54, 0.2)', color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{p.name}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(244, 67, 54, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{p.description}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(244, 67, 54, 0.2)', color:'#f44336', fontWeight:600, fontSize:'14px'}}>Rs. {p.price}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(244, 67, 54, 0.2)', color:'rgba(255, 255, 255, 0.8)', textAlign:'center', fontWeight:500}}>{p.quantity}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(244, 67, 54, 0.2)', textAlign:'center'}}>
+                                <button onClick={()=>{
+                                  setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'meat',oldCategory:'meat',image:p.image||''});
+                                  setImagePreview(p.image || '');
+                                  setImageFile(null);
+                                  setEditingProductId(p.id);
+                                }} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #2196f3, #1976d2)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>✏️ Edit</button>
+                                <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #f44336, #d32f2f)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>🗑️ Delete</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
 
                 {/* Beverages Table */}
                 {beverages.length > 0 && (
-                  <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#fff'}}>
-                    <h3 style={{margin:'0 0 16px 0', color:'#333', fontSize:'18px'}}>Beverages ({beverages.length})</h3>
-                    <table style={{width:'100%', borderCollapse:'collapse'}}>
-                      <thead>
-                        <tr style={{background:'#f3e5f5'}}>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Quantity</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(Array.isArray(beverages) ? beverages : []).map(p=>(
-                          <tr key={p.id}>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>
-                              {p.image ? (
-                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
-                                  onError={(e) => {e.target.style.display = 'none';}} />
-                              ) : (
-                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
-                              )}
-                            </td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
-                            <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
-                              <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'beverages',oldCategory:'beverages',image:p.image||''});
-                                setImagePreview(p.image || '');
-                                setImageFile(null);
-                                setEditingProductId(p.id);
-                              }} style={{marginRight:8, padding:'4px 8px', fontSize:'12px'}}>Edit</button>
-                              <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'4px 8px', fontSize:'12px', background:'#dc3545', color:'white', border:'none', borderRadius:'4px'}}>Delete</button>
-                            </td>
+                  <div style={{
+                    border:'1px solid rgba(156, 39, 176, 0.3)', 
+                    borderRadius:16, 
+                    padding:24, 
+                    background:'linear-gradient(135deg, rgba(35, 25, 40, 0.6), rgba(30, 20, 35, 0.4))',
+                    backdropFilter:'blur(10px)',
+                    boxShadow:'0 8px 32px rgba(156, 39, 176, 0.15)'
+                  }}>
+                    <h3 style={{margin:'0 0 20px 0', color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                      🥤 Beverages ({beverages.length})
+                    </h3>
+                    <div style={{overflowX:'auto'}}>
+                      <table style={{width:'100%', borderCollapse:'separate', borderSpacing:0}}>
+                        <thead>
+                          <tr style={{background:'linear-gradient(135deg, rgba(156, 39, 176, 0.25), rgba(156, 39, 176, 0.15))'}}>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(156, 39, 176, 0.3)', textAlign:'left', width:'90px', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Image</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(156, 39, 176, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Name</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(156, 39, 176, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Description</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(156, 39, 176, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'100px'}}>Price</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(156, 39, 176, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'90px'}}>Quantity</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(156, 39, 176, 0.3)', textAlign:'center', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'160px'}}>Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {(Array.isArray(beverages) ? beverages : []).map(p=>(
+                            <tr key={p.id} style={{background:'rgba(40, 30, 45, 0.4)', transition:'all 0.2s'}} 
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(156, 39, 176, 0.1)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(40, 30, 45, 0.4)'}>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(156, 39, 176, 0.2)'}}>
+                                {p.image ? (
+                                  <img src={p.image} alt={p.name} style={{width:'70px', height:'70px', objectFit:'cover', borderRadius:'8px', border:'2px solid rgba(156, 39, 176, 0.4)'}} 
+                                    onError={(e) => {e.target.style.display = 'none';}} />
+                                ) : (
+                                  <div style={{width:'70px', height:'70px', background:'rgba(60, 50, 65, 0.6)', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'11px', color:'rgba(255, 255, 255, 0.4)', border:'1px dashed rgba(156, 39, 176, 0.4)'}}>No Image</div>
+                                )}
+                              </td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(156, 39, 176, 0.2)', color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{p.name}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(156, 39, 176, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{p.description}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(156, 39, 176, 0.2)', color:'#9c27b0', fontWeight:600, fontSize:'14px'}}>Rs. {p.price}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(156, 39, 176, 0.2)', color:'rgba(255, 255, 255, 0.8)', textAlign:'center', fontWeight:500}}>{p.quantity}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(156, 39, 176, 0.2)', textAlign:'center'}}>
+                                <button onClick={()=>{
+                                  setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'beverages',oldCategory:'beverages',image:p.image||''});
+                                  setImagePreview(p.image || '');
+                                  setImageFile(null);
+                                  setEditingProductId(p.id);
+                                }} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #2196f3, #1976d2)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>✏️ Edit</button>
+                                <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #f44336, #d32f2f)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>🗑️ Delete</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
 
                 {/* Grains Table */}
                 {grains.length > 0 && (
-                  <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#fff'}}>
-                    <h3 style={{margin:'0 0 16px 0', color:'#333', fontSize:'18px'}}>Grains ({grains.length})</h3>
-                    <table style={{width:'100%', borderCollapse:'collapse'}}>
-                      <thead>
-                        <tr style={{background:'#fff3e0'}}>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Quantity</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(Array.isArray(grains) ? grains : []).map(p=>(
-                          <tr key={p.id}>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>
-                              {p.image ? (
-                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
-                                  onError={(e) => {e.target.style.display = 'none';}} />
-                              ) : (
-                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
-                              )}
-                            </td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
-                            <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
-                              <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'grains',oldCategory:'grains',image:p.image||''});
-                                setImagePreview(p.image || '');
-                                setImageFile(null);
-                                setEditingProductId(p.id);
-                              }} style={{marginRight:8, padding:'4px 8px', fontSize:'12px'}}>Edit</button>
-                              <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'4px 8px', fontSize:'12px', background:'#dc3545', color:'white', border:'none', borderRadius:'4px'}}>Delete</button>
-                            </td>
+                  <div style={{
+                    border:'1px solid rgba(255, 152, 0, 0.3)', 
+                    borderRadius:16, 
+                    padding:24, 
+                    background:'linear-gradient(135deg, rgba(40, 35, 25, 0.6), rgba(35, 30, 20, 0.4))',
+                    backdropFilter:'blur(10px)',
+                    boxShadow:'0 8px 32px rgba(255, 152, 0, 0.15)'
+                  }}>
+                    <h3 style={{margin:'0 0 20px 0', color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                      🌾 Grains ({grains.length})
+                    </h3>
+                    <div style={{overflowX:'auto'}}>
+                      <table style={{width:'100%', borderCollapse:'separate', borderSpacing:0}}>
+                        <thead>
+                          <tr style={{background:'linear-gradient(135deg, rgba(255, 152, 0, 0.25), rgba(255, 152, 0, 0.15))'}}>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 152, 0, 0.3)', textAlign:'left', width:'90px', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Image</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 152, 0, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Name</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 152, 0, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Description</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 152, 0, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'100px'}}>Price</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 152, 0, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'90px'}}>Quantity</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(255, 152, 0, 0.3)', textAlign:'center', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'160px'}}>Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {(Array.isArray(grains) ? grains : []).map(p=>(
+                            <tr key={p.id} style={{background:'rgba(45, 40, 30, 0.4)', transition:'all 0.2s'}} 
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 152, 0, 0.1)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(45, 40, 30, 0.4)'}>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 152, 0, 0.2)'}}>
+                                {p.image ? (
+                                  <img src={p.image} alt={p.name} style={{width:'70px', height:'70px', objectFit:'cover', borderRadius:'8px', border:'2px solid rgba(255, 152, 0, 0.4)'}} 
+                                    onError={(e) => {e.target.style.display = 'none';}} />
+                                ) : (
+                                  <div style={{width:'70px', height:'70px', background:'rgba(65, 60, 50, 0.6)', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'11px', color:'rgba(255, 255, 255, 0.4)', border:'1px dashed rgba(255, 152, 0, 0.4)'}}>No Image</div>
+                                )}
+                              </td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 152, 0, 0.2)', color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{p.name}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 152, 0, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{p.description}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 152, 0, 0.2)', color:'#ff9800', fontWeight:600, fontSize:'14px'}}>Rs. {p.price}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 152, 0, 0.2)', color:'rgba(255, 255, 255, 0.8)', textAlign:'center', fontWeight:500}}>{p.quantity}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(255, 152, 0, 0.2)', textAlign:'center'}}>
+                                <button onClick={()=>{
+                                  setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'grains',oldCategory:'grains',image:p.image||''});
+                                  setImagePreview(p.image || '');
+                                  setImageFile(null);
+                                  setEditingProductId(p.id);
+                                }} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #2196f3, #1976d2)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>✏️ Edit</button>
+                                <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #f44336, #d32f2f)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>🗑️ Delete</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
 
                 {/* Vegetables Table */}
                 {vegetables.length > 0 && (
-                  <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#fff'}}>
-                    <h3 style={{margin:'0 0 16px 0', color:'#333', fontSize:'18px'}}>Vegetables ({vegetables.length})</h3>
-                    <table style={{width:'100%', borderCollapse:'collapse'}}>
-                      <thead>
-                        <tr style={{background:'#e8f5e8'}}>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left', width:'80px'}}>Image</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Name</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Description</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Price</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'left'}}>Quantity</th>
-                          <th style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {(Array.isArray(vegetables) ? vegetables : []).map(p=>(
-                          <tr key={p.id}>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>
-                              {p.image ? (
-                                <img src={p.image} alt={p.name} style={{width:'60px', height:'60px', objectFit:'cover', borderRadius:'4px'}} 
-                                  onError={(e) => {e.target.style.display = 'none';}} />
-                              ) : (
-                                <div style={{width:'60px', height:'60px', background:'#f0f0f0', borderRadius:'4px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', color:'#999'}}>No Image</div>
-                              )}
-                            </td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.name}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.description}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>Rs. {p.price}</td>
-                            <td style={{padding:8, border:'1px solid #ddd'}}>{p.quantity}</td>
-                            <td style={{padding:8, border:'1px solid #ddd', textAlign:'center'}}>
-                              <button onClick={()=>{
-                                setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'vegetables',oldCategory:'vegetables',image:p.image||''});
-                                setImagePreview(p.image || '');
-                                setImageFile(null);
-                                setEditingProductId(p.id);
-                              }} style={{marginRight:8, padding:'4px 8px', fontSize:'12px'}}>Edit</button>
-                              <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'4px 8px', fontSize:'12px', background:'#dc3545', color:'white', border:'none', borderRadius:'4px'}}>Delete</button>
-                            </td>
+                  <div style={{
+                    border:'1px solid rgba(139, 195, 74, 0.3)', 
+                    borderRadius:16, 
+                    padding:24, 
+                    background:'linear-gradient(135deg, rgba(30, 40, 25, 0.6), rgba(25, 35, 20, 0.4))',
+                    backdropFilter:'blur(10px)',
+                    boxShadow:'0 8px 32px rgba(139, 195, 74, 0.15)'
+                  }}>
+                    <h3 style={{margin:'0 0 20px 0', color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                      🥬 Vegetables ({vegetables.length})
+                    </h3>
+                    <div style={{overflowX:'auto'}}>
+                      <table style={{width:'100%', borderCollapse:'separate', borderSpacing:0}}>
+                        <thead>
+                          <tr style={{background:'linear-gradient(135deg, rgba(139, 195, 74, 0.25), rgba(139, 195, 74, 0.15))'}}>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(139, 195, 74, 0.3)', textAlign:'left', width:'90px', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Image</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(139, 195, 74, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Name</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(139, 195, 74, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Description</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(139, 195, 74, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'100px'}}>Price</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(139, 195, 74, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'90px'}}>Quantity</th>
+                            <th style={{padding:'14px 12px', border:'1px solid rgba(139, 195, 74, 0.3)', textAlign:'center', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'160px'}}>Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {(Array.isArray(vegetables) ? vegetables : []).map(p=>(
+                            <tr key={p.id} style={{background:'rgba(40, 50, 35, 0.4)', transition:'all 0.2s'}} 
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(139, 195, 74, 0.1)'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(40, 50, 35, 0.4)'}>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(139, 195, 74, 0.2)'}}>
+                                {p.image ? (
+                                  <img src={p.image} alt={p.name} style={{width:'70px', height:'70px', objectFit:'cover', borderRadius:'8px', border:'2px solid rgba(139, 195, 74, 0.4)'}} 
+                                    onError={(e) => {e.target.style.display = 'none';}} />
+                                ) : (
+                                  <div style={{width:'70px', height:'70px', background:'rgba(60, 70, 55, 0.6)', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'11px', color:'rgba(255, 255, 255, 0.4)', border:'1px dashed rgba(139, 195, 74, 0.4)'}}>No Image</div>
+                                )}
+                              </td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(139, 195, 74, 0.2)', color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{p.name}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(139, 195, 74, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{p.description}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(139, 195, 74, 0.2)', color:'#8bc34a', fontWeight:600, fontSize:'14px'}}>Rs. {p.price}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(139, 195, 74, 0.2)', color:'rgba(255, 255, 255, 0.8)', textAlign:'center', fontWeight:500}}>{p.quantity}</td>
+                              <td style={{padding:'10px 12px', border:'1px solid rgba(139, 195, 74, 0.2)', textAlign:'center'}}>
+                                <button onClick={()=>{
+                                  setForm({name:p.name,description:p.description,price:p.price,quantity:p.quantity,category:'vegetables',oldCategory:'vegetables',image:p.image||''});
+                                  setImagePreview(p.image || '');
+                                  setImageFile(null);
+                                  setEditingProductId(p.id);
+                                }} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #2196f3, #1976d2)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>✏️ Edit</button>
+                                <button onClick={()=>managerDeleteProduct(p.id)} style={{padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #f44336, #d32f2f)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                                onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                                onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>🗑️ Delete</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
 
@@ -5422,43 +5558,78 @@ function App(){
             </div>
           )}
           {showUserCrud && (
-            <div style={{display:'flex', flexDirection:'column', gap:24, maxWidth:800, margin:'0 auto'}}>
-              <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#fff'}}>
-                <h3 style={{marginTop:0}}>All Users</h3>
-                {userError && <div style={{color:'red',marginBottom:8}}>{userError}</div>}
-                {loadingUsers ? <div>Loading users...</div> : (
-                  <table style={{width:'100%', borderCollapse:'collapse'}}>
-                    <thead>
-                      <tr style={{background:'#eee'}}>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>ID</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Username</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Email</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Password</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Role</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Phone</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Address</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {(Array.isArray(users) ? users : []).map(u => (
-                        <tr key={u.id}>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{u.id}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{u.username}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{u.email}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{u.password}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{u.role}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{u.phone}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{u.address}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>
-                            <button onClick={()=>{viewUser(u.id);}}>View</button>
-                            <button style={{marginLeft:8}} onClick={()=>{setUserForm(u); setEditingUserId(u.id);}}>Edit</button>
-                            <button style={{marginLeft:8}} onClick={()=>deleteUser(u.id)}>Delete</button>
-                          </td>
+            <div style={{display:'flex', flexDirection:'column', gap:24, maxWidth:1000, margin:'0 auto'}}>
+              <div style={{
+                border:'1px solid rgba(33, 150, 243, 0.3)', 
+                borderRadius:16, 
+                padding:24, 
+                background:'linear-gradient(135deg, rgba(25, 35, 45, 0.6), rgba(20, 30, 40, 0.4))',
+                backdropFilter:'blur(10px)',
+                boxShadow:'0 8px 32px rgba(33, 150, 243, 0.15)'
+              }}>
+                <h3 style={{marginTop:0, color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                  👤 All Users ({(Array.isArray(users) ? users : []).length})
+                </h3>
+                {userError && <div style={{color:'#ff6b6b',marginBottom:12, padding:'10px', background:'rgba(255, 107, 107, 0.1)', borderRadius:'6px', border:'1px solid rgba(255, 107, 107, 0.3)'}}>{userError}</div>}
+                {loadingUsers ? (
+                  <div style={{textAlign:'center', padding:'40px', color:'rgba(255, 255, 255, 0.7)'}}>
+                    <div style={{fontSize:'48px', marginBottom:'16px'}}>⏳</div>
+                    <div>Loading users...</div>
+                  </div>
+                ) : (
+                  <div style={{overflowX:'auto'}}>
+                    <table style={{width:'100%', borderCollapse:'separate', borderSpacing:0}}>
+                      <thead>
+                        <tr style={{background:'linear-gradient(135deg, rgba(33, 150, 243, 0.25), rgba(33, 150, 243, 0.15))'}}>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'60px'}}>ID</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Username</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Email</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Password</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'90px'}}>Role</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Phone</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Address</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(33, 150, 243, 0.3)', textAlign:'center', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'200px'}}>Actions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {(Array.isArray(users) ? users : []).map(u => (
+                          <tr key={u.id} style={{background:'rgba(35, 45, 55, 0.4)', transition:'all 0.2s'}}
+                              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(33, 150, 243, 0.1)'}
+                              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(35, 45, 55, 0.4)'}>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', color:'#2196f3', fontWeight:600}}>{u.id}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{u.username}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{u.email}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', color:'rgba(255, 255, 255, 0.5)', fontSize:'12px', fontFamily:'monospace'}}>{u.password}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)'}}>
+                              <span style={{
+                                padding:'4px 10px',
+                                borderRadius:'12px',
+                                fontSize:'11px',
+                                fontWeight:600,
+                                background: u.role === 'manager' ? 'linear-gradient(135deg, #f44336, #d32f2f)' : 'linear-gradient(135deg, #4caf50, #388e3e)',
+                                color:'white'
+                              }}>
+                                {u.role}
+                              </span>
+                            </td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', color:'rgba(255, 255, 255, 0.8)'}}>{u.phone}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{u.address}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(33, 150, 243, 0.2)', textAlign:'center'}}>
+                              <button onClick={()=>{viewUser(u.id);}} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #4caf50, #388e3e)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                              onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                              onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>👁️ View</button>
+                              <button onClick={()=>{setUserForm(u); setEditingUserId(u.id);}} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #2196f3, #1976d2)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                              onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                              onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>✏️ Edit</button>
+                              <button onClick={()=>deleteUser(u.id)} style={{padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #f44336, #d32f2f)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                              onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                              onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>🗑️ Delete</button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 )}
               </div>
               {/* Edit User Section */}
@@ -5590,9 +5761,18 @@ function App(){
                 </div>
               )}
               {/* Employee Table Section */}
-              <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#fff'}}>
-                <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px'}}>
-                  <h3 style={{margin:0}}>All Employees ({employees.length})</h3>
+              <div style={{
+                border:'1px solid rgba(0, 150, 136, 0.3)', 
+                borderRadius:16, 
+                padding:24, 
+                background:'linear-gradient(135deg, rgba(20, 40, 38, 0.6), rgba(15, 35, 33, 0.4))',
+                backdropFilter:'blur(10px)',
+                boxShadow:'0 8px 32px rgba(0, 150, 136, 0.15)'
+              }}>
+                <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'20px'}}>
+                  <h3 style={{margin:0, color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                    👥 All Employees ({employees.length})
+                  </h3>
                   <button 
                     onClick={() => {
                       console.log('Manual refresh clicked');
@@ -5600,91 +5780,120 @@ function App(){
                     }}
                     style={{
                       padding:'8px 16px',
-                      backgroundColor:'#2196f3',
+                      background:'linear-gradient(135deg, #009688, #00796b)',
                       color:'white',
                       border:'none',
-                      borderRadius:'4px',
+                      borderRadius:'8px',
                       cursor:'pointer',
-                      fontSize:'14px'
+                      fontSize:'13px',
+                      fontWeight:600,
+                      transition:'all 0.2s'
                     }}
+                    onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                    onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}
                   >
                     🔄 Refresh
                   </button>
                 </div>
-                {employeeError && <div style={{color:'red',marginBottom:8}}>{employeeError}</div>}
+                {employeeError && <div style={{color:'#ff6b6b', marginBottom:12, padding:'10px', background:'rgba(255, 107, 107, 0.1)', borderRadius:'6px', border:'1px solid rgba(255, 107, 107, 0.3)'}}>{employeeError}</div>}
                 
                 {/* Debug info */}
                 <div style={{
                   fontSize:'12px',
-                  color:'#666',
-                  marginBottom:'10px',
-                  padding:'8px',
-                  backgroundColor:'#f5f5f5',
-                  borderRadius:'4px'
+                  color:'rgba(255, 255, 255, 0.5)',
+                  marginBottom:'12px',
+                  padding:'10px',
+                  background:'rgba(0, 150, 136, 0.1)',
+                  borderRadius:'6px',
+                  border:'1px solid rgba(0, 150, 136, 0.2)'
                 }}>
                   Debug: {employees.length} employees loaded. Loading: {loadingEmployees.toString()}
                   {employees.length > 0 && ` (Latest: ${employees[employees.length-1]?.name})`}
                 </div>
                 
-                {loadingEmployees ? <div>Loading employees...</div> : 
+                {loadingEmployees ? (
+                  <div style={{textAlign:'center', padding:'40px', color:'rgba(255, 255, 255, 0.7)'}}>
+                    <div style={{fontSize:'48px', marginBottom:'16px'}}>⏳</div>
+                    <div>Loading employees...</div>
+                  </div>
+                ) : 
                   employees.length === 0 ? (
                     <div style={{
                       textAlign:'center',
                       padding:'40px',
-                      color:'#666',
-                      backgroundColor:'#f9f9f9',
-                      borderRadius:'8px',
-                      border:'2px dashed #ddd'
+                      color:'rgba(255, 255, 255, 0.7)',
+                      background:'rgba(0, 150, 136, 0.05)',
+                      borderRadius:'12px',
+                      border:'2px dashed rgba(0, 150, 136, 0.3)'
                     }}>
                       <div style={{fontSize:'48px', marginBottom:'16px'}}>👥</div>
-                      <div style={{fontSize:'18px', fontWeight:'600', marginBottom:'8px'}}>No Employees Found</div>
+                      <div style={{fontSize:'18px', fontWeight:'600', marginBottom:'8px', color:'rgba(255, 255, 255, 0.8)'}}>No Employees Found</div>
                       <div style={{fontSize:'14px'}}>
                         {employeeError ? 'There was an error loading employees.' : 'Add your first employee using the form above.'}
                       </div>
                     </div>
                   ) : (
-                  <table style={{width:'100%', borderCollapse:'collapse'}}>
-                    <thead>
-                      <tr style={{background:'#eee'}}>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>ID</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Name</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Address</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Phone</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Email</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Birthdate</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Role</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {(Array.isArray(employees) ? employees : []).map(emp => (
-                        <tr key={emp.id}>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{emp.id}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{emp.name}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{emp.address}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{emp.phoneNumber || emp.phone || ''}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{emp.email || 'N/A'}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{emp.birthdate}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{emp.role}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>
-                            <button onClick={()=>{
-                              setEmployeeForm({
-                                name: emp.name,
-                                address: emp.address,
-                                phone: emp.phoneNumber || emp.phone || '',
-                                birthdate: emp.birthdate,
-                                role: emp.role,
-                                email: emp.email || '',
-                                password: '' // Don't populate password for security
-                              });
-                              setEditingEmployeeId(emp.id);
-                            }}>Edit</button>
-                            <button style={{marginLeft:8}} onClick={()=>deleteEmployee(emp.id)}>Delete</button>
-                          </td>
+                  <div style={{overflowX:'auto'}}>
+                    <table style={{width:'100%', borderCollapse:'separate', borderSpacing:0}}>
+                      <thead>
+                        <tr style={{background:'linear-gradient(135deg, rgba(0, 150, 136, 0.25), rgba(0, 150, 136, 0.15))'}}>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(0, 150, 136, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'60px'}}>ID</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(0, 150, 136, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Name</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(0, 150, 136, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Address</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(0, 150, 136, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Phone</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(0, 150, 136, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Email</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(0, 150, 136, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Birthdate</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(0, 150, 136, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'100px'}}>Role</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(0, 150, 136, 0.3)', textAlign:'center', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'160px'}}>Actions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {(Array.isArray(employees) ? employees : []).map(emp => (
+                          <tr key={emp.id} style={{background:'rgba(30, 50, 48, 0.4)', transition:'all 0.2s'}}
+                              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0, 150, 136, 0.1)'}
+                              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(30, 50, 48, 0.4)'}>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(0, 150, 136, 0.2)', color:'#009688', fontWeight:600}}>{emp.id}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(0, 150, 136, 0.2)', color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{emp.name}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(0, 150, 136, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{emp.address}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(0, 150, 136, 0.2)', color:'rgba(255, 255, 255, 0.8)'}}>{emp.phoneNumber || emp.phone || ''}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(0, 150, 136, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{emp.email || 'N/A'}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(0, 150, 136, 0.2)', color:'rgba(255, 255, 255, 0.8)'}}>{emp.birthdate}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(0, 150, 136, 0.2)'}}>
+                              <span style={{
+                                padding:'4px 10px',
+                                borderRadius:'12px',
+                                fontSize:'11px',
+                                fontWeight:600,
+                                background: emp.role === 'delivery' ? 'linear-gradient(135deg, #ff9800, #f57c00)' : emp.role === 'cashier' ? 'linear-gradient(135deg, #4caf50, #388e3e)' : 'linear-gradient(135deg, #9c27b0, #7b1fa2)',
+                                color:'white'
+                              }}>
+                                {emp.role}
+                              </span>
+                            </td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(0, 150, 136, 0.2)', textAlign:'center'}}>
+                              <button onClick={()=>{
+                                setEmployeeForm({
+                                  name: emp.name,
+                                  address: emp.address,
+                                  phone: emp.phoneNumber || emp.phone || '',
+                                  birthdate: emp.birthdate,
+                                  role: emp.role,
+                                  email: emp.email || '',
+                                  password: '' // Don't populate password for security
+                                });
+                                setEditingEmployeeId(emp.id);
+                              }} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #2196f3, #1976d2)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                              onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                              onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>✏️ Edit</button>
+                              <button onClick={()=>deleteEmployee(emp.id)} style={{padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #f44336, #d32f2f)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                              onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                              onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>🗑️ Delete</button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                   )
                 }
               </div>
@@ -5778,71 +5987,111 @@ function App(){
             </div>
           )}
           {showOrderCrud && (
-            <div style={{display:'flex', flexDirection:'column', gap:24, maxWidth:900, margin:'0 auto'}}>
-              <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#fff'}}>
-                <h3 style={{marginTop:0}}>All Orders</h3>
-                {orderError && <div style={{color:'red',marginBottom:8}}>{orderError}</div>}
-                {loadingOrders ? <div>Loading orders...</div> : (
-                  <table style={{width:'100%', borderCollapse:'collapse'}}>
-                    <thead>
-                      <tr style={{background:'#eee'}}>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>ID</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Customer</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Total</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Status</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Delivery Address</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Delivery Employee</th>
-                        <th style={{padding:8, border:'1px solid #ddd'}}>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {orders.map(order => (
-                        <tr key={order.id}>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{order.id}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{order.customerId ?? order.customer_id ?? ''}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{order.total ?? (order.items ? order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0) : '')}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{order.status}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>{order.deliveryAddress || order.delivery_address || ''}</td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>
-                            {(() => {
-                              // Check multiple possible field names for delivery employee
-                              const deliveryEmployee = order.assignedDeliveryEmployeeName || 
-                                                      order.assigned_delivery_employee_name ||
-                                                      order.deliveryEmployeeName ||
-                                                      order.delivery_employee_name ||
-                                                      order.deliveryEmployee ||
-                                                      order.delivery_employee;
-                              
-                              return (
-                                <span style={{
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '4px',
-                                  padding: '4px 8px',
-                                  borderRadius: '12px',
-                                  fontSize: '12px',
-                                  fontWeight: '500',
-                                  backgroundColor: deliveryEmployee ? '#d4edda' : '#f8d7da',
-                                  color: deliveryEmployee ? '#155724' : '#721c24'
-                                }}>
-                                  {deliveryEmployee ? '🚚' : '⚠️'} 
-                                  {deliveryEmployee || 'Not Assigned'}
-                                </span>
-                              );
-                            })()}
-                          </td>
-                          <td style={{padding:8, border:'1px solid #ddd'}}>
-                            <button onClick={()=>{
-                              setOrderForm({status:order.status,deliveryAddress:order.deliveryAddress || order.delivery_address || ''});
-                              setEditingOrderId(order.id);
-                            }}>Edit</button>
-                            <button style={{marginLeft:8}} onClick={()=>deleteOrder(order.id)}>Delete</button>
-                            <button style={{marginLeft:8}} onClick={()=>viewOrder(order.id)}>View</button>
-                          </td>
+            <div style={{display:'flex', flexDirection:'column', gap:24, maxWidth:1100, margin:'0 auto'}}>
+              <div style={{
+                border:'1px solid rgba(63, 81, 181, 0.3)', 
+                borderRadius:16, 
+                padding:24, 
+                background:'linear-gradient(135deg, rgba(25, 30, 50, 0.6), rgba(20, 25, 45, 0.4))',
+                backdropFilter:'blur(10px)',
+                boxShadow:'0 8px 32px rgba(63, 81, 181, 0.15)'
+              }}>
+                <h3 style={{marginTop:0, color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                  📦 All Orders ({orders.length})
+                </h3>
+                {orderError && <div style={{color:'#ff6b6b', marginBottom:12, padding:'10px', background:'rgba(255, 107, 107, 0.1)', borderRadius:'6px', border:'1px solid rgba(255, 107, 107, 0.3)'}}>{orderError}</div>}
+                {loadingOrders ? (
+                  <div style={{textAlign:'center', padding:'40px', color:'rgba(255, 255, 255, 0.7)'}}>
+                    <div style={{fontSize:'48px', marginBottom:'16px'}}>⏳</div>
+                    <div>Loading orders...</div>
+                  </div>
+                ) : (
+                  <div style={{overflowX:'auto'}}>
+                    <table style={{width:'100%', borderCollapse:'separate', borderSpacing:0}}>
+                      <thead>
+                        <tr style={{background:'linear-gradient(135deg, rgba(63, 81, 181, 0.25), rgba(63, 81, 181, 0.15))'}}>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(63, 81, 181, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'60px'}}>ID</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(63, 81, 181, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'90px'}}>Customer</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(63, 81, 181, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'100px'}}>Total</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(63, 81, 181, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'110px'}}>Status</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(63, 81, 181, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px'}}>Delivery Address</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(63, 81, 181, 0.3)', textAlign:'left', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'140px'}}>Delivery Employee</th>
+                          <th style={{padding:'14px 12px', border:'1px solid rgba(63, 81, 181, 0.3)', textAlign:'center', color:'rgba(255, 255, 255, 0.9)', fontWeight:600, fontSize:'13px', width:'220px'}}>Actions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {orders.map(order => (
+                          <tr key={order.id} style={{background:'rgba(35, 40, 60, 0.4)', transition:'all 0.2s'}}
+                              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(63, 81, 181, 0.1)'}
+                              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(35, 40, 60, 0.4)'}>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(63, 81, 181, 0.2)', color:'#3f51b5', fontWeight:600}}>{order.id}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(63, 81, 181, 0.2)', color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{order.customerId ?? order.customer_id ?? ''}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(63, 81, 181, 0.2)', color:'#4caf50', fontWeight:600, fontSize:'14px'}}>
+                              Rs. {order.total ?? (order.items ? order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2) : '0.00')}
+                            </td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(63, 81, 181, 0.2)'}}>
+                              <span style={{
+                                padding:'4px 10px',
+                                borderRadius:'12px',
+                                fontSize:'11px',
+                                fontWeight:600,
+                                background: order.status === 'delivered' ? 'linear-gradient(135deg, #4caf50, #388e3e)' : 
+                                           order.status === 'pending' ? 'linear-gradient(135deg, #ff9800, #f57c00)' : 
+                                           order.status === 'processing' ? 'linear-gradient(135deg, #2196f3, #1976d2)' :
+                                           'linear-gradient(135deg, #f44336, #d32f2f)',
+                                color:'white'
+                              }}>
+                                {order.status}
+                              </span>
+                            </td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(63, 81, 181, 0.2)', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>{order.deliveryAddress || order.delivery_address || ''}</td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(63, 81, 181, 0.2)'}}>
+                              {(() => {
+                                // Check multiple possible field names for delivery employee
+                                const deliveryEmployee = order.assignedDeliveryEmployeeName || 
+                                                        order.assigned_delivery_employee_name ||
+                                                        order.deliveryEmployeeName ||
+                                                        order.delivery_employee_name ||
+                                                        order.deliveryEmployee ||
+                                                        order.delivery_employee;
+                                
+                                return (
+                                  <span style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '4px',
+                                    padding: '6px 10px',
+                                    borderRadius: '12px',
+                                    fontSize: '11px',
+                                    fontWeight: '600',
+                                    background: deliveryEmployee ? 'linear-gradient(135deg, #4caf50, #388e3e)' : 'linear-gradient(135deg, #ff9800, #f57c00)',
+                                    color: 'white'
+                                  }}>
+                                    {deliveryEmployee ? '🚚' : '⚠️'} 
+                                    {deliveryEmployee || 'Not Assigned'}
+                                  </span>
+                                );
+                              })()}
+                            </td>
+                            <td style={{padding:'10px 12px', border:'1px solid rgba(63, 81, 181, 0.2)', textAlign:'center'}}>
+                              <button onClick={()=>{
+                                setOrderForm({status:order.status,deliveryAddress:order.deliveryAddress || order.delivery_address || ''});
+                                setEditingOrderId(order.id);
+                              }} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #2196f3, #1976d2)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                              onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                              onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>✏️ Edit</button>
+                              <button onClick={()=>deleteOrder(order.id)} style={{marginRight:6, padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #f44336, #d32f2f)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                              onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                              onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>🗑️ Delete</button>
+                              <button onClick={()=>viewOrder(order.id)} style={{padding:'6px 12px', fontSize:'12px', background:'linear-gradient(135deg, #4caf50, #388e3e)', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:600, transition:'all 0.2s'}}
+                              onMouseEnter={(e) => e.target.style.transform = 'translateY(-2px)'}
+                              onMouseLeave={(e) => e.target.style.transform = 'translateY(0)'}>👁️ View</button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 )}
               </div>
               {/* Edit Order Section */}
@@ -5954,7 +6203,7 @@ function App(){
         {page==='account' && user && (
     <div style={{fontFamily:'Nunito, Open Sans, Arial',padding:0,margin:0,minHeight:'100vh',background:'url("/FoodMart-1.0.0/images/bg-leaves-img-pattern.png") repeat, linear-gradient(135deg,#f8fafc 0%,#e3f2fd 100%)',display:'flex',alignItems:'center',justifyContent:'center'}}>
       <div style={{background:'#fff',borderRadius:20,boxShadow:'0 8px 32px rgba(0,0,0,0.18)',padding:48,minWidth:340,maxWidth:400,width:'100%',border:'1px solid #eee',position:'relative'}}>
-        <img src="/shanthi-logo.png" alt="Shanthi Stores Logo" style={{width:80,display:'block',margin:'0 auto 18px'}}/>
+        <img src="/FoodMart-1.0.0/images/a.png" alt="Shanthi Stores Logo" style={{width:80,display:'block',margin:'0 auto 18px'}}/>
         <h1 style={{textAlign:'center',color:'#7b1fa2',marginBottom:24,fontWeight:700,letterSpacing:1,fontFamily:'Nunito'}}>My Account</h1>
         <div style={{marginBottom:18}}>
           <div><b>Username:</b> {user.username}</div>

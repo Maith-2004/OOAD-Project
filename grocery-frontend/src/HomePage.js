@@ -759,7 +759,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
           <div className="row">
             <div className="col-lg-3 col-md-6 col-sm-6">
               <div className="footer-menu">
-                <img src="/shanthi-logo.png" alt="logo" />
+                <img src="/FoodMart-1.0.0/images/a.png" alt="logo" />
                 <div className="social-links mt-5">
                   <ul className="d-flex list-unstyled gap-2">
                     <li><a href="#" className="btn btn-outline-light"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M15.12 5.32H17V2.14A26.11 26.11 0 0 0 14.26 2c-2.72 0-4.58 1.66-4.58 4.7v2.62H6.61v3.56h3.07V22h3.68v-9.12h3.06l.46-3.56h-3.52V7.05c0-1.05.28-1.73 1.76-1.73Z"/></svg></a></li>
