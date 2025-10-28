@@ -2423,63 +2423,65 @@ function App(){
   if(!user || (showLogin || showRegister || showManagerLogin || showManagerRegister)){
     return (
   <div style={{
-    fontFamily:'Inter, Nunito, sans-serif',
+    fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
     padding:0,
     margin:0,
     minHeight:'100vh',
-    background:'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+    background:'linear-gradient(135deg, #f7fafc 0%, #e8eef3 50%, #d4dde6 100%)',
     display:'flex',
     alignItems:'center',
     justifyContent:'center',
     position:'relative',
     overflow:'hidden'
   }}>
-    {/* Animated background shapes */}
-    <div style={{position:'absolute',top:'-10%',left:'-5%',width:'40%',height:'40%',background:'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',borderRadius:'50%',filter:'blur(60px)'}}></div>
-    <div style={{position:'absolute',bottom:'-10%',right:'-5%',width:'50%',height:'50%',background:'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',borderRadius:'50%',filter:'blur(80px)'}}></div>
+    {/* Subtle background pattern */}
+    <div style={{
+      position:'absolute',
+      inset:0,
+      backgroundImage:'radial-gradient(circle at 2px 2px, rgba(42, 67, 101, 0.03) 1px, transparent 0)',
+      backgroundSize:'40px 40px'
+    }}></div>
     
     <div style={{
-      background:'rgba(255, 255, 255, 0.95)',
-      backdropFilter:'blur(20px) saturate(180%)',
-      borderRadius:24,
-      boxShadow:'0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.2)',
-      padding:'48px 40px',
-      minWidth:380,
-      maxWidth:440,
+      background:'#ffffff',
+      borderRadius:20,
+      boxShadow:'0 20px 60px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05)',
+      padding:'50px 48px',
+      minWidth:420,
+      maxWidth:460,
       width:'100%',
-      border:'1px solid rgba(255,255,255,0.3)',
+      border:'1px solid rgba(226, 232, 240, 0.8)',
       position:'relative',
       zIndex:1
     }}>
-      {/* Logo with enhanced styling */}
-      <div style={{textAlign:'center',marginBottom:32}}>
+      {/* Logo with professional styling */}
+      <div style={{textAlign:'center',marginBottom:40}}>
         <div style={{
-          width:90,
-          height:90,
-          margin:'0 auto 20px',
-          background:'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          width:100,
+          height:100,
+          margin:'0 auto 24px',
+          background:'linear-gradient(135deg, #1a1a1a 0%, #2d3748 100%)',
           borderRadius:'50%',
           display:'flex',
           alignItems:'center',
           justifyContent:'center',
-          boxShadow:'0 8px 24px rgba(102,126,234,0.4)',
-          border:'4px solid rgba(255,255,255,0.9)'
+          boxShadow:'0 12px 32px rgba(26, 26, 26, 0.15)',
+          border:'5px solid #f7fafc',
+          position:'relative'
         }}>
-          <img src="/FoodMart-1.0.0/images/a.png" alt="Shanthi Stores Logo" style={{width:60,height:60,objectFit:'contain'}}/>
+          <img src="/FoodMart-1.0.0/images/a.png" alt="Shanthi Stores Logo" style={{width:68,height:68,objectFit:'contain'}}/>
         </div>
         <h1 style={{
           margin:0,
-          color:'#2d3748',
-          fontSize:32,
+          color:'#1a1a1a',
+          fontSize:34,
           fontWeight:800,
-          letterSpacing:'-0.5px',
-          background:'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          WebkitBackgroundClip:'text',
-          WebkitTextFillColor:'transparent'
+          letterSpacing:'-0.8px',
+          lineHeight:1.2
         }}>
           Shanthi Stores
         </h1>
-        <p style={{color:'#718096',fontSize:15,marginTop:8,fontWeight:500}}>Your neighborhood grocery store</p>
+        <p style={{color:'#6b7280',fontSize:16,marginTop:10,fontWeight:500,letterSpacing:'0.1px'}}>Your trusted neighborhood grocery</p>
       </div>
       
       <div style={{display:'flex', flexDirection:'column', gap:16}}>
@@ -2488,127 +2490,133 @@ function App(){
             <button 
               onClick={()=>{setShowLogin(true); setShowRegister(false); setShowManagerLogin(false); setShowManagerRegister(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} 
               style={{
-                padding:'16px 28px',
+                padding:'18px 32px',
                 fontSize:17,
                 borderRadius:12,
-                background:'linear-gradient(135deg, #4299e1 0%, #3182ce 100%)',
-                color:'#fff',
+                background:'linear-gradient(135deg, #2d3748 0%, #1a1a1a 100%)',
+                color:'#ffffff',
                 border:'none',
                 fontWeight:700,
-                boxShadow:'0 6px 20px rgba(66,153,225,0.4)',
+                boxShadow:'0 8px 24px rgba(26, 26, 26, 0.2)',
                 transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 cursor:'pointer',
-                letterSpacing:'0.3px'
+                letterSpacing:'0.3px',
+                position:'relative',
+                overflow:'hidden'
               }}
               onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 10px 30px rgba(66,153,225,0.5)';
+                e.target.style.transform = 'translateY(-3px)';
+                e.target.style.boxShadow = '0 12px 32px rgba(26, 26, 26, 0.3)';
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 6px 20px rgba(66,153,225,0.4)';
+                e.target.style.boxShadow = '0 8px 24px rgba(26, 26, 26, 0.2)';
               }}
             >
-              🔐 Sign In to Your Account
+              <span style={{marginRight:10,fontSize:18}}>🔐</span>Sign In to Your Account
             </button>
             <button 
               onClick={()=>{setShowRegister(true); setShowLogin(false); setShowManagerLogin(false); setShowManagerRegister(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} 
               style={{
-                padding:'16px 28px',
+                padding:'18px 32px',
                 fontSize:17,
                 borderRadius:12,
-                background:'linear-gradient(135deg, #9f7aea 0%, #805ad5 100%)',
-                color:'#fff',
+                background:'linear-gradient(135deg, #4a5568 0%, #2d3748 100%)',
+                color:'#ffffff',
                 border:'none',
                 fontWeight:700,
-                boxShadow:'0 6px 20px rgba(159,122,234,0.4)',
+                boxShadow:'0 8px 24px rgba(74, 85, 104, 0.2)',
                 transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 cursor:'pointer',
                 letterSpacing:'0.3px'
               }}
               onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 10px 30px rgba(159,122,234,0.5)';
+                e.target.style.transform = 'translateY(-3px)';
+                e.target.style.boxShadow = '0 12px 32px rgba(74, 85, 104, 0.3)';
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 6px 20px rgba(159,122,234,0.4)';
+                e.target.style.boxShadow = '0 8px 24px rgba(74, 85, 104, 0.2)';
               }}
             >
-              ✨ Create New Account
+              <span style={{marginRight:10,fontSize:18}}>✨</span>Create New Account
             </button>
             
-            <div style={{display:'flex',alignItems:'center',gap:12,margin:'8px 0'}}>
+            <div style={{display:'flex',alignItems:'center',gap:14,margin:'12px 0'}}>
               <div style={{flex:1,height:1,background:'linear-gradient(to right, transparent, #cbd5e0, transparent)'}}></div>
-              <span style={{color:'#a0aec0',fontSize:13,fontWeight:600}}>OR</span>
+              <span style={{color:'#9ca3af',fontSize:13,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.8px'}}>OR</span>
               <div style={{flex:1,height:1,background:'linear-gradient(to right, transparent, #cbd5e0, transparent)'}}></div>
             </div>
             
             <button 
               onClick={() => setUser({guest: true})} 
               style={{
-                padding:'14px 28px',
+                padding:'16px 32px',
                 fontSize:16,
                 borderRadius:12,
-                background:'linear-gradient(135deg, #48bb78 0%, #38a169 100%)',
-                color:'#fff',
+                background:'linear-gradient(135deg, #7AB730 0%, #9ED645 100%)',
+                color:'#ffffff',
                 border:'none',
-                fontWeight:600,
-                boxShadow:'0 4px 16px rgba(72,187,120,0.3)',
+                fontWeight:700,
+                boxShadow:'0 6px 20px rgba(122, 183, 48, 0.25)',
                 transition:'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 cursor:'pointer',
-                letterSpacing:'0.2px'
+                letterSpacing:'0.3px'
               }}
               onMouseEnter={(e) => {
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 8px 24px rgba(72,187,120,0.4)';
+                e.target.style.transform = 'translateY(-3px)';
+                e.target.style.boxShadow = '0 10px 28px rgba(122, 183, 48, 0.35)';
               }}
               onMouseLeave={(e) => {
                 e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 4px 16px rgba(72,187,120,0.3)';
+                e.target.style.boxShadow = '0 6px 20px rgba(122, 183, 48, 0.25)';
               }}
             >
-              👤 Continue as Guest
+              <span style={{marginRight:10,fontSize:18}}>👤</span>Continue as Guest
             </button>
           </div>
         )}
         
         {showLogin && !showRegister && !showManagerLogin && (
           <>
-            <h2 style={{fontSize:24,fontWeight:700,color:'#2d3748',marginBottom:12,textAlign:'center'}}>Welcome Back!</h2>
-            <p style={{fontSize:14,color:'#718096',marginBottom:20,textAlign:'center'}}>Sign in to access your account</p>
+            <h2 style={{fontSize:28,fontWeight:800,color:'#1a1a1a',marginBottom:8,textAlign:'center',letterSpacing:'-0.5px'}}>Welcome Back</h2>
+            <p style={{fontSize:15,color:'#6b7280',marginBottom:28,textAlign:'center',fontWeight:500}}>Sign in to access your account</p>
             
-            <div style={{marginBottom:18}}>
-              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Email Address</label>
+            <div style={{marginBottom:20}}>
+              <label style={{display:'block',marginBottom:10,color:'#1a1a1a',fontSize:14,fontWeight:700,letterSpacing:'0.1px'}}>Email Address</label>
               <input 
                 placeholder="your.email@example.com" 
                 value={form.email} 
                 onChange={e=>setForm({...form,email:e.target.value})} 
                 style={{
                   width:'100%',
-                  padding:'14px 16px',
+                  padding:'15px 18px',
                   fontSize:16,
                   borderRadius:10,
                   border:'2px solid #e2e8f0',
-                  fontFamily:'Inter, sans-serif',
+                  fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
                   outline:'none',
-                  transition:'all 0.2s',
-                  background:'#fff',
-                  boxSizing:'border-box'
+                  transition:'all 0.25s',
+                  background:'#f9fafb',
+                  boxSizing:'border-box',
+                  color:'#1a1a1a',
+                  fontWeight:500
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#4299e1';
-                  e.target.style.boxShadow = '0 0 0 3px rgba(66,153,225,0.1)';
+                  e.target.style.borderColor = '#2d3748';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(45, 55, 72, 0.08)';
+                  e.target.style.background = '#ffffff';
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = '#e2e8f0';
                   e.target.style.boxShadow = 'none';
+                  e.target.style.background = '#f9fafb';
                 }}
               />
             </div>
             
-            <div style={{marginBottom:24}}>
-              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Password</label>
+            <div style={{marginBottom:30}}>
+              <label style={{display:'block',marginBottom:10,color:'#1a1a1a',fontSize:14,fontWeight:700,letterSpacing:'0.1px'}}>Password</label>
               <input 
                 placeholder="Enter your password" 
                 type="password" 
@@ -2616,23 +2624,27 @@ function App(){
                 onChange={e=>setForm({...form,password:e.target.value})} 
                 style={{
                   width:'100%',
-                  padding:'14px 16px',
+                  padding:'15px 18px',
                   fontSize:16,
                   borderRadius:10,
                   border:'2px solid #e2e8f0',
-                  fontFamily:'Inter, sans-serif',
+                  fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
                   outline:'none',
-                  transition:'all 0.2s',
-                  background:'#fff',
-                  boxSizing:'border-box'
+                  transition:'all 0.25s',
+                  background:'#f9fafb',
+                  boxSizing:'border-box',
+                  color:'#1a1a1a',
+                  fontWeight:500
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#4299e1';
-                  e.target.style.boxShadow = '0 0 0 3px rgba(66,153,225,0.1)';
+                  e.target.style.borderColor = '#2d3748';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(45, 55, 72, 0.08)';
+                  e.target.style.background = '#ffffff';
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = '#e2e8f0';
                   e.target.style.boxShadow = 'none';
+                  e.target.style.background = '#f9fafb';
                 }}
               />
             </div>
@@ -2642,24 +2654,25 @@ function App(){
                 onClick={login} 
                 style={{
                   flex:1,
-                  padding:'14px 24px',
+                  padding:'16px 28px',
                   fontSize:17,
                   borderRadius:10,
-                  background:'linear-gradient(135deg, #4299e1 0%, #3182ce 100%)',
-                  color:'#fff',
+                  background:'linear-gradient(135deg, #2d3748 0%, #1a1a1a 100%)',
+                  color:'#ffffff',
                   border:'none',
                   fontWeight:700,
                   cursor:'pointer',
-                  boxShadow:'0 6px 20px rgba(66,153,225,0.4)',
-                  transition:'all 0.3s'
+                  boxShadow:'0 8px 24px rgba(26, 26, 26, 0.2)',
+                  transition:'all 0.3s',
+                  letterSpacing:'0.3px'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.transform = 'translateY(-2px)';
-                  e.target.style.boxShadow = '0 10px 30px rgba(66,153,225,0.5)';
+                  e.target.style.transform = 'translateY(-3px)';
+                  e.target.style.boxShadow = '0 12px 32px rgba(26, 26, 26, 0.3)';
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.transform = 'translateY(0)';
-                  e.target.style.boxShadow = '0 6px 20px rgba(66,153,225,0.4)';
+                  e.target.style.boxShadow = '0 8px 24px rgba(26, 26, 26, 0.2)';
                 }}
               >
                 Sign In
@@ -2667,18 +2680,25 @@ function App(){
               <button 
                 onClick={()=>{setShowLogin(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} 
                 style={{
-                  padding:'14px 24px',
+                  padding:'16px 28px',
                   fontSize:17,
                   borderRadius:10,
-                  background:'#f7fafc',
+                  background:'#ffffff',
                   color:'#4a5568',
                   border:'2px solid #e2e8f0',
-                  fontWeight:600,
+                  fontWeight:700,
                   cursor:'pointer',
-                  transition:'all 0.2s'
+                  transition:'all 0.25s',
+                  letterSpacing:'0.2px'
                 }}
-                onMouseEnter={(e) => e.target.style.background = '#edf2f7'}
-                onMouseLeave={(e) => e.target.style.background = '#f7fafc'}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#f9fafb';
+                  e.target.style.borderColor = '#cbd5e0';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = '#ffffff';
+                  e.target.style.borderColor = '#e2e8f0';
+                }}
               >
                 Back
               </button>
@@ -2688,69 +2708,77 @@ function App(){
         
         {showRegister && !showLogin && !showManagerLogin && !showManagerRegister && (
           <>
-            <h2 style={{fontSize:24,fontWeight:700,color:'#2d3748',marginBottom:12,textAlign:'center'}}>Create Account</h2>
-            <p style={{fontSize:14,color:'#718096',marginBottom:20,textAlign:'center'}}>Join us and start shopping!</p>
+            <h2 style={{fontSize:28,fontWeight:800,color:'#1a1a1a',marginBottom:8,textAlign:'center',letterSpacing:'-0.5px'}}>Create Account</h2>
+            <p style={{fontSize:15,color:'#6b7280',marginBottom:24,textAlign:'center',fontWeight:500}}>Join us and start shopping today</p>
             
-            <div style={{marginBottom:16}}>
-              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Username</label>
+            <div style={{marginBottom:18}}>
+              <label style={{display:'block',marginBottom:10,color:'#1a1a1a',fontSize:14,fontWeight:700,letterSpacing:'0.1px'}}>Username</label>
               <input 
                 placeholder="Choose a username" 
                 value={form.username} 
                 onChange={e=>setForm({...form,username:e.target.value})} 
                 style={{
                   width:'100%',
-                  padding:'12px 14px',
+                  padding:'14px 18px',
                   fontSize:15,
                   borderRadius:10,
                   border:'2px solid #e2e8f0',
-                  fontFamily:'Inter, sans-serif',
+                  fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
                   outline:'none',
-                  transition:'all 0.2s',
-                  background:'#fff',
-                  boxSizing:'border-box'
+                  transition:'all 0.25s',
+                  background:'#f9fafb',
+                  boxSizing:'border-box',
+                  color:'#1a1a1a',
+                  fontWeight:500
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#9f7aea';
-                  e.target.style.boxShadow = '0 0 0 3px rgba(159,122,234,0.1)';
+                  e.target.style.borderColor = '#4a5568';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(74, 85, 104, 0.08)';
+                  e.target.style.background = '#ffffff';
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = '#e2e8f0';
                   e.target.style.boxShadow = 'none';
+                  e.target.style.background = '#f9fafb';
                 }}
               />
             </div>
             
-            <div style={{marginBottom:16}}>
-              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Email Address</label>
+            <div style={{marginBottom:18}}>
+              <label style={{display:'block',marginBottom:10,color:'#1a1a1a',fontSize:14,fontWeight:700,letterSpacing:'0.1px'}}>Email Address</label>
               <input 
                 placeholder="your.email@example.com" 
                 value={form.email} 
                 onChange={e=>setForm({...form,email:e.target.value})} 
                 style={{
                   width:'100%',
-                  padding:'12px 14px',
+                  padding:'14px 18px',
                   fontSize:15,
                   borderRadius:10,
                   border:'2px solid #e2e8f0',
-                  fontFamily:'Inter, sans-serif',
+                  fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
                   outline:'none',
-                  transition:'all 0.2s',
-                  background:'#fff',
-                  boxSizing:'border-box'
+                  transition:'all 0.25s',
+                  background:'#f9fafb',
+                  boxSizing:'border-box',
+                  color:'#1a1a1a',
+                  fontWeight:500
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#9f7aea';
-                  e.target.style.boxShadow = '0 0 0 3px rgba(159,122,234,0.1)';
+                  e.target.style.borderColor = '#4a5568';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(74, 85, 104, 0.08)';
+                  e.target.style.background = '#ffffff';
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = '#e2e8f0';
                   e.target.style.boxShadow = 'none';
+                  e.target.style.background = '#f9fafb';
                 }}
               />
             </div>
             
-            <div style={{marginBottom:16}}>
-              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Password</label>
+            <div style={{marginBottom:18}}>
+              <label style={{display:'block',marginBottom:10,color:'#1a1a1a',fontSize:14,fontWeight:700,letterSpacing:'0.1px'}}>Password</label>
               <input 
                 placeholder="Create a strong password" 
                 type="password" 
@@ -2758,81 +2786,93 @@ function App(){
                 onChange={e=>setForm({...form,password:e.target.value})} 
                 style={{
                   width:'100%',
-                  padding:'12px 14px',
+                  padding:'14px 18px',
                   fontSize:15,
                   borderRadius:10,
                   border:'2px solid #e2e8f0',
-                  fontFamily:'Inter, sans-serif',
+                  fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
                   outline:'none',
-                  transition:'all 0.2s',
-                  background:'#fff',
-                  boxSizing:'border-box'
+                  transition:'all 0.25s',
+                  background:'#f9fafb',
+                  boxSizing:'border-box',
+                  color:'#1a1a1a',
+                  fontWeight:500
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#9f7aea';
-                  e.target.style.boxShadow = '0 0 0 3px rgba(159,122,234,0.1)';
+                  e.target.style.borderColor = '#4a5568';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(74, 85, 104, 0.08)';
+                  e.target.style.background = '#ffffff';
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = '#e2e8f0';
                   e.target.style.boxShadow = 'none';
+                  e.target.style.background = '#f9fafb';
                 }}
               />
             </div>
             
-            <div style={{marginBottom:16}}>
-              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Delivery Address</label>
+            <div style={{marginBottom:18}}>
+              <label style={{display:'block',marginBottom:10,color:'#1a1a1a',fontSize:14,fontWeight:700,letterSpacing:'0.1px'}}>Delivery Address</label>
               <input 
                 placeholder="Street address, city" 
                 value={form.address} 
                 onChange={e=>setForm({...form,address:e.target.value})} 
                 style={{
                   width:'100%',
-                  padding:'12px 14px',
+                  padding:'14px 18px',
                   fontSize:15,
                   borderRadius:10,
                   border:'2px solid #e2e8f0',
-                  fontFamily:'Inter, sans-serif',
+                  fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
                   outline:'none',
-                  transition:'all 0.2s',
-                  background:'#fff',
-                  boxSizing:'border-box'
+                  transition:'all 0.25s',
+                  background:'#f9fafb',
+                  boxSizing:'border-box',
+                  color:'#1a1a1a',
+                  fontWeight:500
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#9f7aea';
-                  e.target.style.boxShadow = '0 0 0 3px rgba(159,122,234,0.1)';
+                  e.target.style.borderColor = '#4a5568';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(74, 85, 104, 0.08)';
+                  e.target.style.background = '#ffffff';
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = '#e2e8f0';
                   e.target.style.boxShadow = 'none';
+                  e.target.style.background = '#f9fafb';
                 }}
               />
             </div>
             
-            <div style={{marginBottom:20}}>
-              <label style={{display:'block',marginBottom:8,color:'#4a5568',fontSize:14,fontWeight:600}}>Phone Number</label>
+            <div style={{marginBottom:24}}>
+              <label style={{display:'block',marginBottom:10,color:'#1a1a1a',fontSize:14,fontWeight:700,letterSpacing:'0.1px'}}>Phone Number</label>
               <input 
                 placeholder="Your contact number" 
                 value={form.phone} 
                 onChange={e=>setForm({...form,phone:e.target.value})} 
                 style={{
                   width:'100%',
-                  padding:'12px 14px',
+                  padding:'14px 18px',
                   fontSize:15,
                   borderRadius:10,
                   border:'2px solid #e2e8f0',
-                  fontFamily:'Inter, sans-serif',
+                  fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
                   outline:'none',
-                  transition:'all 0.2s',
-                  background:'#fff',
-                  boxSizing:'border-box'
+                  transition:'all 0.25s',
+                  background:'#f9fafb',
+                  boxSizing:'border-box',
+                  color:'#1a1a1a',
+                  fontWeight:500
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#9f7aea';
-                  e.target.style.boxShadow = '0 0 0 3px rgba(159,122,234,0.1)';
+                  e.target.style.borderColor = '#4a5568';
+                  e.target.style.boxShadow = '0 0 0 4px rgba(74, 85, 104, 0.08)';
+                  e.target.style.background = '#ffffff';
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = '#e2e8f0';
                   e.target.style.boxShadow = 'none';
+                  e.target.style.background = '#f9fafb';
                 }}
               />
             </div>
@@ -2842,43 +2882,51 @@ function App(){
                 onClick={register} 
                 style={{
                   flex:1,
-                  padding:'14px 24px',
+                  padding:'16px 28px',
                   fontSize:17,
                   borderRadius:10,
-                  background:'linear-gradient(135deg, #9f7aea 0%, #805ad5 100%)',
-                  color:'#fff',
+                  background:'linear-gradient(135deg, #4a5568 0%, #2d3748 100%)',
+                  color:'#ffffff',
                   border:'none',
                   fontWeight:700,
                   cursor:'pointer',
-                  boxShadow:'0 6px 20px rgba(159,122,234,0.4)',
-                  transition:'all 0.3s'
+                  boxShadow:'0 8px 24px rgba(74, 85, 104, 0.2)',
+                  transition:'all 0.3s',
+                  letterSpacing:'0.3px'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.transform = 'translateY(-2px)';
-                  e.target.style.boxShadow = '0 10px 30px rgba(159,122,234,0.5)';
+                  e.target.style.transform = 'translateY(-3px)';
+                  e.target.style.boxShadow = '0 12px 32px rgba(74, 85, 104, 0.3)';
                 }}
                 onMouseLeave={(e) => {
                   e.target.style.transform = 'translateY(0)';
-                  e.target.style.boxShadow = '0 6px 20px rgba(159,122,234,0.4)';
+                  e.target.style.boxShadow = '0 8px 24px rgba(74, 85, 104, 0.2)';
                 }}
               >
-                Sign Up
+                Create Account
               </button>
               <button 
                 onClick={()=>{setShowRegister(false); setForm({username:'',email:'',password:'',address:'',phone:''});}} 
                 style={{
-                  padding:'14px 24px',
+                  padding:'16px 28px',
                   fontSize:17,
                   borderRadius:10,
-                  background:'#f7fafc',
+                  background:'#ffffff',
                   color:'#4a5568',
                   border:'2px solid #e2e8f0',
-                  fontWeight:600,
+                  fontWeight:700,
                   cursor:'pointer',
-                  transition:'all 0.2s'
+                  transition:'all 0.25s',
+                  letterSpacing:'0.2px'
                 }}
-                onMouseEnter={(e) => e.target.style.background = '#edf2f7'}
-                onMouseLeave={(e) => e.target.style.background = '#f7fafc'}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#f9fafb';
+                  e.target.style.borderColor = '#cbd5e0';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = '#ffffff';
+                  e.target.style.borderColor = '#e2e8f0';
+                }}
               >
                 Back
               </button>
@@ -5667,96 +5715,399 @@ function App(){
             </div>
           )}
           {showEmployeeCrud && (
-            <div style={{display:'flex', flexDirection:'column', gap:24, maxWidth:800, margin:'0 auto'}}>
+            <div style={{display:'flex', flexDirection:'column', gap:24, maxWidth:1000, margin:'0 auto'}}>
               {/* Add Employee Section - always visible above table */}
               {!editingEmployeeId && (
-                <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#f9f9f9'}}>
-                  <h3 style={{marginTop:0}}>Add Employee</h3>
+                <div style={{
+                  border:'1px solid rgba(0, 150, 136, 0.3)', 
+                  borderRadius:16, 
+                  padding:24, 
+                  background:'linear-gradient(135deg, rgba(20, 40, 38, 0.6), rgba(15, 35, 33, 0.4))',
+                  backdropFilter:'blur(10px)',
+                  boxShadow:'0 8px 32px rgba(0, 150, 136, 0.15)'
+                }}>
+                  <h3 style={{marginTop:0, color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                    ➕ Add New Employee
+                  </h3>
                   <div style={{
-                    padding:'8px 12px',
-                    backgroundColor:'#e3f2fd',
-                    borderRadius:'4px',
-                    fontSize:'14px',
-                    color:'#1976d2',
-                    marginBottom:'12px',
-                    border:'1px solid #bbdefb'
+                    padding:'12px 16px',
+                    background:'rgba(33, 150, 243, 0.1)',
+                    borderRadius:'8px',
+                    fontSize:'13px',
+                    color:'rgba(255, 255, 255, 0.8)',
+                    marginBottom:'16px',
+                    border:'1px solid rgba(33, 150, 243, 0.3)'
                   }}>
-                    💡 <strong>Note:</strong> Email and password fields are for future employee login functionality. 
+                    💡 <strong style={{color:'#2196f3'}}>Note:</strong> Email and password fields are for future employee login functionality. 
                     If the backend doesn't support them yet, the employee will be created without login credentials.
                   </div>
-                  <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12}}>
-                    <input placeholder="Name" value={employeeForm.name} onChange={e=>setEmployeeForm({...employeeForm,name:e.target.value})}/>
-                    <input placeholder="Address" value={employeeForm.address} onChange={e=>setEmployeeForm({...employeeForm,address:e.target.value})}/>
-                    <input placeholder="Phone" value={employeeForm.phone} onChange={e=>setEmployeeForm({...employeeForm,phone:e.target.value})}/>
-                    <input placeholder="Birthdate (yyyy-MM-dd)" value={employeeForm.birthdate} onChange={e=>setEmployeeForm({...employeeForm,birthdate:e.target.value})}/>
+                  <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:14}}>
+                    <input 
+                      placeholder="Name" 
+                      value={employeeForm.name} 
+                      onChange={e=>setEmployeeForm({...employeeForm,name:e.target.value})}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(0, 150, 136, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.3)'}
+                    />
+                    <input 
+                      placeholder="Address" 
+                      value={employeeForm.address} 
+                      onChange={e=>setEmployeeForm({...employeeForm,address:e.target.value})}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(0, 150, 136, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.3)'}
+                    />
+                    <input 
+                      placeholder="Phone" 
+                      value={employeeForm.phone} 
+                      onChange={e=>setEmployeeForm({...employeeForm,phone:e.target.value})}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(0, 150, 136, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.3)'}
+                    />
+                    <input 
+                      placeholder="Birthdate (yyyy-MM-dd)" 
+                      value={employeeForm.birthdate} 
+                      onChange={e=>setEmployeeForm({...employeeForm,birthdate:e.target.value})}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(0, 150, 136, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.3)'}
+                    />
                     <input 
                       type="email" 
                       placeholder="Email Address" 
                       value={employeeForm.email} 
                       onChange={e=>setEmployeeForm({...employeeForm,email:e.target.value})}
-                      style={{padding:'8px', border:'1px solid #ccc', borderRadius:'4px'}}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(0, 150, 136, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.3)'}
                     />
                     <input 
                       type="password" 
                       placeholder="Password" 
                       value={employeeForm.password} 
                       onChange={e=>setEmployeeForm({...employeeForm,password:e.target.value})}
-                      style={{padding:'8px', border:'1px solid #ccc', borderRadius:'4px'}}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(0, 150, 136, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.3)'}
                     />
                     <select 
                       value={employeeForm.role} 
                       onChange={e=>setEmployeeForm({...employeeForm,role:e.target.value})}
-                      style={{padding:'8px', border:'1px solid #ccc', borderRadius:'4px', backgroundColor:'#fff', gridColumn:'span 2'}}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(0, 150, 136, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        gridColumn:'span 2',
+                        outline:'none',
+                        cursor:'pointer',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(0, 150, 136, 0.3)'}
                     >
-                      <option value="">Select Role</option>
-                      <option value="Delivery">🚚 Delivery</option>
-                      <option value="Worker">👷 Worker</option>
-                      <option value="Payment Handler">💰 Payment Handler</option>
+                      <option value="" style={{background:'#1a1a1a'}}>Select Role</option>
+                      <option value="Delivery" style={{background:'#1a1a1a'}}>🚚 Delivery</option>
+                      <option value="Worker" style={{background:'#1a1a1a'}}>👷 Worker</option>
+                      <option value="Payment Handler" style={{background:'#1a1a1a'}}>💰 Payment Handler</option>
                     </select>
                   </div>
-                  <div style={{marginTop:16, display:'flex', gap:12}}>
-                    <button onClick={addEmployee}>Add Employee</button>
-                    <button onClick={()=>setEmployeeForm({name:'',address:'',phone:'',birthdate:'',role:'',email:'',password:''})}>Clear</button>
+                  <div style={{marginTop:18, display:'flex', gap:12}}>
+                    <button 
+                      onClick={addEmployee}
+                      style={{
+                        padding:'12px 24px',
+                        fontSize:'14px',
+                        background:'linear-gradient(135deg, #4caf50, #388e3e)',
+                        color:'white',
+                        border:'none',
+                        borderRadius:'8px',
+                        cursor:'pointer',
+                        fontWeight:600,
+                        transition:'all 0.2s',
+                        boxShadow:'0 4px 12px rgba(76, 175, 80, 0.3)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.transform = 'translateY(-2px)';
+                        e.target.style.boxShadow = '0 6px 16px rgba(76, 175, 80, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.transform = 'translateY(0)';
+                        e.target.style.boxShadow = '0 4px 12px rgba(76, 175, 80, 0.3)';
+                      }}
+                    >✅ Add Employee</button>
+                    <button 
+                      onClick={()=>setEmployeeForm({name:'',address:'',phone:'',birthdate:'',role:'',email:'',password:''})}
+                      style={{
+                        padding:'12px 24px',
+                        fontSize:'14px',
+                        background:'rgba(255, 255, 255, 0.1)',
+                        color:'rgba(255, 255, 255, 0.8)',
+                        border:'1px solid rgba(255, 255, 255, 0.2)',
+                        borderRadius:'8px',
+                        cursor:'pointer',
+                        fontWeight:600,
+                        transition:'all 0.2s'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.background = 'rgba(255, 255, 255, 0.15)';
+                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                      }}
+                    >🔄 Clear</button>
                   </div>
                 </div>
               )}
               {/* Edit Employee Section - only visible when editing */}
               {editingEmployeeId && (
-                <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#f9f9f9', marginTop:0}}>
-                  <h3 style={{marginTop:0}}>Edit Employee</h3>
-                  <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:12}}>
-                    <input placeholder="Name" value={employeeForm.name} onChange={e=>setEmployeeForm({...employeeForm,name:e.target.value})}/>
-                    <input placeholder="Address" value={employeeForm.address} onChange={e=>setEmployeeForm({...employeeForm,address:e.target.value})}/>
-                    <input placeholder="Phone" value={employeeForm.phone} onChange={e=>setEmployeeForm({...employeeForm,phone:e.target.value})}/>
-                    <input placeholder="Birthdate (yyyy-MM-dd)" value={employeeForm.birthdate} onChange={e=>setEmployeeForm({...employeeForm,birthdate:e.target.value})}/>
+                <div style={{
+                  border:'1px solid rgba(33, 150, 243, 0.3)', 
+                  borderRadius:16, 
+                  padding:24, 
+                  background:'linear-gradient(135deg, rgba(25, 35, 45, 0.6), rgba(20, 30, 40, 0.4))',
+                  backdropFilter:'blur(10px)',
+                  boxShadow:'0 8px 32px rgba(33, 150, 243, 0.15)',
+                  marginTop:0
+                }}>
+                  <h3 style={{marginTop:0, color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700}}>
+                    ✏️ Edit Employee
+                  </h3>
+                  <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:14}}>
+                    <input 
+                      placeholder="Name" 
+                      value={employeeForm.name} 
+                      onChange={e=>setEmployeeForm({...employeeForm,name:e.target.value})}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(33, 150, 243, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.3)'}
+                    />
+                    <input 
+                      placeholder="Address" 
+                      value={employeeForm.address} 
+                      onChange={e=>setEmployeeForm({...employeeForm,address:e.target.value})}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(33, 150, 243, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.3)'}
+                    />
+                    <input 
+                      placeholder="Phone" 
+                      value={employeeForm.phone} 
+                      onChange={e=>setEmployeeForm({...employeeForm,phone:e.target.value})}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(33, 150, 243, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.3)'}
+                    />
+                    <input 
+                      placeholder="Birthdate (yyyy-MM-dd)" 
+                      value={employeeForm.birthdate} 
+                      onChange={e=>setEmployeeForm({...employeeForm,birthdate:e.target.value})}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(33, 150, 243, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.3)'}
+                    />
                     <input 
                       type="email" 
                       placeholder="Email Address" 
                       value={employeeForm.email} 
                       onChange={e=>setEmployeeForm({...employeeForm,email:e.target.value})}
-                      style={{padding:'8px', border:'1px solid #ccc', borderRadius:'4px'}}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(33, 150, 243, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.3)'}
                     />
                     <input 
                       type="password" 
                       placeholder="New Password (leave blank to keep current)" 
                       value={employeeForm.password} 
                       onChange={e=>setEmployeeForm({...employeeForm,password:e.target.value})}
-                      style={{padding:'8px', border:'1px solid #ccc', borderRadius:'4px'}}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(33, 150, 243, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        outline:'none',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.3)'}
                     />
                     <select 
                       value={employeeForm.role} 
                       onChange={e=>setEmployeeForm({...employeeForm,role:e.target.value})}
-                      style={{padding:'8px', border:'1px solid #ccc', borderRadius:'4px', backgroundColor:'#fff', gridColumn:'span 2'}}
+                      style={{
+                        padding:'12px 14px', 
+                        border:'1px solid rgba(33, 150, 243, 0.3)', 
+                        borderRadius:'8px', 
+                        background:'rgba(255, 255, 255, 0.05)',
+                        color:'rgba(255, 255, 255, 0.9)',
+                        fontSize:'14px',
+                        gridColumn:'span 2',
+                        outline:'none',
+                        cursor:'pointer',
+                        transition:'all 0.2s'
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.6)'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(33, 150, 243, 0.3)'}
                     >
-                      <option value="">Select Role</option>
-                      <option value="Delivery">🚚 Delivery</option>
-                      <option value="Worker">👷 Worker</option>
-                      <option value="Payment Handler">💰 Payment Handler</option>
+                      <option value="" style={{background:'#1a1a1a'}}>Select Role</option>
+                      <option value="Delivery" style={{background:'#1a1a1a'}}>🚚 Delivery</option>
+                      <option value="Worker" style={{background:'#1a1a1a'}}>👷 Worker</option>
+                      <option value="Payment Handler" style={{background:'#1a1a1a'}}>💰 Payment Handler</option>
                     </select>
                   </div>
-                  <div style={{marginTop:16, display:'flex', gap:12}}>
-                    <button onClick={updateEmployee} style={{background:'#1976d2',color:'#fff',padding:'8px 16px',border:'none',borderRadius:4}}>Save Edit</button>
-                    <button onClick={()=>{setEditingEmployeeId(null); setEmployeeForm({name:'',address:'',phone:'',birthdate:'',role:'',email:'',password:''});}}>Cancel</button>
+                  <div style={{marginTop:18, display:'flex', gap:12}}>
+                    <button 
+                      onClick={updateEmployee} 
+                      style={{
+                        padding:'12px 24px',
+                        fontSize:'14px',
+                        background:'linear-gradient(135deg, #2196f3, #1976d2)',
+                        color:'white',
+                        border:'none',
+                        borderRadius:'8px',
+                        cursor:'pointer',
+                        fontWeight:600,
+                        transition:'all 0.2s',
+                        boxShadow:'0 4px 12px rgba(33, 150, 243, 0.3)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.transform = 'translateY(-2px)';
+                        e.target.style.boxShadow = '0 6px 16px rgba(33, 150, 243, 0.4)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.transform = 'translateY(0)';
+                        e.target.style.boxShadow = '0 4px 12px rgba(33, 150, 243, 0.3)';
+                      }}
+                    >💾 Save Edit</button>
+                    <button 
+                      onClick={()=>{setEditingEmployeeId(null); setEmployeeForm({name:'',address:'',phone:'',birthdate:'',role:'',email:'',password:''});}}
+                      style={{
+                        padding:'12px 24px',
+                        fontSize:'14px',
+                        background:'rgba(255, 255, 255, 0.1)',
+                        color:'rgba(255, 255, 255, 0.8)',
+                        border:'1px solid rgba(255, 255, 255, 0.2)',
+                        borderRadius:'8px',
+                        cursor:'pointer',
+                        fontWeight:600,
+                        transition:'all 0.2s'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.background = 'rgba(255, 255, 255, 0.15)';
+                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.background = 'rgba(255, 255, 255, 0.1)';
+                        e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                      }}
+                    >❌ Cancel</button>
                   </div>
                 </div>
               )}
@@ -5899,11 +6250,19 @@ function App(){
               </div>
               
               {/* Delivery Dashboard Section */}
-              <div style={{border:'1px solid #ccc', borderRadius:8, padding:20, background:'#f8fff9', marginTop:24}}>
-                <h3 style={{marginTop:0, color:'#2e7d32', display:'flex', alignItems:'center', gap:'8px'}}>
+              <div style={{
+                border:'1px solid rgba(255, 152, 0, 0.3)', 
+                borderRadius:16, 
+                padding:24, 
+                background:'linear-gradient(135deg, rgba(40, 35, 25, 0.6), rgba(35, 30, 20, 0.4))',
+                backdropFilter:'blur(10px)',
+                boxShadow:'0 8px 32px rgba(255, 152, 0, 0.15)',
+                marginTop:24
+              }}>
+                <h3 style={{marginTop:0, color:'rgba(255, 255, 255, 0.9)', fontSize:'20px', fontWeight:700, display:'flex', alignItems:'center', gap:'10px'}}>
                   🚚 Delivery Employee Dashboard
                 </h3>
-                <p style={{color:'#666', marginBottom:'20px'}}>
+                <p style={{color:'rgba(255, 255, 255, 0.6)', marginBottom:'20px', fontSize:'14px'}}>
                   Monitor delivery employees and their assignment status for order fulfillment.
                 </p>
                 
@@ -5912,17 +6271,18 @@ function App(){
                   return (
                     <div>
                       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px'}}>
-                        <h4 style={{margin:0, color:'#333'}}>
+                        <h4 style={{margin:0, color:'rgba(255, 255, 255, 0.9)', fontSize:'18px', fontWeight:600}}>
                           Available Delivery Staff ({deliveryEmployees.length})
                         </h4>
                         {deliveryEmployees.length === 0 && (
                           <span style={{
-                            padding:'4px 12px',
-                            backgroundColor:'#ffebee',
-                            color:'#c62828',
+                            padding:'6px 14px',
+                            background:'linear-gradient(135deg, #ff9800, #f57c00)',
+                            color:'white',
                             borderRadius:'12px',
                             fontSize:'12px',
-                            fontWeight:'600'
+                            fontWeight:'600',
+                            boxShadow:'0 4px 12px rgba(255, 152, 0, 0.3)'
                           }}>
                             ⚠️ NO DELIVERY STAFF
                           </span>
@@ -5930,36 +6290,63 @@ function App(){
                       </div>
                       
                       {deliveryEmployees.length > 0 ? (
-                        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))', gap:'16px'}}>
+                        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))', gap:'16px'}}>
                           {deliveryEmployees.map(emp => (
                             <div key={emp.id} style={{
-                              border:'1px solid #c8e6c9',
-                              borderRadius:'8px',
-                              padding:'16px',
-                              backgroundColor:'#e8f5e9',
-                              position:'relative'
+                              border:'1px solid rgba(76, 175, 80, 0.3)',
+                              borderRadius:'12px',
+                              padding:'18px',
+                              background:'linear-gradient(135deg, rgba(30, 40, 30, 0.6), rgba(25, 35, 25, 0.4))',
+                              backdropFilter:'blur(8px)',
+                              boxShadow:'0 4px 16px rgba(76, 175, 80, 0.2)',
+                              position:'relative',
+                              transition:'all 0.2s'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.transform = 'translateY(-4px)';
+                              e.currentTarget.style.boxShadow = '0 8px 24px rgba(76, 175, 80, 0.3)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.transform = 'translateY(0)';
+                              e.currentTarget.style.boxShadow = '0 4px 16px rgba(76, 175, 80, 0.2)';
                             }}>
                               <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start'}}>
                                 <div>
-                                  <h5 style={{margin:'0 0 8px 0', color:'#2e7d32', fontSize:'16px'}}>{emp.name}</h5>
-                                  <p style={{margin:'4px 0', color:'#666', fontSize:'14px'}}>ID: {emp.id}</p>
-                                  <p style={{margin:'4px 0', color:'#666', fontSize:'14px'}}>Role: {emp.role}</p>
+                                  <h5 style={{margin:'0 0 10px 0', color:'#4caf50', fontSize:'17px', fontWeight:700}}>{emp.name}</h5>
+                                  <p style={{margin:'4px 0', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>
+                                    <span style={{color:'#4caf50', fontWeight:600}}>ID:</span> {emp.id}
+                                  </p>
+                                  <p style={{margin:'4px 0', color:'rgba(255, 255, 255, 0.7)', fontSize:'13px'}}>
+                                    <span style={{color:'#4caf50', fontWeight:600}}>Role:</span> {emp.role}
+                                  </p>
                                 </div>
                                 <span style={{
-                                  padding:'4px 8px',
-                                  backgroundColor:'#d4edda',
-                                  color:'#155724',
+                                  padding:'6px 12px',
+                                  background:'linear-gradient(135deg, #4caf50, #388e3e)',
+                                  color:'white',
                                   borderRadius:'12px',
                                   fontSize:'11px',
-                                  fontWeight:'600'
+                                  fontWeight:'600',
+                                  boxShadow:'0 4px 12px rgba(76, 175, 80, 0.3)'
                                 }}>
-                                  ACTIVE
+                                  ✓ ACTIVE
                                 </span>
                               </div>
                               
-                              <div style={{marginTop:'12px', padding:'8px', backgroundColor:'#fff', borderRadius:'4px', fontSize:'12px'}}>
-                                <div style={{color:'#666'}}>📧 Contact: {emp.phoneNumber || emp.phone || 'Not provided'}</div>
-                                <div style={{color:'#666', marginTop:'4px'}}>📍 Address: {emp.address || 'Not provided'}</div>
+                              <div style={{
+                                marginTop:'14px',
+                                padding:'12px',
+                                background:'rgba(0, 0, 0, 0.2)',
+                                borderRadius:'8px',
+                                border:'1px solid rgba(76, 175, 80, 0.2)',
+                                fontSize:'12px'
+                              }}>
+                                <div style={{color:'rgba(255, 255, 255, 0.8)', marginBottom:'6px', display:'flex', alignItems:'center', gap:'6px'}}>
+                                  <span style={{color:'#4caf50'}}>�</span> Contact: <span style={{color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{emp.phoneNumber || emp.phone || 'Not provided'}</span>
+                                </div>
+                                <div style={{color:'rgba(255, 255, 255, 0.8)', display:'flex', alignItems:'center', gap:'6px'}}>
+                                  <span style={{color:'#4caf50'}}>📍</span> Address: <span style={{color:'rgba(255, 255, 255, 0.9)', fontWeight:500}}>{emp.address || 'Not provided'}</span>
+                                </div>
                               </div>
                             </div>
                           ))}
@@ -5967,14 +6354,14 @@ function App(){
                       ) : (
                         <div style={{
                           textAlign:'center',
-                          padding:'40px',
-                          backgroundColor:'#fff3cd',
-                          borderRadius:'8px',
-                          border:'1px solid #ffeaa7'
+                          padding:'48px 24px',
+                          background:'rgba(255, 152, 0, 0.05)',
+                          borderRadius:'12px',
+                          border:'2px dashed rgba(255, 152, 0, 0.3)'
                         }}>
-                          <div style={{fontSize:'48px', marginBottom:'16px'}}>⚠️</div>
-                          <h4 style={{color:'#856404', margin:'0 0 8px 0'}}>No Delivery Employees Found</h4>
-                          <p style={{color:'#856404', margin:'0', fontSize:'14px'}}>
+                          <div style={{fontSize:'64px', marginBottom:'16px'}}>⚠️</div>
+                          <h4 style={{color:'rgba(255, 255, 255, 0.9)', margin:'0 0 10px 0', fontSize:'18px', fontWeight:700}}>No Delivery Employees Found</h4>
+                          <p style={{color:'rgba(255, 255, 255, 0.6)', margin:'0', fontSize:'14px', lineHeight:'1.6'}}>
                             Orders cannot be automatically assigned without delivery employees. 
                             Please add employees with "delivery" role to enable order processing.
                           </p>
@@ -6166,6 +6553,89 @@ function App(){
               )}
             </div>
           )}
+
+          {/* Admin Dashboard Footer */}
+          <div style={{
+            background:'linear-gradient(135deg, rgba(30, 30, 30, 0.98), rgba(20, 20, 20, 0.95))',
+            backdropFilter:'blur(20px) saturate(180%)',
+            borderTop:'2px solid rgba(122, 183, 48, 0.3)',
+            padding:'32px 48px',
+            marginTop:'60px',
+            boxShadow:'0 -4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(122, 183, 48, 0.2)'
+          }}>
+            <div style={{
+              maxWidth:'1200px',
+              margin:'0 auto',
+              display:'flex',
+              justifyContent:'space-between',
+              alignItems:'center',
+              flexWrap:'wrap',
+              gap:'20px'
+            }}>
+              <div>
+                <div style={{
+                  fontSize:'24px',
+                  fontWeight:700,
+                  background:'linear-gradient(135deg, #7AB730 0%, #9ED645 100%)',
+                  WebkitBackgroundClip:'text',
+                  WebkitTextFillColor:'transparent',
+                  marginBottom:'8px'
+                }}>
+                  🎛️ Admin Panel
+                </div>
+                <p style={{
+                  margin:0,
+                  fontSize:'14px',
+                  color:'rgba(255, 255, 255, 0.5)',
+                  fontWeight:500
+                }}>
+                  © 2025 Shanthi Stores. All rights reserved.
+                </p>
+              </div>
+              <div style={{
+                display:'flex',
+                gap:'20px',
+                alignItems:'center'
+              }}>
+                <div style={{
+                  padding:'10px 16px',
+                  background:'rgba(122, 183, 48, 0.1)',
+                  border:'1px solid rgba(122, 183, 48, 0.3)',
+                  borderRadius:'8px',
+                  color:'rgba(255, 255, 255, 0.7)',
+                  fontSize:'13px',
+                  fontWeight:600
+                }}>
+                  👤 Manager: {user?.username || 'Admin'}
+                </div>
+                <button 
+                  onClick={() => setPage('home')}
+                  style={{
+                    padding:'10px 20px',
+                    background:'linear-gradient(135deg, #7AB730, #9ED645)',
+                    color:'white',
+                    border:'none',
+                    borderRadius:'8px',
+                    cursor:'pointer',
+                    fontSize:'14px',
+                    fontWeight:700,
+                    transition:'all 0.2s',
+                    boxShadow:'0 4px 12px rgba(122, 183, 48, 0.3)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.transform = 'translateY(-2px)';
+                    e.target.style.boxShadow = '0 6px 16px rgba(122, 183, 48, 0.4)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.transform = 'translateY(0)';
+                    e.target.style.boxShadow = '0 4px 12px rgba(122, 183, 48, 0.3)';
+                  }}
+                >
+                  🏠 Back to Store
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 

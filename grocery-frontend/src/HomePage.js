@@ -30,24 +30,90 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
 
   // Helper for product grid (trending, best sellers, etc.)
   const renderProductGrid = (count = 10) => (
-    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))',gap:'16px',padding:'0'}}>
+    <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))',gap:'20px',padding:'0'}}>
       {(loading ? Array(count).fill({}) : products.slice(0, count)).map((product, i) => {
         const pid = product.id || i;
         const qty = qtys[pid] || 1;
         return (
-          <div key={pid} style={{background:'#fff',borderRadius:'12px',boxShadow:'0 2px 8px rgba(0,0,0,0.08)',padding:'16px',position:'relative',minHeight:'320px',display:'flex',flexDirection:'column',border:'1px solid #f0f0f0'}}>
+          <div key={pid} style={{
+            background:'#fff',
+            borderRadius:'16px',
+            boxShadow:'0 4px 16px rgba(0,0,0,0.06)',
+            padding:'20px',
+            position:'relative',
+            minHeight:'360px',
+            display:'flex',
+            flexDirection:'column',
+            border:'1px solid #e8e8e8',
+            transition:'all 0.3s ease',
+            cursor:'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+            e.currentTarget.style.transform = 'translateY(-4px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}>
             {/* Discount badge */}
-            <span style={{position:'absolute',top:'12px',left:'12px',background:'#4CAF50',color:'#fff',fontWeight:'600',padding:'4px 8px',borderRadius:'6px',fontSize:'12px',zIndex:2}}>-30%</span>
+            <span style={{
+              position:'absolute',
+              top:'16px',
+              left:'16px',
+              background:'linear-gradient(135deg, #4CAF50, #388e3e)',
+              color:'#fff',
+              fontWeight:'700',
+              padding:'6px 12px',
+              borderRadius:'8px',
+              fontSize:'11px',
+              zIndex:2,
+              letterSpacing:'0.3px',
+              boxShadow:'0 4px 12px rgba(76, 175, 80, 0.3)',
+              fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
+            }}>-30% OFF</span>
             
             {/* Heart icon */}
-            <div style={{position:'absolute',top:'12px',right:'12px',width:'32px',height:'32px',background:'#fff',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',boxShadow:'0 2px 4px rgba(0,0,0,0.1)',zIndex:2}}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="#ccc">
+            <div style={{
+              position:'absolute',
+              top:'16px',
+              right:'16px',
+              width:'36px',
+              height:'36px',
+              background:'#fff',
+              borderRadius:'50%',
+              display:'flex',
+              alignItems:'center',
+              justifyContent:'center',
+              cursor:'pointer',
+              boxShadow:'0 2px 8px rgba(0,0,0,0.08)',
+              zIndex:2,
+              transition:'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(244, 67, 54, 0.2)';
+              e.currentTarget.querySelector('svg').style.fill = '#f44336';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+              e.currentTarget.querySelector('svg').style.fill = '#ccc';
+            }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc" style={{transition:'fill 0.2s'}}>
                 <path d="m12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
               </svg>
             </div>
             
             {/* Product image */}
-            <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'140px',marginBottom:'12px',borderRadius:'8px',backgroundColor:'#fafafa'}}>
+            <div style={{
+              display:'flex',
+              justifyContent:'center',
+              alignItems:'center',
+              height:'160px',
+              marginBottom:'16px',
+              borderRadius:'12px',
+              backgroundColor:'#f8f9fa',
+              border:'1px solid #f0f0f0'
+            }}>
               <img 
                 src={
                   product.image || 
@@ -60,49 +126,164 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
                   )
                 } 
                 alt={product.name || 'Product'} 
-                style={{maxHeight:'120px',maxWidth:'100%',objectFit:'contain'}} 
+                style={{
+                  maxHeight:'140px',
+                  maxWidth:'90%',
+                  objectFit:'contain',
+                  filter:'drop-shadow(0 2px 8px rgba(0,0,0,0.05))'
+                }} 
               />
             </div>
             
             {/* Product name */}
-            <h3 style={{fontWeight:'600',fontSize:'16px',color:'#333',marginBottom:'8px',lineHeight:'1.4'}}>{product.name || 'Sunstar Fresh Melon Juice'}</h3>
+            <h3 style={{
+              fontWeight:'600',
+              fontSize:'15px',
+              color:'#1a1a1a',
+              marginBottom:'10px',
+              lineHeight:'1.4',
+              fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
+              letterSpacing:'-0.2px',
+              minHeight:'42px'
+            }}>{product.name || 'Sunstar Fresh Melon Juice'}</h3>
             
             {/* Unit and rating */}
-            <div style={{display:'flex',alignItems:'center',gap:'12px',marginBottom:'8px'}}>
-              <span style={{fontSize:'12px',color:'#888',fontWeight:'500'}}>1 UNIT</span>
+            <div style={{
+              display:'flex',
+              alignItems:'center',
+              gap:'12px',
+              marginBottom:'12px',
+              paddingBottom:'12px',
+              borderBottom:'1px solid #f0f0f0'
+            }}>
+              <span style={{
+                fontSize:'11px',
+                color:'#6b7280',
+                fontWeight:'600',
+                letterSpacing:'0.5px',
+                fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
+              }}>1 UNIT</span>
               <div style={{display:'flex',alignItems:'center',gap:'4px'}}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFB400">
                   <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                 </svg>
-                <span style={{fontSize:'12px',fontWeight:'600',color:'#333'}}>4.5</span>
+                <span style={{
+                  fontSize:'13px',
+                  fontWeight:'700',
+                  color:'#1a1a1a',
+                  fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
+                }}>4.5</span>
               </div>
             </div>
             
             {/* Price */}
-            <div style={{fontSize:'20px',fontWeight:'700',color:'#333',marginBottom:'16px'}}>Rs. {product.price ? product.price.toFixed(2) : '18.00'}</div>
+            <div style={{
+              fontSize:'22px',
+              fontWeight:'700',
+              color:'#2d3748',
+              marginBottom:'16px',
+              fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
+              letterSpacing:'-0.5px'
+            }}>
+              <span style={{fontSize:'16px', color:'#6b7280', fontWeight:'500'}}>Rs.</span> {product.price ? product.price.toFixed(2) : '18.00'}
+            </div>
             
             {/* Quantity controls and Add to Cart */}
-            <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'auto'}}>
+            <div style={{display:'flex',alignItems:'center',gap:'10px',marginTop:'auto'}}>
               <button 
                 type="button" 
-                style={{width:'32px',height:'32px',border:'1px solid #ddd',background:'#fff',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:'18px',fontWeight:'500',color:'#666'}} 
+                style={{
+                  width:'36px',
+                  height:'36px',
+                  border:'1px solid #e0e0e0',
+                  background:'#fff',
+                  borderRadius:'8px',
+                  display:'flex',
+                  alignItems:'center',
+                  justifyContent:'center',
+                  cursor:'pointer',
+                  fontSize:'18px',
+                  fontWeight:'600',
+                  color:'#4a5568',
+                  transition:'all 0.2s',
+                  boxShadow:'0 1px 3px rgba(0,0,0,0.05)'
+                }} 
                 onClick={() => setQtys(q => ({ ...q, [pid]: Math.max(1, (q[pid] || 1) - 1) }))}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#f7fafc';
+                  e.target.style.borderColor = '#cbd5e0';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = '#fff';
+                  e.target.style.borderColor = '#e0e0e0';
+                }}
               >
                 −
               </button>
-              <span style={{fontWeight:'600',fontSize:'16px',minWidth:'24px',textAlign:'center',color:'#333'}}>{qty}</span>
+              <span style={{
+                fontWeight:'700',
+                fontSize:'15px',
+                minWidth:'28px',
+                textAlign:'center',
+                color:'#1a1a1a',
+                fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif'
+              }}>{qty}</span>
               <button 
                 type="button" 
-                style={{width:'32px',height:'32px',border:'1px solid #ddd',background:'#fff',borderRadius:'6px',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:'18px',fontWeight:'500',color:'#666'}} 
+                style={{
+                  width:'36px',
+                  height:'36px',
+                  border:'1px solid #e0e0e0',
+                  background:'#fff',
+                  borderRadius:'8px',
+                  display:'flex',
+                  alignItems:'center',
+                  justifyContent:'center',
+                  cursor:'pointer',
+                  fontSize:'18px',
+                  fontWeight:'600',
+                  color:'#4a5568',
+                  transition:'all 0.2s',
+                  boxShadow:'0 1px 3px rgba(0,0,0,0.05)'
+                }} 
                 onClick={() => setQtys(q => ({ ...q, [pid]: (q[pid] || 1) + 1 }))}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#f7fafc';
+                  e.target.style.borderColor = '#cbd5e0';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = '#fff';
+                  e.target.style.borderColor = '#e0e0e0';
+                }}
               >
                 +
               </button>
               <button 
-                style={{flex:1,marginLeft:'12px',background:'#f8f9fa',color:'#666',fontWeight:'500',fontSize:'14px',padding:'8px 16px',border:'1px solid #e9ecef',borderRadius:'6px',cursor:'pointer',transition:'all 0.2s'}} 
+                style={{
+                  flex:1,
+                  marginLeft:'8px',
+                  background:'linear-gradient(135deg, #7AB730, #9ED645)',
+                  color:'#fff',
+                  fontWeight:'600',
+                  fontSize:'13px',
+                  padding:'10px 14px',
+                  border:'none',
+                  borderRadius:'8px',
+                  cursor:'pointer',
+                  transition:'all 0.2s',
+                  fontFamily:'"Inter", "Segoe UI", system-ui, sans-serif',
+                  letterSpacing:'0.2px',
+                  boxShadow:'0 4px 12px rgba(122, 183, 48, 0.25)'
+                }} 
                 onClick={() => handleAddToCart(product, i)}
-                onMouseOver={(e) => {e.target.style.background='#e9ecef'}}
-                onMouseOut={(e) => {e.target.style.background='#f8f9fa'}}
+                onMouseEnter={(e) => {
+                  e.target.style.boxShadow='0 6px 16px rgba(122, 183, 48, 0.35)';
+                  e.target.style.transform='translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.boxShadow='0 4px 12px rgba(122, 183, 48, 0.25)';
+                  e.target.style.transform='translateY(0)';
+                }}
               >
                 Add to Cart
               </button>
