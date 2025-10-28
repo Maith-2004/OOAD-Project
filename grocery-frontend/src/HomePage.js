@@ -116,7 +116,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
 
 
   return (
-    <div className="foodmart-home">
+    <div className="shanthi-stores-home">
 
       {/* Admin Button for Managers */}
       {user && user.role === 'manager' && (
@@ -641,7 +641,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
                   <img src="/FoodMart-1.0.0/images/phone.png" alt="phone" className="image-float img-fluid" />
                 </div>
                 <div className="col-md-8">
-                  <h2 className="my-5">Shop faster with FoodMart App</h2>
+                  <h2 className="my-5">Shop faster with Shanthi Stores App</h2>
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sagittis sed ptibus liberolectus nonet psryroin. Amet sed lorem posuere sit iaculis amet, ac urna. Adipiscing fames semper erat ac in suspendisse iaculis. Amet blandit tortor praesent ante vitae. A, enim pretiummi senectus magna. Sagittis sed ptibus liberolectus non et psryroin.</p>
                   <div className="d-flex gap-2 flex-wrap">
                     <img src="/FoodMart-1.0.0/images/app-store.jpg" alt="app-store" />
@@ -759,7 +759,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
           <div className="row">
             <div className="col-lg-3 col-md-6 col-sm-6">
               <div className="footer-menu">
-                <img src="/FoodMart-1.0.0/images/logo.png" alt="logo" />
+                <img src="/shanthi-logo.png" alt="logo" />
                 <div className="social-links mt-5">
                   <ul className="d-flex list-unstyled gap-2">
                     <li><a href="#" className="btn btn-outline-light"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M15.12 5.32H17V2.14A26.11 26.11 0 0 0 14.26 2c-2.72 0-4.58 1.66-4.58 4.7v2.62H6.61v3.56h3.07V22h3.68v-9.12h3.06l.46-3.56h-3.52V7.05c0-1.05.28-1.73 1.76-1.73Z"/></svg></a></li>
@@ -827,7 +827,7 @@ export default function HomePage({ addToCart, cart = [], onNavigate, user, onCat
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-6 copyright">
-              <p>&copy; 2025 FoodMart. All rights reserved.</p>
+              <p>&copy; 2025 Shanthi Stores. All rights reserved.</p>
             </div>
             <div className="col-md-6 credit-link text-start text-md-end">
 

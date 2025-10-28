@@ -2465,7 +2465,7 @@ function App(){
           boxShadow:'0 8px 24px rgba(102,126,234,0.4)',
           border:'4px solid rgba(255,255,255,0.9)'
         }}>
-          <img src="/FoodMart-1.0.0/images/logo.png" alt="FoodMart Logo" style={{width:60,height:60,objectFit:'contain'}}/>
+          <img src="/shanthi-logo.png" alt="Shanthi Stores Logo" style={{width:60,height:60,objectFit:'contain'}}/>
         </div>
         <h1 style={{
           margin:0,
@@ -2477,7 +2477,7 @@ function App(){
           WebkitBackgroundClip:'text',
           WebkitTextFillColor:'transparent'
         }}>
-          FoodMart
+          Shanthi Stores
         </h1>
         <p style={{color:'#718096',fontSize:15,marginTop:8,fontWeight:500}}>Your neighborhood grocery store</p>
       </div>
@@ -3211,9 +3211,9 @@ function App(){
         <div style={{width:'100%',padding:'16px 24px',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:20}}>
           {/* Logo Section */}
           <div style={{display:'flex',alignItems:'center',gap:12,minWidth:'250px'}}>
-            <img src="/FoodMart-1.0.0/images/logo.png" alt="FoodMart logo" style={{height:50}} />
+            <img src="/shanthi-logo.png" alt="Shanthi Stores logo" style={{height:50}} />
             <div>
-              <div style={{fontWeight:700,fontSize:22,color:'#333',lineHeight:1}}>FOOD<span style={{color:'#ffa726'}}>MART</span></div>
+              <div style={{fontWeight:700,fontSize:22,color:'#333',lineHeight:1}}>SHANTHI <span style={{color:'#ffa726'}}>STORES</span></div>
               <div style={{fontSize:12,color:'#888',textTransform:'uppercase',letterSpacing:1}}>GROCERY STORE</div>
             </div>
           </div>
@@ -3386,9 +3386,9 @@ function App(){
         <div style={{background:isEmployeePage ? 'linear-gradient(135deg, rgba(30, 30, 30, 0.98), rgba(20, 20, 20, 0.95))' : '#fff',backdropFilter:isEmployeePage ? 'blur(20px) saturate(180%)' : 'none',borderBottom:isEmployeePage ? '2px solid rgba(122, 183, 48, 0.3)' : '1px solid #eee',fontSize:16,padding:'16px 0',boxShadow:isEmployeePage ? '0 4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(122, 183, 48, 0.2)' : 'none'}}>
           <div style={{textAlign:'center',cursor:'pointer'}} onClick={() => setPage('home')}>
             <div style={{display:'inline-flex',alignItems:'center',gap:12}}>
-              <img src="/FoodMart-1.0.0/images/logo.png" alt="FoodMart logo" style={{height:40,filter:isEmployeePage ? 'drop-shadow(0 0 10px rgba(122, 183, 48, 0.3))' : 'none'}} />
+              <img src="/shanthi-logo.png" alt="Shanthi Stores logo" style={{height:40,filter:isEmployeePage ? 'drop-shadow(0 0 10px rgba(122, 183, 48, 0.3))' : 'none'}} />
               <div style={{fontWeight:700,fontSize:22,color:isEmployeePage ? 'rgba(255, 255, 255, 0.95)' : '#333',fontFamily:'Nunito, sans-serif',textShadow:isEmployeePage ? '0 2px 4px rgba(0, 0, 0, 0.5)' : 'none'}}>
-                FOOD<span style={{color:'#ffa726',textShadow:isEmployeePage ? '0 0 20px rgba(255, 167, 38, 0.5)' : 'none'}}>MART</span> - GROCERY STORE
+                SHANTHI <span style={{color:'#ffa726',textShadow:isEmployeePage ? '0 0 20px rgba(255, 167, 38, 0.5)' : 'none'}}>STORES</span> - GROCERY STORE
               </div>
             </div>
           </div>
@@ -5954,7 +5954,7 @@ function App(){
         {page==='account' && user && (
     <div style={{fontFamily:'Nunito, Open Sans, Arial',padding:0,margin:0,minHeight:'100vh',background:'url("/FoodMart-1.0.0/images/bg-leaves-img-pattern.png") repeat, linear-gradient(135deg,#f8fafc 0%,#e3f2fd 100%)',display:'flex',alignItems:'center',justifyContent:'center'}}>
       <div style={{background:'#fff',borderRadius:20,boxShadow:'0 8px 32px rgba(0,0,0,0.18)',padding:48,minWidth:340,maxWidth:400,width:'100%',border:'1px solid #eee',position:'relative'}}>
-        <img src="/FoodMart-1.0.0/images/logo.png" alt="FoodMart Logo" style={{width:80,display:'block',margin:'0 auto 18px'}}/>
+        <img src="/shanthi-logo.png" alt="Shanthi Stores Logo" style={{width:80,display:'block',margin:'0 auto 18px'}}/>
         <h1 style={{textAlign:'center',color:'#7b1fa2',marginBottom:24,fontWeight:700,letterSpacing:1,fontFamily:'Nunito'}}>My Account</h1>
         <div style={{marginBottom:18}}>
           <div><b>Username:</b> {user.username}</div>
@@ -7671,7 +7671,7 @@ function App(){
       {/* Global Footer */}
       <footer style={{background:isEmployeePage ? 'linear-gradient(135deg, rgba(20, 20, 20, 0.98), rgba(15, 15, 15, 0.95))' : '#f8f9fa',backdropFilter:isEmployeePage ? 'blur(20px) saturate(180%)' : 'none',padding:isEmployeePage ? '24px 0' : '20px 0',borderTop:isEmployeePage ? '2px solid rgba(122, 183, 48, 0.3)' : '1px solid #eee',boxShadow:isEmployeePage ? '0 -4px 20px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(122, 183, 48, 0.2)' : 'none'}}>
         <div style={{textAlign:'center',color:isEmployeePage ? 'rgba(255, 255, 255, 0.6)' : '#888',fontSize:'14px',textShadow:isEmployeePage ? '0 2px 4px rgba(0, 0, 0, 0.5)' : 'none',fontFamily:'Open Sans, sans-serif'}}>
-          © 2025 <span style={{color:isEmployeePage ? '#7AB730' : '#888',fontWeight:isEmployeePage ? 600 : 'normal'}}>FoodMart</span>. All rights reserved.
+          © 2025 <span style={{color:isEmployeePage ? '#7AB730' : '#888',fontWeight:isEmployeePage ? 600 : 'normal'}}>Shanthi Stores</span>. All rights reserved.
         </div>
       </footer>
     </div>
